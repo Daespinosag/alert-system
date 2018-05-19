@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Bogota', //UTC
 
     /*
     |--------------------------------------------------------------------------
@@ -166,7 +166,11 @@ return [
 
         /*
          * Package Service Providers...
+         * 
+        Barryvdh\Debugbar\ServiceProvider::class,
+        Rinvex\Repository\Providers\RepositoryServiceProvider::class,
          */
+
 
         /*
          * Application Service Providers...
@@ -176,6 +180,11 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+
+        /*
+         * Personal Service Providers...
+         */
 
     ],
 
@@ -225,7 +234,18 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        
+        /*
+         * Aliases Service Providers...
+         */
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
+
+
+    /*
+     * this external pass in server adquisition
+     */
+    'external_pass' => env('EXTERNAL_DB_PASSWORD', null),
+
 
 ];

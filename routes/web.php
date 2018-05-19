@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,5 +14,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('test');
+});
+
+
+
+Route::group(['prefix' => 'test','name' => 'test'], function()
+{
+    Route::get('index', [ 'as'=>'test.index','uses'=>'AlertSystem\testController@index']);
+   
 });
