@@ -16,9 +16,9 @@
 <script>
     export default {
         created(){
-            console.log('entre');
             this.$store.dispatch( 'loadStations' );
         },
+        
         computed: {
             stationsLoadStatus() {
                 return this.$store.getters.getStationsLoadStatus;

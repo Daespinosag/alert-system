@@ -20,28 +20,37 @@ Vue.use( VueRouter );
     Makes a new VueRouter that we will use to run all of the routes
     for the app.
 */
+/*
 
+ */
 export default new VueRouter({
     routes: [
         {
             path: '/',
-            name: 'home',
-            component: Vue.component( 'Home', require( './pages/Home.vue' ) )
-        },
-        {
-            path: '/stations',
-            name: 'stations',
-            component: Vue.component( 'Stations', require( './pages/Stations.vue' ) )
-        },
-        {
-            path: '/Nets',
-            name: 'Nets',
-            component: Vue.component( 'Nets', require( './pages/Nets.vue' ) )
-        },
-        {
-            path: '/station/:id',
-            name: 'station',
-            component: Vue.component( 'Station', require( './pages/Station.vue' ) )
+            name: 'layout',
+            component: Vue.component( 'Layout', require( './pages/Layout.vue' ) ),
+            children: [
+                {
+                    path: 'home',
+                    name: 'home',
+                    component: Vue.component( 'Home', require( './pages/Home.vue' ) )
+                },
+                {
+                    path: 'stations',
+                    name: 'stations',
+                    component: Vue.component( 'Stations', require( './pages/Stations.vue' ) )
+                },
+                {
+                    path: 'Nets',
+                    name: 'Nets',
+                    component: Vue.component( 'Nets', require( './pages/Nets.vue' ) )
+                },
+                {
+                    path: 'station/:id',
+                    name: 'station',
+                    component: Vue.component( 'Station', require( './pages/Station.vue' ) )
+                }
+            ]
         }
     ]
 });
