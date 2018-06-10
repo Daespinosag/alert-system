@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Console\Commands\AlertSystemCommand;
+use App\Console\Commands\AlertA25Command;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        AlertSystemCommand::class
+        AlertA25Command::class
     ];
 
     /**
@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //$schedule->command('alert-system')->everyFiveMinutes();
+        //$schedule->command('alert-a25')->everyFiveMinutes();
     }
 
     /**

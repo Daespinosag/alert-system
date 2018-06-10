@@ -7,7 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Repositories\Administrator\ConnectionRepository;
 use App\Repositories\Administrator\StationRepository;
 use App\Repositories\AlertSystem\A25FiveMinutesRepository;
-use App\AlertSystem\AlertSystem;
+use App\Repositories\Administrator\AlertRepository;
+use App\AlertSystem\Alerts\AlertA25;
 use Event;
 use Mail;
 
@@ -21,7 +22,12 @@ class testController extends Controller
      */
     public function index()
     {
-        $alertSystem = new AlertSystem(new ConnectionRepository(),new StationRepository(),new A25FiveMinutesRepository());
+        $alertSystem = new AlertA25(
+            new ConnectionRepository(),
+            new StationRepository(),
+            new A25FiveMinutesRepository(),
+            new AlertRepository()
+        );
         $alertSystem->init();
         dd($alertSystem);
         /*

@@ -13,9 +13,10 @@ class Station extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'station_type_id', 'owner_net_id','name','description','table_db_name','measurements_per_day', 'latitude_degrees',
-        'latitude_minutes', 'latitude_seconds', 'latitude_direction', 'longitude_degrees', 'longitude_minutes', 'longitude_seconds',
-        'longitude_direction', 'rt_active', 'etl_active', 'image_1', 'image_2', 'pdf_file'
+        'station_type_id','net_id','code','name','description','table_db_name','measurements_per_day','active',
+        'rt_active','etl_active','community','start_operation','finish_operation','latitude_degrees','latitude_minutes',
+        'latitude_seconds','latitude_direction','longitude_degrees','longitude_minutes','longitude_seconds','longitude_direction',
+        'city','localization','basin','sub_basin','image_1','image_2','pdf_file','comment'
     ];
 
     protected $hidden = [
@@ -38,7 +39,7 @@ class Station extends Model
 
     public function net()
     {
-        return $this->belongsTo(Net::class,'owner_net_id');
+        return $this->belongsTo(Net::class,'net_id');
     }
 
     /**
@@ -101,5 +102,24 @@ class Station extends Model
     public function filterState()
     {
         return $this->hasOne(FilterState::class,'station_id','id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function alerts()
+    {
+        return $this->belongsToMany(Alert::class,'alert_station','station_id','alert_id')
+            ->withPivot(['id','active'])
+            ->withTimestamps();
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function owners()
+    {
+        return $this->belongsToMany(Owner::class,'owner_station','station_id','owner_id')
+            ->withPivot(['id'])
+            ->withTimestamps();
     }
 }

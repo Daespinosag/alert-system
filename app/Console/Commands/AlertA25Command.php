@@ -2,20 +2,21 @@
 
 namespace App\Console\Commands;
 
+use App\Repositories\Administrator\AlertRepository;
 use Illuminate\Console\Command;
 use App\Repositories\Administrator\ConnectionRepository;
 use App\Repositories\Administrator\StationRepository;
 use App\Repositories\AlertSystem\A25FiveMinutesRepository;
-use App\AlertSystem\AlertSystem;
+use App\AlertSystem\Alerts\AlertA25;
 
-class AlertSystemCommand extends Command
+class AlertA25Command extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'alert-system';
+    protected $signature = 'alert-a25';
 
     /**
      * The console command description.
@@ -41,7 +42,13 @@ class AlertSystemCommand extends Command
      */
     public function handle()
     {
-        $alertSystem = new AlertSystem(new ConnectionRepository(),new StationRepository(),new A25FiveMinutesRepository());
+        $alertSystem = new AlertA25(
+            new ConnectionRepository(),
+            new StationRepository(),
+            new A25FiveMinutesRepository(),
+            new AlertRepository()
+        );
+
         $alertSystem->init();
     }
 }

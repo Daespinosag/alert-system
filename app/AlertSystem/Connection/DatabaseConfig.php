@@ -19,17 +19,22 @@ trait DatabaseConfig
      * @param string $defaultConnection
      * @return bool
      */
-    public function searchExternalConnection($connection, $extractTable = null,$defaultConnection = 'external_connection')
+    public function searchExternalConnection($connection = null, $extractTable = null,$defaultConnection = 'external_connection')
     {
         $var = $this->configExternalConnection($connection,$defaultConnection);
+        $flag = false;
+
         if (!is_null($extractTable)){
             if ($var){
                 if ($this->validateExistenceExternalTable($extractTable,$defaultConnection)){return true;}
             }
-            $this->loopForConnection($connection->id,$extractTable,$defaultConnection);
+            $flag =  $this->loopForConnection($connection->id,$extractTable,$defaultConnection);
         }
-        return true;
+
+        /** @var boolean $flag */
+        return $flag;
     }
+
     /**
      * @param $connectionId
      * @param $extractTable
@@ -49,8 +54,10 @@ trait DatabaseConfig
             }
             $i++;
         }
+
         return $flag;
     }
+
     /**
      * @param string $extractTable
      * @param $defaultConnection
@@ -63,6 +70,7 @@ trait DatabaseConfig
         foreach ($tables as $table){array_push($arr,array_values((array)$table)[0]);}
         return (!(array_search($extractTable,$arr) == false));
     }
+
     /**
      * Configuration external connection.
      *
@@ -70,9 +78,11 @@ trait DatabaseConfig
      * @param $defaultConnection
      * @return bool
      */
+
       private function configExternalConnection($connection,$defaultConnection)
       {
           DB::disconnect($defaultConnection);
+
           if ($connection->id == 1){
               return false;
           }
@@ -81,23 +91,42 @@ trait DatabaseConfig
               Log::info('Coneccion desabilidata para el proceso de etl');
               return false;
           }
+
+          $pass = $this->decryptPassLocal($connection->password);
+
         try {
 
-          // Se extrae la contaseña del servidor de adquisicion del archivo de variables de entorno.
-          $connection->password = config('app.external_pass');
-      
-          Config::set("database.connections.".$defaultConnection.".driver", $connection->connection_driver);
-          Config::set("database.connections.".$defaultConnection.".host", $connection->host);
-          Config::set("database.connections.".$defaultConnection.".port", $connection->port);
-          Config::set("database.connections.".$defaultConnection.".database", $connection->database);
-          Config::set("database.connections.".$defaultConnection.".username", $connection->username);
-          Config::set("database.connections.".$defaultConnection.".password", $connection->password);
-          //dd(Config::get('database.connections.'.$defaultConnection));
+            Config::set("database.connections.".$defaultConnection.".driver", $connection->connection_driver);
+            Config::set("database.connections.".$defaultConnection.".host", $connection->host);
+            Config::set("database.connections.".$defaultConnection.".port", $connection->port);
+            Config::set("database.connections.".$defaultConnection.".database", $connection->database);
+            Config::set("database.connections.".$defaultConnection.".username", $connection->username);
+
+            if ($pass != false){
+                Config::set("database.connections.".$defaultConnection.".password", $pass);
+            }else{
+              //dd(' la contraseña no pudo ser desencriptada'); TODO
+            }
+           //dd(Config::get('database.connections.'.$defaultConnection));
+
           return true;
         } catch (Exception $e) {
-            dd('fallo la conexion');
           Log::info('Fallo en la conexión.');
           return false;
         }
+      }
+
+    /**
+     * @param string $pass
+     * @return bool|string
+     */
+    public function decryptPassLocal(string $pass)
+      {
+          try {
+              return decrypt($pass);
+          } catch (Exception $e) {
+              Log::info('Fallo desencriptar contraseña.');
+              return false;
+          }
       }
 }
