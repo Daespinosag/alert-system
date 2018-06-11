@@ -9,6 +9,14 @@ export default {
      */
     getStations: function(){
         return axios.get( ALERT_SYSTEM_CONFIG.API_URL + '/stations' );
+    },
+
+    getStation: function (id){
+        return axios.get(ALERT_SYSTEM_CONFIG.API_URL + '/station' + id)
+    },
+
+    getNets: function () {
+        return axios.get(ALERT_SYSTEM_CONFIG.API_URL + '/nets' );
     }
 
 }

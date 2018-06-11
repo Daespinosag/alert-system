@@ -34,7 +34,17 @@ export const stations = {
                 });
         },
         loadStation( { commit }, data ){
-          // TODO
+            commit( 'setStationLoadStatus', 1 );
+
+            StationsAPI.getStation( data.id )
+                .then( function( response ){
+                    commit( 'setStation', response.data );
+                    commit( 'setStationLoadStatus', 2 );
+                })
+                .catch( function(){
+                    commit( 'setStation', {} );
+                    commit( 'setStationLoadStatus', 3 );
+                });
         }
     },
     mutations: {

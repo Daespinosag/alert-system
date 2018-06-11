@@ -4,9 +4,9 @@
 
 <template>
     <div id="home">
-        <span v-show="stationsLoadStatus == 1">Loading</span>
-        <span v-show="stationsLoadStatus == 2">Stations loaded successfully!</span>
-        <span v-show="stationsLoadStatus == 3">Stations loaded unsuccessfully!</span>
+        <span v-show="stationsLoadStatus === 1">Loading</span>
+        <span v-show="stationsLoadStatus === 2">Stations loaded successfully!</span>
+        <span v-show="stationsLoadStatus === 3">Stations loaded unsuccessfully!</span>
         <ul>
             <li v-for="station in stations">{{ station.name }}</li>
         </ul>
@@ -15,10 +15,6 @@
 
 <script>
     export default {
-        created(){
-            this.$store.dispatch( 'loadStations' );
-        },
-        
         computed: {
             stationsLoadStatus() {
                 return this.$store.getters.getStationsLoadStatus;

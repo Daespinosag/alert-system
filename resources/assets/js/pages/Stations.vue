@@ -3,13 +3,22 @@
 </style>
 
 <template>
-    <div>
+    <div id="stations">
+        <div class="grid-x">
+            <div class="large-9 medium-9 small-12 cell">
+                <station-map></station-map>
+            </div>
+            <div class="large-3 medium-3 small-12 cell">
 
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-    export default {
+    import StationMap from '../components/stations/StationMap.vue';
 
+    export default {
+        components: {StationMap}
     }
 </script>

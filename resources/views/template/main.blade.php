@@ -91,6 +91,9 @@
             @show
 
         </div>
+
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZWMe7WI59R_HaHS55TdqaNmHidkuLNKs"></script>
+
         <script src="{{ asset(elixir('js/app.js'))  }}"></script>
         <script src="{{ asset('js/unal.js') }}" type="text/javascript"></script>
         <script src="{{ asset('js/sb-admin-2.js') }}" type="text/javascript"></script>
