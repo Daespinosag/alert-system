@@ -61,7 +61,7 @@ export const stations = {
         },
 
         setStation( state, station ){
-            state.Station = station;
+            state.station = station;
         }
     },
     getters: {

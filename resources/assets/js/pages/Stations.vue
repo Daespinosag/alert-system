@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <div id="stations">
+    <div id="stations" class="page">
         <div class="grid-x">
             <div class="large-9 medium-9 small-12 cell">
                 <station-map></station-map>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Repositories\Administrator\NetRepository;
 use App\Repositories\Administrator\StationRepository;
+use App\Repositories\AlertSystem\A25FiveMinutesRepository;
 
 class AlertSystemController extends Controller
 {
@@ -16,19 +17,26 @@ class AlertSystemController extends Controller
      * @var NetRepository
      */
     private $netRepository;
+    /**
+     * @var A25FiveMinutesRepository
+     */
+    private $a25FiveMinutesRepository;
 
     /**
      * AlertSystemController constructor.
      * @param StationRepository $stationRepository
      * @param NetRepository $netRepository
+     * @param A25FiveMinutesRepository $a25FiveMinutesRepository
      */
     public function __construct(
         StationRepository $stationRepository,
-        NetRepository $netRepository
+        NetRepository $netRepository,
+        A25FiveMinutesRepository $a25FiveMinutesRepository
     )
     {
         $this->stationRepository = $stationRepository;
         $this->netRepository = $netRepository;
+        $this->a25FiveMinutesRepository = $a25FiveMinutesRepository;
     }
 
     /**
@@ -51,6 +59,9 @@ class AlertSystemController extends Controller
                 $station->latitude_seconds,
                 $station->latitude_direction
             );
+
+            # TODO ESTO HAY QYE ARREGLARLO PARA QUE SAQUE EL ULTIMO PERO SOLO DE LOS ULTIMOS 5 MINUTOS
+            $station->alertA25 = $this->a25FiveMinutesRepository->getUltimateDate($station->id);
         }
 
         return $stations;
@@ -62,7 +73,23 @@ class AlertSystemController extends Controller
      */
     public function getStation($id)
     {
-       return $this->stationRepository->getStation($id);
+       $station = $this->stationRepository->getStation($id);
+
+        $station->longitude = $this->calculateDecimalCoordinates(
+            $station->longitude_degrees,
+            $station->longitude_minutes,
+            $station->longitude_seconds,
+            $station->longitude_direction
+        );
+        $station->latitude = $this->calculateDecimalCoordinates(
+            $station->latitude_degrees,
+            $station->latitude_minutes,
+            $station->latitude_seconds,
+            $station->latitude_direction
+        );
+
+        return $station;
+
     }
 
     /**

@@ -38,7 +38,7 @@
             return {
                 markers: [],
                 infoWindows: [],
-                markerImg: 'images/station-marker.svg'
+                markerImg: 'images/alert-icons/station-marker'
             }
         },
         computed: {
@@ -54,7 +54,7 @@
                     var marker = new google.maps.Marker({
                         position: { lat: parseFloat( this.stations[i].latitude ), lng: parseFloat( this.stations[i].longitude ) },
                         map: this.map,
-                        icon: this.markerImg
+                        icon: this.getIconAlert(this.stations[i].alertA25.alert)
                     });
                     this.markers.push( marker );
 
@@ -72,11 +72,33 @@
                     });
                 }
             },
+
             clearMarkers(){
                 for( var i = 0; i < this.markers.length; i++ ){
                     this.markers[i].setMap( null );
                 }
             },
+
+            getIconAlert(alert){
+                let icon = this.markerImg;
+                switch(alert) {
+                    case 0:
+                        icon += '-green.svg';
+                        break;
+                    case 1:
+                        icon += '-yellow.svg';
+                        break;
+                    case 2:
+                        icon += '-orange.svg';
+                        break;
+                    case 3:
+                        icon += '-red.svg';
+                        break;
+                    default:
+                        icon += '-default.svg';
+                }
+                return icon;
+            }
         },
         watch: {
             stations(){
