@@ -14,7 +14,7 @@
                 <div class="col-md-8">
                     <ul class="list-group">
                         <li class="list-group-item list-group-item-success">Lista de Estaciones</li>
-                        <loader v-show="stationsLoadStatus == 1" :width="100" :height="100"></loader>
+                        <loader v-show="stationsLoadStatus === 1" :width="100" :height="100"></loader>
                         <station-card v-for="station in stations" :key="station.id" :station="station"></station-card>
                     </ul>
                 </div>

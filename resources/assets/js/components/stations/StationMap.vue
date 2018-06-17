@@ -5,10 +5,10 @@
     }*/
     div#station-map-container{
         position: absolute;
-        top: 50px;
+        top: 100px;
         left: 0px;
         right: 0px;
-        bottom: 50px;
+        bottom: 0px;
 
         div#station-map{
             position: absolute;
@@ -16,6 +16,40 @@
             left: 0px;
             right: 0px;
             bottom: 0px;
+        }
+
+        div.cafe-info-window{
+            div.cafe-name{
+                display: block;
+                text-align: center;
+                color: #2b542c;
+                font-family: 'Josefin Sans', sans-serif;
+            }
+            div.cafe-address{
+                display: block;
+                text-align: center;
+                margin-top: 5px;
+                color: #1f648b;
+                font-family: 'Lato', sans-serif;
+                span.street{
+                    font-size: 14px;
+                    display: block;
+                }
+                span.city{
+                    font-size: 12px;
+                }
+                span.state{
+                    font-size: 12px;
+                }
+                span.zip{
+                    font-size: 12px;
+                    display: block;
+                }
+                a{
+                    color: #FFFFFF;
+                    font-weight: bold;
+                }
+            }
         }
     }
 </style>
@@ -99,8 +133,18 @@
                         overWindow.close(this.map, this);
                     });
 
+                    let contentString = '<div class="station-info-window">' +
+                                        '<div class="station-name">'+this.stations[i].name + '</div>' +
+                                        '<div class="station-address">' +
+                                        '<span class="street">'+this.stations[i].netName + '</span>' +
+                                        '<span class="city">'+this.stations[i].city+'</span> <span class="state">'+this.stations[i].localization + '</span>' +
+                                        '<span class="zip">Alerta inundacion : '+this.stations[i].alertInundation + '</span>' +
+                                        '<span class="zip">Alerta deslizamientos: '+this.stations[i].alertLandslide + '</span>' +
+                                        '</div>'+
+                                        '</div>';
+
                     let infoWindow = new google.maps.InfoWindow({
-                        content: 'ver estacion'
+                        content: contentString
                     });
 
                     this.infoWindows.push( infoWindow );

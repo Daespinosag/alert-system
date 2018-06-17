@@ -21,6 +21,7 @@ function checkBck() {
 }
 checkBck();
 
+/*
 jQuery(document).ready(function($) {
   $('#unalOpenMenuServicios, #unalOpenMenuPerfiles').on('click',function(e) {
     var $target = $(this).data('target');
@@ -32,19 +33,19 @@ jQuery(document).ready(function($) {
     var $s = $('#services');
     $s.height($(window).height());
     $('ul', $s).height($(window).height());
-    
+
     if ($('.indicator', '#services').hasClass('active')) {
       $s.css({ 'right': 0 });
     } else {
       $s.css({ 'right': parseInt($('#services').width()) * -1 });
     }
   }
-  
+
   $('.indicator', '#services').click(function() {
     $(this).toggleClass('active');
     serviceMenuStatus();
   });
-  
+
   $(window).resize(function() {
     $('.open').removeClass('open');
     if ($(window).width() > 767) {
@@ -53,8 +54,9 @@ jQuery(document).ready(function($) {
       serviceMenuStatus();
     } else {
       $('.indicator', '#services').removeClass('active');
-    }  
+    }
   });
   $('#services').css({ 'right': parseInt($('#services').width()) * -1 })
   serviceMenuStatus();
 });
+*/

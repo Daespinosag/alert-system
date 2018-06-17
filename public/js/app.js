@@ -50152,7 +50152,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "/*div#station-map{\n    width: 100%;\n    height: 400px;\n}*/\ndiv#station-map-container {\n  position: absolute;\n  top: 50px;\n  left: 0px;\n  right: 0px;\n  bottom: 50px;\n}\ndiv#station-map-container div#station-map {\n    position: absolute;\n    top: 0px;\n    left: 0px;\n    right: 0px;\n    bottom: 0px;\n}\n", ""]);
+exports.push([module.i, "/*div#station-map{\n    width: 100%;\n    height: 400px;\n}*/\ndiv#station-map-container {\n  position: absolute;\n  top: 100px;\n  left: 0px;\n  right: 0px;\n  bottom: 0px;\n}\ndiv#station-map-container div#station-map {\n    position: absolute;\n    top: 0px;\n    left: 0px;\n    right: 0px;\n    bottom: 0px;\n}\ndiv#station-map-container div.cafe-info-window div.cafe-name {\n    display: block;\n    text-align: center;\n    color: #2b542c;\n    font-family: 'Josefin Sans', sans-serif;\n}\ndiv#station-map-container div.cafe-info-window div.cafe-address {\n    display: block;\n    text-align: center;\n    margin-top: 5px;\n    color: #1f648b;\n    font-family: 'Lato', sans-serif;\n}\ndiv#station-map-container div.cafe-info-window div.cafe-address span.street {\n      font-size: 14px;\n      display: block;\n}\ndiv#station-map-container div.cafe-info-window div.cafe-address span.city {\n      font-size: 12px;\n}\ndiv#station-map-container div.cafe-info-window div.cafe-address span.state {\n      font-size: 12px;\n}\ndiv#station-map-container div.cafe-info-window div.cafe-address span.zip {\n      font-size: 12px;\n      display: block;\n}\ndiv#station-map-container div.cafe-info-window div.cafe-address a {\n      color: #FFFFFF;\n      font-weight: bold;\n}\n", ""]);
 
 // exports
 
@@ -50167,6 +50167,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_filters_StationTextFilter_js__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__StationMapFilter_vue__ = __webpack_require__(84);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__StationMapFilter_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__StationMapFilter_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -50272,8 +50306,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     overWindow.close(this.map, this);
                 });
 
+                var contentString = '<div class="station-info-window">' + '<div class="station-name">' + _this.stations[i].name + '</div>' + '<div class="station-address">' + '<span class="street">' + _this.stations[i].netName + '</span>' + '<span class="city">' + _this.stations[i].city + '</span> <span class="state">' + _this.stations[i].localization + '</span>' + '<span class="zip">Alerta inundacion : ' + _this.stations[i].alertInundation + '</span>' + '<span class="zip">Alerta deslizamientos: ' + _this.stations[i].alertLandslide + '</span>' + '</div>' + '</div>';
+
                 var infoWindow = new google.maps.InfoWindow({
-                    content: 'ver estacion'
+                    content: contentString
                 });
 
                 _this.infoWindows.push(infoWindow);

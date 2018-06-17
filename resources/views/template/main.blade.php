@@ -85,11 +85,6 @@
                     @yield('content')
                 </div>
             </main>
-
-            @section('footer')
-                @include('template.footer')
-            @show
-
         </div>
 
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZWMe7WI59R_HaHS55TdqaNmHidkuLNKs"></script>
