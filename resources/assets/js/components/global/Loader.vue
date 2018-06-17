@@ -5,7 +5,7 @@
     }
     svg path,
     svg rect{
-        fill: #E8635F;
+        fill: #12e865;
     }
 </style>
 

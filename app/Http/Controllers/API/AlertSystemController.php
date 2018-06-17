@@ -62,6 +62,9 @@ class AlertSystemController extends Controller
 
             # TODO ESTO HAY QYE ARREGLARLO PARA QUE SAQUE EL ULTIMO PERO SOLO DE LOS ULTIMOS 5 MINUTOS
             $station->alertA25 = $this->a25FiveMinutesRepository->getUltimateDate($station->id);
+            $station->alertInundation = true;
+            $station->alertLandslide = true;
+
         }
 
         return $stations;

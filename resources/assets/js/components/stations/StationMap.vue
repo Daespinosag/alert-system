@@ -1,18 +1,43 @@
 <style lang="scss">
-    div#station-map{
+    /*div#station-map{
         width: 100%;
         height: 400px;
+    }*/
+    div#station-map-container{
+        position: absolute;
+        top: 50px;
+        left: 0px;
+        right: 0px;
+        bottom: 50px;
+
+        div#station-map{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+        }
     }
 </style>
 
 <template>
-    <div id="station-map">
+    <div id="station-map-container">
+        <div id="station-map">
 
+        </div>
+        <station-map-filter></station-map-filter>
     </div>
 </template>
 
 <script>
+    import { EventBus } from '../../event-bus.js';
+    import { StationTextFilter } from '../../mixins/filters/StationTextFilter.js';
+
+    import StationMapFilter from './StationMapFilter.vue';
+
     export default {
+        components: { StationMapFilter },
+        mixins: [ StationTextFilter ],
         props: {
             'latitude': {
                 type: Number,
@@ -49,32 +74,45 @@
         methods: {
             buildMarkers(){
                 this.markers = [];
-                for( var i = 0; i < this.stations.length; i++ ){
+                for( let i = 0; i < this.stations.length; i++ ){
 
-                    var marker = new google.maps.Marker({
+                    let marker = new google.maps.Marker({
                         position: { lat: parseFloat( this.stations[i].latitude ), lng: parseFloat( this.stations[i].longitude ) },
                         map: this.map,
-                        icon: this.getIconAlert(this.stations[i].alertA25.alert)
+                        icon: this.getIconAlert(this.stations[i].alertA25.alert),
+                        station: this.stations[i]
                     });
+
                     this.markers.push( marker );
 
-                    let infoWindow = new google.maps.InfoWindow({
+                    let overWindow = new google.maps.InfoWindow({
                         content: this.stations[i].name
                     });
-                    this.infoWindows.push( infoWindow );
+
+                    this.infoWindows.push( overWindow );
 
                     marker.addListener('mouseover', function() {
-                        infoWindow.open(this.map, this);
+                        overWindow.open(this.map, this);
                     });
 
                     marker.addListener('mouseout', function() {
-                        infoWindow.close(this.map, this);
+                        overWindow.close(this.map, this);
+                    });
+
+                    let infoWindow = new google.maps.InfoWindow({
+                        content: 'ver estacion'
+                    });
+
+                    this.infoWindows.push( infoWindow );
+
+                    marker.addListener('click', function() {
+                        infoWindow.open(this.map, this);
                     });
                 }
             },
 
             clearMarkers(){
-                for( var i = 0; i < this.markers.length; i++ ){
+                for(let i = 0; i < this.markers.length; i++ ){
                     this.markers[i].setMap( null );
                 }
             },
@@ -98,7 +136,32 @@
                         icon += '-default.svg';
                 }
                 return icon;
-            }
+            },
+            updateFilterDisplay(){
+                EventBus.$emit('filters-updated', {
+                    text: this.textSearch
+                });
+            },
+            processFilters( filters ){
+                for( let i = 0; i < this.markers.length; i++ ){
+                    if( filters.text === null ){
+                        this.markers[i].setMap( this.map );
+                    }else{
+                        var textPassed = false;
+
+                        if( filters.text !== null && this.processStationTextFilter( this.markers[i].station, filters.text ) ){
+                            textPassed = true;
+                        }else if( filters.text === null ){
+                            textPassed = true;
+                        }
+                    }
+                    if( textPassed){
+                        this.markers[i].setMap( this.map );
+                    }else{
+                        this.markers[i].setMap( null );
+                    }
+                }
+            },
         },
         watch: {
             stations(){
@@ -116,6 +179,10 @@
 
             this.clearMarkers();
             this.buildMarkers();
+
+            EventBus.$on('filters-updated', function( filters ){
+                this.processFilters( filters );
+            }.bind(this));
         }
     }
 </script>
