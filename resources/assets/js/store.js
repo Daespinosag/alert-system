@@ -18,10 +18,11 @@ Vue.use( Vuex );
     Imports all of the modules used in the application to build the data store.
 */
 import { stations } from './modules/stations.js'
+import { display} from "./modules/display";
 /*
   Exports our data store.
 */
 
 export default new Vuex.Store({
-    modules: { stations }
+    modules: { stations,display }
 });

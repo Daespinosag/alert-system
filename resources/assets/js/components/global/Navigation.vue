@@ -1,21 +1,58 @@
-
 <template>
-    <nav class="top-navigation">
-
-        <div class="right">
-            <router-link :to="{ name: 'home'}">
-                <span class="logo">Inicio</span>
-            </router-link>
-
-            <ul class="links">
-                <li>
-                    <router-link :to="{ name: 'stations' }">Stations</router-link>
-                </li>
-            </ul>
-            <img class="avatar" />
+    <div id="unalTop">
+        <div class="logo">
+            <a href="http://unal.edu.co">
+                <svg width="93%" height="93%">
+                    <image xlink:href="images/escudoUnal.svg" width="100%" height="100%" class="hidden-print"></image>
+                </svg>
+            </a>
         </div>
 
-    </nav>
+        <div class="firstMenu">
+            <ul class="socialLinks hidden-xs">
+                <li>
+                    <a href="https://www.facebook.com/UNColombia" target="_blank" class="facebook" title="Página oficial en Facebook"></a>
+                </li>
+                <li>
+                    <a href="https://twitter.com/UNColombia" target="_blank" class="twitter" title="Cuenta oficial en Twitter"></a>
+                </li>
+                <li>
+                    <a href="https://www.youtube.com/channel/UCnE6Zj2llVxcvL5I38B0Ceg" target="_blank" class="youtube" title="Canal oficial de Youtube"></a>
+                </li>
+                <li>
+                    <a href="http://agenciadenoticias.unal.edu.co/nc/sus/type/rss2.html" target="_blank" class="rss" title="Suscripción a canales de información RSS"></a>
+                </li>
+            </ul>
+            <div class="navbar-default">
+                <nav id="profiles">
+                    <ul class="nav navbar-nav dropdown-menu">
+                        <li class="item_Aspirantes #>"><a href="index.html#">Aspirantes</a></li>
+                        <li class="item_Estudiantes #>"><a href="index.html#">Estudiantes</a></li>
+                        <li class="item_Egresados #>"><a href="index.html#">Egresados</a></li>
+                        <li class="item_Docentes #>"><a href="index.html#">Docentes</a></li>
+                        <li class="item_Administrativos #>"><a href="index.html#">Administrativos</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div id="bs-navbar" class="navbar-collapse collapse navigation"><br>
+            <div class="site-url"><a href=""> Sistema de Alerta Temprana</a></div>
+            <div class="col-md-7">
+                <div class="col-md-11">
+                    <div class="btn btn-group">
+                        <router-link :to="{ name: 'home'}" class="btn btn-default" ><span class="">Inicio</span></router-link>
+
+                        <router-link :to="{ name: 'stations' }" class="btn btn-default"><span class="">Stations</span></router-link>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <img class="hidden-print" alt="Escudo de la República de Colombia" src="images/sealColombia.png" width="50" height="50" />
+                    <img class="visible-print margin-img" alt="Escudo de la República de Colombia" src="images/sealColombia_black.png" width="50" height="50" />
+                </div>
+            </div>
+
+        </div>
+    </div>
 </template>
 
 <script>
@@ -25,6 +62,7 @@
 </script>
 
 <style lang="scss">
+
     @import '~@/abstracts/_variables.scss';
 
     nav.top-navigation{
@@ -57,23 +95,19 @@
                 display: inline-block;
                 list-style-type: none;
                 line-height: 50px;
-
                 a{
                     font-family: 'Lato', sans-serif;
                     font-weight: bold;
                     color: $black;
 
-                    &:hover{
-                        color: $dark-color;
-                    }
+                &:hover{color: $dark-color;}
                 }
             }
         }
 
         div.right{
             float: right;
-
-            img.avatar{
+                img.avatar{
                 width: 40px;
                 height: 40px;
                 border-radius: 40px;
@@ -81,6 +115,6 @@
                 margin-right: 10px;
             }
         }
-
     }
+
 </style>

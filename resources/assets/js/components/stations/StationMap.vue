@@ -59,7 +59,6 @@
         <div id="station-map">
 
         </div>
-        <station-map-filter></station-map-filter>
     </div>
 </template>
 
@@ -67,10 +66,7 @@
     import { EventBus } from '../../event-bus.js';
     import { StationTextFilter } from '../../mixins/filters/StationTextFilter.js';
 
-    import StationMapFilter from './StationMapFilter.vue';
-
     export default {
-        components: { StationMapFilter },
         mixins: [ StationTextFilter ],
         props: {
             'latitude': {
@@ -95,7 +91,6 @@
 
         data(){
             return {
-                markers: [],
                 infoWindows: [],
                 markerImg: 'images/alert-icons/station-marker'
             }
@@ -105,19 +100,28 @@
                 return this.$store.getters.getStations;
             }
         },
+        watch: {
+            stations(){
+                this.clearMarkers();
+                this.buildMarkers();
+            }
+        },
+
         methods: {
             buildMarkers(){
-                this.markers = [];
+
+                this.$markers = [];
+
                 for( let i = 0; i < this.stations.length; i++ ){
 
                     let marker = new google.maps.Marker({
                         position: { lat: parseFloat( this.stations[i].latitude ), lng: parseFloat( this.stations[i].longitude ) },
-                        map: this.map,
+                        map: this.$map,
                         icon: this.getIconAlert(this.stations[i].alertA25.alert),
                         station: this.stations[i]
                     });
 
-                    this.markers.push( marker );
+                    this.$markers.push( marker );
 
                     let overWindow = new google.maps.InfoWindow({
                         content: this.stations[i].name
@@ -126,38 +130,24 @@
                     this.infoWindows.push( overWindow );
 
                     marker.addListener('mouseover', function() {
-                        overWindow.open(this.map, this);
+                        overWindow.open(this.$map, this);
                     });
 
                     marker.addListener('mouseout', function() {
-                        overWindow.close(this.map, this);
+                        overWindow.close(this.$map, this);
                     });
 
-                    let contentString = '<div class="station-info-window">' +
-                                        '<div class="station-name">'+this.stations[i].name + '</div>' +
-                                        '<div class="station-address">' +
-                                        '<span class="street">'+this.stations[i].netName + '</span>' +
-                                        '<span class="city">'+this.stations[i].city+'</span> <span class="state">'+this.stations[i].localization + '</span>' +
-                                        '<span class="zip">Alerta inundacion : '+this.stations[i].alertInundation + '</span>' +
-                                        '<span class="zip">Alerta deslizamientos: '+this.stations[i].alertLandslide + '</span>' +
-                                        '</div>'+
-                                        '</div>';
-
-                    let infoWindow = new google.maps.InfoWindow({
-                        content: contentString
-                    });
-
-                    this.infoWindows.push( infoWindow );
+                    let router = this.$router;
 
                     marker.addListener('click', function() {
-                        infoWindow.open(this.map, this);
+                        router.push( { name: 'station', params: { id: this.station.id } } );
                     });
                 }
             },
 
             clearMarkers(){
-                for(let i = 0; i < this.markers.length; i++ ){
-                    this.markers[i].setMap( null );
+                for(let i = 0; i < this.$markers.length; i++ ){
+                    this.$markers[i].setMap( null );
                 }
             },
 
@@ -187,36 +177,32 @@
                 });
             },
             processFilters( filters ){
-                for( let i = 0; i < this.markers.length; i++ ){
+                for( let i = 0; i < this.$markers.length; i++ ){
                     if( filters.text === null ){
-                        this.markers[i].setMap( this.map );
+                        this.$markers[i].setMap( this.$map );
                     }else{
                         var textPassed = false;
 
-                        if( filters.text !== null && this.processStationTextFilter( this.markers[i].station, filters.text ) ){
+                        if( filters.text !== null && this.processStationTextFilter( this.$markers[i].station, filters.text ) ){
                             textPassed = true;
                         }else if( filters.text === null ){
                             textPassed = true;
                         }
                     }
                     if( textPassed){
-                        this.markers[i].setMap( this.map );
+                        this.$markers[i].setMap( this.$map );
                     }else{
-                        this.markers[i].setMap( null );
+                        this.$markers[i].setMap( null );
                     }
                 }
             },
         },
-        watch: {
-            stations(){
-                this.clearMarkers();
-                this.buildMarkers();
-            }
-        },
 
         mounted(){
 
-            this.map = new google.maps.Map(document.getElementById('station-map'), {
+            this.$markers = [];
+
+            this.$map = new google.maps.Map(document.getElementById('station-map'), {
                 center: {lat: this.latitude, lng: this.longitude},
                 zoom: this.zoom
             });
@@ -226,6 +212,12 @@
 
             EventBus.$on('filters-updated', function( filters ){
                 this.processFilters( filters );
+            }.bind(this));
+
+            EventBus.$on('location-selected', function( station ){
+                var latLng = new google.maps.LatLng( station.lat, station.lng );
+                this.$map.setZoom( 17 );
+                this.$map.panTo(latLng);
             }.bind(this));
         }
     }

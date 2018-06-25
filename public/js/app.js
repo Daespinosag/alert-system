@@ -12470,7 +12470,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__routes_js__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_js__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__store_js__ = __webpack_require__(101);
 
 window._ = __webpack_require__(18);
 
@@ -46150,15 +46150,16 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
         }, {
             path: 'stations',
             name: 'stations',
-            component: __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('Stations', __webpack_require__(76))
+            component: __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('Stations', __webpack_require__(76)),
+            children: [{
+                path: ':id',
+                name: 'station',
+                component: __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('Station', __webpack_require__(86))
+            }]
         }, {
             path: 'Nets',
             name: 'Nets',
-            component: __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('Nets', __webpack_require__(91))
-        }, {
-            path: 'station/:id',
-            name: 'station',
-            component: __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('Station', __webpack_require__(96))
+            component: __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('Nets', __webpack_require__(96))
         }]
     }]
 }));
@@ -49066,6 +49067,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
@@ -49077,34 +49117,190 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("nav", { staticClass: "top-navigation" }, [
+  return _c("div", { attrs: { id: "unalTop" } }, [
+    _c("div", { staticClass: "logo" }, [
+      _c("a", { attrs: { href: "http://unal.edu.co" } }, [
+        _c("svg", { attrs: { width: "93%", height: "93%" } }, [
+          _c("image", {
+            staticClass: "hidden-print",
+            attrs: {
+              "xlink:href": "images/escudoUnal.svg",
+              width: "100%",
+              height: "100%"
+            }
+          })
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _vm._m(0),
+    _vm._v(" "),
     _c(
       "div",
-      { staticClass: "right" },
+      {
+        staticClass: "navbar-collapse collapse navigation",
+        attrs: { id: "bs-navbar" }
+      },
       [
-        _c("router-link", { attrs: { to: { name: "home" } } }, [
-          _c("span", { staticClass: "logo" }, [_vm._v("Inicio")])
-        ]),
+        _c("br"),
         _vm._v(" "),
-        _c("ul", { staticClass: "links" }, [
-          _c(
-            "li",
-            [
-              _c("router-link", { attrs: { to: { name: "stations" } } }, [
-                _vm._v("Stations")
-              ])
-            ],
-            1
-          )
-        ]),
+        _vm._m(1),
         _vm._v(" "),
-        _c("img", { staticClass: "avatar" })
-      ],
-      1
+        _c("div", { staticClass: "col-md-7" }, [
+          _c("div", { staticClass: "col-md-11" }, [
+            _c(
+              "div",
+              { staticClass: "btn btn-group" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-default",
+                    attrs: { to: { name: "home" } }
+                  },
+                  [_c("span", {}, [_vm._v("Inicio")])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-default",
+                    attrs: { to: { name: "stations" } }
+                  },
+                  [_c("span", {}, [_vm._v("Stations")])]
+                )
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _vm._m(2)
+        ])
+      ]
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "firstMenu" }, [
+      _c("ul", { staticClass: "socialLinks hidden-xs" }, [
+        _c("li", [
+          _c("a", {
+            staticClass: "facebook",
+            attrs: {
+              href: "https://www.facebook.com/UNColombia",
+              target: "_blank",
+              title: "Página oficial en Facebook"
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("a", {
+            staticClass: "twitter",
+            attrs: {
+              href: "https://twitter.com/UNColombia",
+              target: "_blank",
+              title: "Cuenta oficial en Twitter"
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("a", {
+            staticClass: "youtube",
+            attrs: {
+              href: "https://www.youtube.com/channel/UCnE6Zj2llVxcvL5I38B0Ceg",
+              target: "_blank",
+              title: "Canal oficial de Youtube"
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("li", [
+          _c("a", {
+            staticClass: "rss",
+            attrs: {
+              href:
+                "http://agenciadenoticias.unal.edu.co/nc/sus/type/rss2.html",
+              target: "_blank",
+              title: "Suscripción a canales de información RSS"
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "navbar-default" }, [
+        _c("nav", { attrs: { id: "profiles" } }, [
+          _c("ul", { staticClass: "nav navbar-nav dropdown-menu" }, [
+            _c("li", { staticClass: "item_Aspirantes #>" }, [
+              _c("a", { attrs: { href: "index.html#" } }, [
+                _vm._v("Aspirantes")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "item_Estudiantes #>" }, [
+              _c("a", { attrs: { href: "index.html#" } }, [
+                _vm._v("Estudiantes")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "item_Egresados #>" }, [
+              _c("a", { attrs: { href: "index.html#" } }, [_vm._v("Egresados")])
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "item_Docentes #>" }, [
+              _c("a", { attrs: { href: "index.html#" } }, [_vm._v("Docentes")])
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "item_Administrativos #>" }, [
+              _c("a", { attrs: { href: "index.html#" } }, [
+                _vm._v("Administrativos")
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "site-url" }, [
+      _c("a", { attrs: { href: "" } }, [_vm._v(" Sistema de Alerta Temprana")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-1" }, [
+      _c("img", {
+        staticClass: "hidden-print",
+        attrs: {
+          alt: "Escudo de la República de Colombia",
+          src: "images/sealColombia.png",
+          width: "50",
+          height: "50"
+        }
+      }),
+      _vm._v(" "),
+      _c("img", {
+        staticClass: "visible-print margin-img",
+        attrs: {
+          alt: "Escudo de la República de Colombia",
+          src: "images/sealColombia_black.png",
+          width: "50",
+          height: "50"
+        }
+      })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -49912,8 +50108,8 @@ var render = function() {
                   {
                     name: "show",
                     rawName: "v-show",
-                    value: _vm.stationsLoadStatus == 1,
-                    expression: "stationsLoadStatus == 1"
+                    value: _vm.stationsLoadStatus === 1,
+                    expression: "stationsLoadStatus === 1"
                   }
                 ],
                 attrs: { width: 100, height: 100 }
@@ -49956,7 +50152,7 @@ var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(79)
 /* template */
-var __vue_template__ = __webpack_require__(90)
+var __vue_template__ = __webpack_require__(85)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -50079,7 +50275,7 @@ var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(83)
 /* template */
-var __vue_template__ = __webpack_require__(89)
+var __vue_template__ = __webpack_require__(84)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -50165,8 +50361,6 @@ exports.push([module.i, "/*div#station-map{\n    width: 100%;\n    height: 400px
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__event_bus_js__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_filters_StationTextFilter_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__StationMapFilter_vue__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__StationMapFilter_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__StationMapFilter_vue__);
 //
 //
 //
@@ -50231,15 +50425,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-
-
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    components: { StationMapFilter: __WEBPACK_IMPORTED_MODULE_2__StationMapFilter_vue___default.a },
     mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_filters_StationTextFilter_js__["a" /* StationTextFilter */]],
     props: {
         'latitude': {
@@ -50264,7 +50454,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     data: function data() {
         return {
-            markers: [],
             infoWindows: [],
             markerImg: 'images/alert-icons/station-marker'
         };
@@ -50275,22 +50464,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return this.$store.getters.getStations;
         }
     },
+    watch: {
+        stations: function stations() {
+            this.clearMarkers();
+            this.buildMarkers();
+        }
+    },
+
     methods: {
         buildMarkers: function buildMarkers() {
             var _this = this;
 
-            this.markers = [];
+            this.$markers = [];
 
             var _loop = function _loop(i) {
 
                 var marker = new google.maps.Marker({
                     position: { lat: parseFloat(_this.stations[i].latitude), lng: parseFloat(_this.stations[i].longitude) },
-                    map: _this.map,
+                    map: _this.$map,
                     icon: _this.getIconAlert(_this.stations[i].alertA25.alert),
                     station: _this.stations[i]
                 });
 
-                _this.markers.push(marker);
+                _this.$markers.push(marker);
 
                 var overWindow = new google.maps.InfoWindow({
                     content: _this.stations[i].name
@@ -50299,23 +50495,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.infoWindows.push(overWindow);
 
                 marker.addListener('mouseover', function () {
-                    overWindow.open(this.map, this);
+                    overWindow.open(this.$map, this);
                 });
 
                 marker.addListener('mouseout', function () {
-                    overWindow.close(this.map, this);
+                    overWindow.close(this.$map, this);
                 });
 
-                var contentString = '<div class="station-info-window">' + '<div class="station-name">' + _this.stations[i].name + '</div>' + '<div class="station-address">' + '<span class="street">' + _this.stations[i].netName + '</span>' + '<span class="city">' + _this.stations[i].city + '</span> <span class="state">' + _this.stations[i].localization + '</span>' + '<span class="zip">Alerta inundacion : ' + _this.stations[i].alertInundation + '</span>' + '<span class="zip">Alerta deslizamientos: ' + _this.stations[i].alertLandslide + '</span>' + '</div>' + '</div>';
-
-                var infoWindow = new google.maps.InfoWindow({
-                    content: contentString
-                });
-
-                _this.infoWindows.push(infoWindow);
+                var router = _this.$router;
 
                 marker.addListener('click', function () {
-                    infoWindow.open(this.map, this);
+                    router.push({ name: 'station', params: { id: this.station.id } });
                 });
             };
 
@@ -50324,8 +50514,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         clearMarkers: function clearMarkers() {
-            for (var i = 0; i < this.markers.length; i++) {
-                this.markers[i].setMap(null);
+            for (var i = 0; i < this.$markers.length; i++) {
+                this.$markers[i].setMap(null);
             }
         },
         getIconAlert: function getIconAlert(alert) {
@@ -50354,36 +50544,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         processFilters: function processFilters(filters) {
-            for (var i = 0; i < this.markers.length; i++) {
+            for (var i = 0; i < this.$markers.length; i++) {
                 if (filters.text === null) {
-                    this.markers[i].setMap(this.map);
+                    this.$markers[i].setMap(this.$map);
                 } else {
                     var textPassed = false;
 
-                    if (filters.text !== null && this.processStationTextFilter(this.markers[i].station, filters.text)) {
+                    if (filters.text !== null && this.processStationTextFilter(this.$markers[i].station, filters.text)) {
                         textPassed = true;
                     } else if (filters.text === null) {
                         textPassed = true;
                     }
                 }
                 if (textPassed) {
-                    this.markers[i].setMap(this.map);
+                    this.$markers[i].setMap(this.$map);
                 } else {
-                    this.markers[i].setMap(null);
+                    this.$markers[i].setMap(null);
                 }
             }
-        }
-    },
-    watch: {
-        stations: function stations() {
-            this.clearMarkers();
-            this.buildMarkers();
         }
     },
 
     mounted: function mounted() {
 
-        this.map = new google.maps.Map(document.getElementById('station-map'), {
+        this.$markers = [];
+
+        this.$map = new google.maps.Map(document.getElementById('station-map'), {
             center: { lat: this.latitude, lng: this.longitude },
             zoom: this.zoom
         });
@@ -50394,6 +50580,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$on('filters-updated', function (filters) {
             this.processFilters(filters);
         }.bind(this));
+
+        __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$on('location-selected', function (station) {
+            var latLng = new google.maps.LatLng(station.lat, station.lng);
+            this.$map.setZoom(17);
+            this.$map.panTo(latLng);
+        }.bind(this));
     }
 });
 
@@ -50401,275 +50593,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(85)
-}
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(87)
-/* template */
-var __vue_template__ = __webpack_require__(88)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/stations/StationMapFilter.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-016cbd89", Component.options)
-  } else {
-    hotAPI.reload("data-v-016cbd89", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(86);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("417a4365", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-016cbd89\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./StationMapFilter.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-016cbd89\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/sass-loader/lib/loader.js!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./StationMapFilter.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\ndiv#station-map-filter {\n  background-color: white;\n  border-radius: 10px;\n  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);\n  padding: 5px;\n  z-index: 999999;\n  position: absolute;\n  right: 45px;\n  top: 50px;\n  width: 25%;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 87 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__event_bus_js__ = __webpack_require__(6);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            show: true,
-            textSearch: ''
-        };
-    },
-
-    watch: {
-        textSearch: function textSearch() {
-            this.updateFilterDisplay();
-        }
-    },
-    methods: {
-        updateFilterDisplay: function updateFilterDisplay() {
-            __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$emit('filters-updated', {
-                text: this.textSearch
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports, __webpack_require__) {
-
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "station-map-filter" } }, [
-    _c("div", { staticClass: "col-md-10 col-md-offset-1" }, [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-head" }, [
-          _c("div", {}, [
-            _c(
-              "span",
-              {
-                staticClass: "show-filters",
-                on: {
-                  click: function($event) {
-                    _vm.show = !_vm.show
-                  }
-                }
-              },
-              [
-                _vm._v(
-                  _vm._s(_vm.show ? "Ocultar Filtros ↑" : "Mostrar Filtros ↓")
-                )
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.show,
-                expression: "show"
-              }
-            ],
-            staticClass: "card-body"
-          },
-          [
-            _c("h2", { staticClass: "card-title" }, [
-              _vm._v("Filtrar Estaciones")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", [_vm._v("Buscar:")]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.textSearch,
-                    expression: "textSearch"
-                  }
-                ],
-                attrs: { type: "text", placeholder: "Buscar Estaciones" },
-                domProps: { value: _vm.textSearch },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.textSearch = $event.target.value
-                  }
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", {})
-          ]
-        )
-      ])
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { attrs: { id: "station-map-container" } }, [
+      _c("div", { attrs: { id: "station-map" } })
     ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-016cbd89", module.exports)
   }
-}
-
-/***/ }),
-/* 89 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { attrs: { id: "station-map-container" } },
-    [
-      _c("div", { attrs: { id: "station-map" } }),
-      _vm._v(" "),
-      _c("station-map-filter")
-    ],
-    1
-  )
-}
-var staticRenderFns = []
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -50680,7 +50619,7 @@ if (false) {
 }
 
 /***/ }),
-/* 90 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50696,7 +50635,12 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "large-3 medium-3 small-12 cell" })
+      _c(
+        "div",
+        { staticClass: "large-3 medium-3 small-12 cell" },
+        [_c("router-view")],
+        1
+      )
     ])
   ])
 }
@@ -50711,149 +50655,19 @@ if (false) {
 }
 
 /***/ }),
-/* 91 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(92)
+  __webpack_require__(87)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(94)
+var __vue_script__ = __webpack_require__(89)
 /* template */
 var __vue_template__ = __webpack_require__(95)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/pages/Nets.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-a1e41d9a", Component.options)
-  } else {
-    hotAPI.reload("data-v-a1e41d9a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 92 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(93);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(2)("58fce4ad", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a1e41d9a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Nets.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a1e41d9a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Nets.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 93 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 94 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({});
-
-/***/ }),
-/* 95 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div")
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-a1e41d9a", module.exports)
-  }
-}
-
-/***/ }),
-/* 96 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(97)
-}
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(99)
-/* template */
-var __vue_template__ = __webpack_require__(105)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -50892,13 +50706,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 97 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(98);
+var content = __webpack_require__(88);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -50918,7 +50732,7 @@ if(false) {
 }
 
 /***/ }),
-/* 98 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(false);
@@ -50926,21 +50740,22 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "\ndiv#station-page {\n  position: absolute;\n  right: 30px;\n  top: 125px;\n  background: #FFFFFF;\n  box-shadow: 0 2px 4px 0 rgba(3, 27, 78, 0.1);\n  width: 100%;\n  max-width: 480px;\n  padding: 20px;\n  padding-top: 10px;\n}\ndiv#station-page img.close-icon {\n    float: right;\n    cursor: pointer;\n    margin-top: 10px;\n}\ndiv#station-page h2.station-title {\n    color: #342C0C;\n    font-size: 36px;\n    line-height: 44px;\n    font-family: \"Lato\", sans-serif;\n    font-weight: bolder;\n}\ndiv#station-page span.location-number {\n    display: inline-block;\n    color: #8E8E8E;\n    font-size: 18px;\n}\ndiv#station-page span.location-number span.location-image-container {\n      width: 35px;\n      text-align: center;\n      display: inline-block;\n}\ndiv#station-page label.station-label {\n    font-family: \"Lato\", sans-serif;\n    text-transform: uppercase;\n    font-weight: bold;\n    color: black;\n    margin-top: 20px;\n    margin-bottom: 10px;\n}\ndiv#station-page div.location-type {\n    color: white;\n    font-family: \"Lato\", sans-serif;\n    font-size: 16px;\n    width: 105px;\n    height: 45px;\n    text-align: center;\n    line-height: 45px;\n    border-radius: 3px;\n}\ndiv#station-page div.location-type img {\n      margin-right: 5px;\n}\ndiv#station-page div.location-type.roaster {\n      background-color: #a6ffa1;\n}\ndiv#station-page div.location-type.station {\n      background-color: #3D281E;\n}\ndiv#station-page div.location-type.station img {\n        margin-top: -6px;\n}\ndiv#station-page div.brew-method {\n    font-size: 16px;\n    color: #666666;\n    font-family: \"Lato\", sans-serif;\n    border-radius: 4px;\n    background-color: #F9F9FA;\n    width: 150px;\n    height: 57px;\n    float: left;\n    margin-right: 10px;\n    margin-bottom: 10px;\n    padding: 5px;\n    cursor: pointer;\n    position: relative;\n}\ndiv#station-page div.brew-method div.brew-method-container {\n      position: absolute;\n      top: 50%;\n      transform: translateY(-50%);\n}\ndiv#station-page div.brew-method div.brew-method-container img.brew-method-icon {\n        display: inline-block;\n        margin-right: 10px;\n        margin-left: 5px;\n        width: 20px;\n        max-height: 30px;\n}\ndiv#station-page div.brew-method div.brew-method-container span.brew-method-name {\n        display: inline-block;\n        width: calc( 100% - 40px);\n        vertical-align: middle;\n}\ndiv#station-page div.address-container {\n    color: #666666;\n    font-size: 18px;\n    line-height: 23px;\n    font-family: \"Lato\", sans-serif;\n    margin-bottom: 5px;\n}\ndiv#station-page div.address-container span.address {\n      display: block;\n}\ndiv#station-page div.address-container span.city-state {\n      display: block;\n}\ndiv#station-page div.address-container span.zip {\n      display: block;\n}\ndiv#station-page a.station-website {\n    font-family: \"Lato\", sans-serif;\n    color: #543729;\n    font-size: 18px;\n}\ndiv#station-page a.suggest-station-edit {\n    font-family: \"Lato\", sans-serif;\n    color: #054E7A;\n    font-size: 14px;\n    display: inline-block;\n    margin-top: 30px;\n    text-decoration: underline;\n}\n\n/* Small only */\n@media screen and (max-width: 39.9375em) {\ndiv#station-page {\n    position: fixed;\n    right: 0px;\n    left: 0px;\n    top: 0px;\n    bottom: 0px;\n    z-index: 99999;\n}\n}\n\n/* Medium only */\n/* Large only */\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 99 */
+/* 89 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_global_Loader_vue__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_global_Loader_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_global_Loader_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_stations_IndividualStationMap_vue__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_stations_IndividualStationMap_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_stations_IndividualStationMap_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__event_bus__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_global_Loader_vue__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_global_Loader_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_global_Loader_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_stations_IndividualStationMap_vue__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_stations_IndividualStationMap_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_stations_IndividualStationMap_vue__);
 //
 //
 //
@@ -50978,18 +50793,167 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    components: { IndividualStationMap: __WEBPACK_IMPORTED_MODULE_1__components_stations_IndividualStationMap_vue___default.a, Loader: __WEBPACK_IMPORTED_MODULE_0__components_global_Loader_vue___default.a },
+    components: { IndividualStationMap: __WEBPACK_IMPORTED_MODULE_2__components_stations_IndividualStationMap_vue___default.a, Loader: __WEBPACK_IMPORTED_MODULE_1__components_global_Loader_vue___default.a },
     created: function created() {
         this.$store.dispatch('loadStation', {
             id: this.$route.params.id
         });
     },
 
+    watch: {
+        '$route.params.id': function $routeParamsId() {
+            this.$store.dispatch('loadStation', {
+                id: this.$route.params.id
+            });
+        },
+        'stationLoadStatus': function stationLoadStatus() {
+            if (this.stationLoadStatus === 2) {
+                __WEBPACK_IMPORTED_MODULE_0__event_bus__["a" /* EventBus */].$emit('location-selected', { lat: parseFloat(this.station.latitude), lng: parseFloat(this.station.longitude) });
+            }
+            if (this.stationLoadStatus === 3) {
+                __WEBPACK_IMPORTED_MODULE_0__event_bus__["a" /* EventBus */].$emit('show-error', { notification: 'No fue posible cargar la estación!' });
+                this.$router.push({ name: 'stations' });
+            }
+        }
+    },
     computed: {
         stationLoadStatus: function stationLoadStatus() {
             return this.$store.getters.getStationLoadStatus;
@@ -51001,19 +50965,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 100 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(101)
+  __webpack_require__(91)
 }
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(103)
+var __vue_script__ = __webpack_require__(93)
 /* template */
-var __vue_template__ = __webpack_require__(104)
+var __vue_template__ = __webpack_require__(94)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -51052,13 +51016,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 101 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(102);
+var content = __webpack_require__(92);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -51078,7 +51042,7 @@ if(false) {
 }
 
 /***/ }),
-/* 102 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(false);
@@ -51092,7 +51056,7 @@ exports.push([module.i, "\ndiv#individual-station-map {\n  width: 100%;\n  heigh
 
 
 /***/ }),
-/* 103 */
+/* 93 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51144,7 +51108,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 104 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51164,95 +51128,68 @@ if (false) {
 }
 
 /***/ }),
-/* 105 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "page", attrs: { id: "station" } }, [
-    _c("div", { staticClass: "col-md-12" }, [
-      _c(
+  return _vm.stationLoadStatus === 2
+    ? _c(
         "div",
-        { staticClass: "col-md-4" },
+        { attrs: { id: "station-page" } },
         [
-          _c("loader", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.stationLoadStatus === 1,
-                expression: "stationLoadStatus === 1"
-              }
-            ],
-            attrs: { width: 100, height: 100 }
-          }),
+          _c("router-link", { attrs: { to: { name: "stations" } } }, [
+            _c("img", {
+              staticClass: "close-icon",
+              attrs: { src: "/img/close-icon.svg" }
+            })
+          ]),
           _vm._v(" "),
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.stationLoadStatus === 2,
-                  expression: "stationLoadStatus === 2"
-                }
-              ],
-              staticClass: "station-page"
-            },
-            [
-              _c("h2", [_vm._v(_vm._s(_vm.station.name))]),
-              _vm._v(" "),
-              _vm.station.localization !== ""
-                ? _c("h3", [_vm._v(_vm._s(_vm.station.localization))])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("span", { staticClass: "address" }, [
-                _vm._v("\n                      " + _vm._s(_vm.station.code)),
-                _c("br"),
-                _vm._v(
-                  "\n                      " +
-                    _vm._s(_vm.station.code) +
-                    ", " +
-                    _vm._s(_vm.station.code)
-                ),
-                _c("br"),
-                _vm._v(
-                  "\n                      " +
-                    _vm._s(_vm.station.code) +
-                    "\n                    "
-                )
-              ]),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "website",
-                  attrs: { href: _vm.station.code, target: "_blank" }
-                },
-                [_vm._v(_vm._s(_vm.station.code))]
-              ),
-              _vm._v(" "),
-              _vm._m(0)
-            ]
-          )
+          _c("h2", { staticClass: "station-title" }, [
+            _vm._v(_vm._s(_vm.station.name))
+          ]),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _vm._m(2)
         ],
         1
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-8" }, [_c("individual-station-map")], 1)
-    ])
-  ])
+      )
+    : _vm._e()
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "brew-methods-container" }, [
-      _c("div", { staticClass: "grid-x grid-padding-x" })
+    return _c("div", { staticClass: "grid-x" }, [
+      _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+        _c("label", { staticClass: "station-label" }, [_vm._v("------")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "grid-x" }, [
+      _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+        _c("label", { staticClass: "station-label" }, [_vm._v("------")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "grid-x" }, [
+      _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+        _c("label", { staticClass: "station-label" }, [_vm._v("------------")])
+      ])
     ])
   }
 ]
@@ -51266,18 +51203,149 @@ if (false) {
 }
 
 /***/ }),
-/* 106 */
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(97)
+}
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(99)
+/* template */
+var __vue_template__ = __webpack_require__(100)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/pages/Nets.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a1e41d9a", Component.options)
+  } else {
+    hotAPI.reload("data-v-a1e41d9a", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(98);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("58fce4ad", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a1e41d9a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Nets.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-a1e41d9a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Nets.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 99 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div")
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-a1e41d9a", module.exports)
+  }
+}
+
+/***/ }),
+/* 101 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_stations_js__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_stations_js__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_display__ = __webpack_require__(107);
 /*
   Adds the promise polyfill for IE 11
 */
-__webpack_require__(107).polyfill();
+__webpack_require__(102).polyfill();
 
 /*
     Imports Vue and Vuex
@@ -51294,16 +51362,17 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuex
     Imports all of the modules used in the application to build the data store.
 */
 
+
 /*
   Exports our data store.
 */
 
 /* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
-    modules: { stations: __WEBPACK_IMPORTED_MODULE_2__modules_stations_js__["a" /* stations */] }
+    modules: { stations: __WEBPACK_IMPORTED_MODULE_2__modules_stations_js__["a" /* stations */], display: __WEBPACK_IMPORTED_MODULE_3__modules_display__["a" /* display */] }
 }));
 
 /***/ }),
-/* 107 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, global) {/*!
@@ -52489,7 +52558,7 @@ return Promise$1;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(4)))
 
 /***/ }),
-/* 108 */
+/* 103 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -53434,12 +53503,12 @@ var index_esm = {
 
 
 /***/ }),
-/* 109 */
+/* 104 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return stations; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_stations_js__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_stations_js__ = __webpack_require__(105);
 /*
 |-------------------------------------------------------------------------------
 | VUEX modules/stations.js
@@ -53520,11 +53589,11 @@ var stations = {
 };
 
 /***/ }),
-/* 110 */
+/* 105 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config_js__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config_js__ = __webpack_require__(106);
 /*
     Imports the Roast API URL from the config.
 */
@@ -53549,7 +53618,7 @@ var stations = {
 });
 
 /***/ }),
-/* 111 */
+/* 106 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -53564,6 +53633,59 @@ var google_maps_js_api = 'AIzaSyDZWMe7WI59R_HaHS55TdqaNmHidkuLNKs';
 var ALERT_SYSTEM_CONFIG = {
     API_URL: api_url,
     GOOGLE_MAPS_JS_API: google_maps_js_api
+};
+
+/***/ }),
+/* 107 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return display; });
+/*
+|-------------------------------------------------------------------------------
+| VUEX modules/display.js
+|-------------------------------------------------------------------------------
+| The Vuex data store for the display state
+*/
+var display = {
+    /*
+      Defines the state being monitored for the module
+    */
+    state: {
+        showFilters: false,
+        showPopOut: false
+    },
+
+    actions: {
+        toggleShowFilters: function toggleShowFilters(_ref, data) {
+            var commit = _ref.commit;
+
+            commit('setShowFilters', data.showFilters);
+        },
+        toggleShowPopOut: function toggleShowPopOut(_ref2, data) {
+            var commit = _ref2.commit;
+
+            commit('setShowPopOut', data.showPopOut);
+        }
+    },
+
+    mutations: {
+        setShowFilters: function setShowFilters(state, show) {
+            state.showFilters = show;
+        },
+        setShowPopOut: function setShowPopOut(state, show) {
+            state.showPopOut = show;
+        }
+    },
+
+    getters: {
+        getShowFilters: function getShowFilters(state) {
+            return state.showFilters;
+        },
+        getShowPopOut: function getShowPopOut(state) {
+            return state.showPopOut;
+        }
+    }
 };
 
 /***/ })

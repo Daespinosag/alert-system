@@ -38,17 +38,19 @@ export default new VueRouter({
                 {
                     path: 'stations',
                     name: 'stations',
-                    component: Vue.component( 'Stations', require( './pages/Stations.vue' ) )
+                    component: Vue.component( 'Stations', require( './pages/Stations.vue' ) ),
+                    children: [
+                        {
+                            path: ':id',
+                            name: 'station',
+                            component: Vue.component( 'Station', require( './pages/Station.vue' ) )
+                        },
+                    ]
                 },
                 {
                     path: 'Nets',
                     name: 'Nets',
                     component: Vue.component( 'Nets', require( './pages/Nets.vue' ) )
-                },
-                {
-                    path: 'station/:id',
-                    name: 'station',
-                    component: Vue.component( 'Station', require( './pages/Station.vue' ) )
                 }
             ]
         }
