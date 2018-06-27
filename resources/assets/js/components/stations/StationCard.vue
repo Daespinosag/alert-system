@@ -1,9 +1,11 @@
 <template>
-    <li class="list-group-item"  v-show="show">
-        <router-link :to="{ name: 'station', params: { id: station.id} }">
-            {{ station.name }}
-        </router-link>
-    </li>
+    <div class="station-card-container">
+        <li class="list-group-item"  v-show="show">
+            <router-link :to="{ name: 'station', params: { id: station.id} }">
+                {{ station.name }}
+            </router-link>
+        </li>
+    </div>
 </template>
 
 <script>

@@ -145,7 +145,7 @@
 
 <template>
     <div id="station-page" v-if="stationLoadStatus === 2">
-        <router-link :to="{ name: 'stations' }"> <img class="close-icon" src="/img/close-icon.svg"/></router-link>
+        <router-link :to="{ name: 'stations' }"> <img class="close-icon" src="images/close-icon.svg"/></router-link>
         <h2 class="station-title">{{ station.name }}</h2>
 
         <div class="grid-x">

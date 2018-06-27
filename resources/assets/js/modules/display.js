@@ -1,13 +1,4 @@
-/*
-|-------------------------------------------------------------------------------
-| VUEX modules/display.js
-|-------------------------------------------------------------------------------
-| The Vuex data store for the display state
-*/
 export const display = {
-    /*
-      Defines the state being monitored for the module
-    */
     state: {
         showFilters: false,
         showPopOut: false,
