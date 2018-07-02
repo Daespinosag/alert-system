@@ -3,13 +3,12 @@
 namespace App\Repositories\AlertSystem;
 
 use Rinvex\Repository\Repositories\EloquentRepository;
-use App\Entities\AlertSystem\A25FiveMinutes;
+use App\Entities\AlertSystem\Landslide;
 
-
-class A25FiveMinutesRepository extends EloquentRepository
+class LandslideRepository extends EloquentRepository
 {
     protected $repositoryId = 'rinvex.repository.uniqueid';
-    protected $model = A25FiveMinutes::class;
+    protected $model = Landslide::class;
 
     public  function createShowcase()
     {

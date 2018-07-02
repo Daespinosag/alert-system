@@ -31,7 +31,7 @@ class Alert extends Model
     public function stations()
     {
         return $this->belongsToMany(Station::class,'alert_station','alert_id','station_id')
-            ->withPivot(['id','active'])
+            ->withPivot(['id','active','flag_level_one','flag_level_two','flag_level_three'])
             ->withTimestamps();
     }
     /**

@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Administrator\ConnectionRepository;
 use App\Repositories\Administrator\StationRepository;
-use App\Repositories\AlertSystem\A25FiveMinutesRepository;
+use App\Repositories\AlertSystem\LandslideRepository;
 use App\Repositories\Administrator\AlertRepository;
-use App\AlertSystem\Alerts\AlertA25;
+use App\AlertSystem\Alerts\Landslide;
 use Event;
 use Mail;
 
@@ -22,10 +22,10 @@ class testController extends Controller
      */
     public function index()
     {
-        $alertSystem = new AlertA25(
+        $alertSystem = new Landslide(
             new ConnectionRepository(),
             new StationRepository(),
-            new A25FiveMinutesRepository(),
+            new LandslideRepository(),
             new AlertRepository()
         );
         $alertSystem->init();

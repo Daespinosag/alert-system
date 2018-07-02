@@ -6,11 +6,11 @@ use App\AlertSystem\AlertSystem;
 use App\Events\AlertFiveMinutesCalculated;
 use App\Repositories\Administrator\AlertRepository;
 use App\Repositories\Administrator\StationRepository;
-use App\Repositories\AlertSystem\A25FiveMinutesRepository;
+use App\Repositories\AlertSystem\LandslideRepository;
 use App\Repositories\Administrator\ConnectionRepository;
 use Carbon\Carbon;
 
-class AlertA25 extends AlertSystem implements AlertInterface
+class Landslide extends AlertSystem implements AlertInterface
 {
     private $connectionRepository;
 
@@ -32,13 +32,13 @@ class AlertA25 extends AlertSystem implements AlertInterface
      * AlertSystem constructor.
      * @param ConnectionRepository $connectionRepository
      * @param StationRepository $stationRepository
-     * @param A25FiveMinutesRepository $a25FiveMinutesRepository
+     * @param LandslideRepository $a25FiveMinutesRepository
      * @param AlertRepository $alertRepository
      */
     public function  __construct(
         ConnectionRepository $connectionRepository,
         StationRepository $stationRepository,
-        A25FiveMinutesRepository $a25FiveMinutesRepository,
+        LandslideRepository $a25FiveMinutesRepository,
         AlertRepository $alertRepository
     )
     {
@@ -78,7 +78,6 @@ class AlertA25 extends AlertSystem implements AlertInterface
             $resultConnection = $this->searchExternalConnection($connection,$station->table_db_name,$this->externalConnection);
 
             if ($resultConnection){
-
                 # Se consultan los datos de a25 en la central de acopio
                 $result = $this->calculateA25($this->externalConnection,$station->table_db_name,$dateOne,$dateTwo,$time);
 
@@ -115,5 +114,4 @@ class AlertA25 extends AlertSystem implements AlertInterface
 
         event(new AlertFiveMinutesCalculated($arrayNewValues));
     }
-
 }

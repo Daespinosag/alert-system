@@ -150,17 +150,17 @@
 
         <div class="grid-x">
             <div class="large-12 medium-12 small-12 cell">
-                <label class="station-label">------</label>
+                <label class="station-label">{{ station.netName }}</label>
             </div>
         </div>
         <div class="grid-x">
             <div class="large-12 medium-12 small-12 cell">
-                <label class="station-label">------</label>
+                <label class="station-label">{{ station.city }}</label>
             </div>
         </div>
         <div class="grid-x">
             <div class="large-12 medium-12 small-12 cell">
-                <label class="station-label">------------</label>
+                <label class="station-label">{{ station.localization }}</label>
             </div>
         </div>
     </div>
@@ -187,7 +187,7 @@
             },
             'stationLoadStatus': function(){
                 if( this.stationLoadStatus === 2 ){
-                    EventBus.$emit('location-selected', { lat: parseFloat( this.station.latitude ), lng: parseFloat( this.station.longitude ) });
+                    // TODO suscribirse a eventos por estacion
                 }
                 if( this.stationLoadStatus === 3 ){
                     EventBus.$emit('show-error', { notification: 'No fue posible cargar la estación!'} );

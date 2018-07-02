@@ -36,7 +36,7 @@
             }
         }
 
-        input[type="text"].search{
+        input[type="text"].search-filters{
             box-shadow: none;
             border-radius: 3px;
             color: #BABABA;
@@ -217,7 +217,7 @@
                 </span>
             </div>
             <div class="col-md-12" id="text-container">
-               <input type="text" class="search" v-model="textSearch" placeholder="Buscar Estaciones"/>
+               <input type="text" class="search-filters form-control" v-model="textSearch" placeholder="Buscar Estaciones"/>
             </div>
 
             <div id="col-md-12 location-type-container">

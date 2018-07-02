@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Repositories\Administrator\NetRepository;
 use App\Repositories\Administrator\StationRepository;
-use App\Repositories\AlertSystem\A25FiveMinutesRepository;
+use App\Repositories\AlertSystem\LandslideRepository;
 
 class AlertSystemController extends Controller
 {
@@ -18,7 +18,7 @@ class AlertSystemController extends Controller
      */
     private $netRepository;
     /**
-     * @var A25FiveMinutesRepository
+     * @var LandslideRepository
      */
     private $a25FiveMinutesRepository;
 
@@ -26,12 +26,12 @@ class AlertSystemController extends Controller
      * AlertSystemController constructor.
      * @param StationRepository $stationRepository
      * @param NetRepository $netRepository
-     * @param A25FiveMinutesRepository $a25FiveMinutesRepository
+     * @param LandslideRepository $a25FiveMinutesRepository
      */
     public function __construct(
         StationRepository $stationRepository,
         NetRepository $netRepository,
-        A25FiveMinutesRepository $a25FiveMinutesRepository
+        LandslideRepository $a25FiveMinutesRepository
     )
     {
         $this->stationRepository = $stationRepository;

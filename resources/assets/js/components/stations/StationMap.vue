@@ -213,12 +213,6 @@
             EventBus.$on('filters-updated', function( filters ){
                 this.processFilters( filters );
             }.bind(this));
-
-            EventBus.$on('location-selected', function( station ){
-                var latLng = new google.maps.LatLng( station.lat, station.lng );
-                this.$map.setZoom( 17 );
-                this.$map.panTo(latLng);
-            }.bind(this));
         }
     }
 </script>

@@ -49532,7 +49532,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\ndiv.filters-container {\n  background-color: white;\n  position: fixed;\n  left: 0;\n  bottom: 0;\n  top: 105px;\n  /* position: absolute;\n    top: 0px;\n    left: 0px;\n    right: 0px;\n    bottom: 0px;*/\n  max-width: 550px;\n  width: 100%;\n  /*padding-top: 50px;*/\n  box-shadow: 0 2px 4px 0 rgba(3, 27, 78, 0.1);\n  z-index: 99;\n}\ndiv.filters-container span.clear-filters {\n    font-size: 16px;\n    color: #3e8f3e;\n    font-family: \"Lato\", sans-serif;\n    cursor: pointer;\n    display: block;\n    float: left;\n    margin-bottom: 20px;\n}\ndiv.filters-container span.clear-filters img {\n      margin-right: 10px;\n      float: left;\n      margin-top: 6px;\n}\ndiv.filters-container input[type=\"text\"].search {\n    box-shadow: none;\n    border-radius: 3px;\n    color: #BABABA;\n    font-size: 16px;\n    font-family: \"Lato\", sans-serif;\n    background-repeat: no-repeat;\n    background-position: 6px;\n    padding-left: 35px;\n    padding-top: 5px;\n    padding-bottom: 5px;\n}\ndiv.filters-container label.filter-label {\n    font-family: \"Lato\", sans-serif;\n    text-transform: uppercase;\n    font-weight: bold;\n    color: black;\n    margin-top: 20px;\n    margin-bottom: 10px;\n}\ndiv.filters-container div.location-filter {\n    text-align: center;\n    font-family: \"Lato\", sans-serif;\n    font-size: 16px;\n    color: #3e8f3e;\n    border-bottom: 1px solid #3e8f3e;\n    border-top: 1px solid #3e8f3e;\n    border-left: 1px solid #3e8f3e;\n    border-right: 1px solid #3e8f3e;\n    width: 30%;\n    display: inline-block;\n    height: 55px;\n    line-height: 55px;\n    cursor: pointer;\n    margin-bottom: 5px;\n}\ndiv.filters-container div.location-filter.active {\n      color: white;\n      background-color: #3e8f3e;\n}\ndiv.filters-container div.location-filter.all-locations {\n      border-top-left-radius: 3px;\n      border-bottom-left-radius: 3px;\n}\ndiv.filters-container div.location-filter.roasters {\n      border-left: none;\n      border-right: none;\n}\ndiv.filters-container div.location-filter.stations {\n      border-top-right-radius: 3px;\n      border-bottom-right-radius: 3px;\n}\ndiv.filters-container div.brew-method {\n    font-size: 16px;\n    color: #666666;\n    font-family: \"Lato\", sans-serif;\n    border-radius: 4px;\n    background-color: #F9F9FA;\n    width: 150px;\n    height: 57px;\n    float: left;\n    margin-right: 10px;\n    margin-bottom: 10px;\n    padding: 5px;\n    cursor: pointer;\n    position: relative;\n}\ndiv.filters-container div.brew-method.active {\n      color: white;\n      background-color: #3e8f3e;\n}\ndiv.filters-container div.brew-method div.brew-method-container {\n      position: absolute;\n      top: 50%;\n      transform: translateY(-50%);\n}\ndiv.filters-container div.brew-method div.brew-method-container img.brew-method-icon {\n        display: inline-block;\n        margin-right: 10px;\n        margin-left: 5px;\n        width: 20px;\n        max-height: 30px;\n}\ndiv.filters-container div.brew-method div.brew-method-container span.brew-method-name {\n        display: inline-block;\n        width: calc( 100% - 40px);\n        vertical-align: middle;\n}\ndiv.filters-container span.liked-location-label {\n    color: #666666;\n    font-size: 16px;\n    font-family: \"Lato\", sans-serif;\n    margin-left: 10px;\n}\ndiv.filters-container div.station-grid-container {\n    /*overflow: auto;\n        padding-bottom: 10px;*/\n}\ndiv.filters-container div.close-filters {\n    height: 90px;\n    width: 23px;\n    position: absolute;\n    right: -20px;\n    background-color: white;\n    border-top-right-radius: 3px;\n    border-bottom-right-radius: 3px;\n    line-height: 90px;\n    top: 50%;\n    cursor: pointer;\n    margin-top: -82px;\n    text-align: center;\n}\ndiv.filters-container span.no-results {\n    display: block;\n    text-align: center;\n    margin-top: 50px;\n    color: #666666;\n    text-transform: uppercase;\n    font-weight: 600;\n}\n\n/* Small only */\n@media screen and (max-width: 39.9375em) {\ndiv.filters-container {\n    padding-top: 25px;\n    overflow-y: auto;\n}\ndiv.filters-container span.clear-filters {\n      display: block;\n}\ndiv.filters-container div.station-grid-container {\n      height: inherit;\n}\ndiv.filters-container div.close-filters {\n      display: none;\n}\n}\n\n/* Medium only */\n/* Large only */\n", ""]);
+exports.push([module.i, "\ndiv.filters-container {\n  background-color: white;\n  position: fixed;\n  left: 0;\n  bottom: 0;\n  top: 105px;\n  /* position: absolute;\n    top: 0px;\n    left: 0px;\n    right: 0px;\n    bottom: 0px;*/\n  max-width: 550px;\n  width: 100%;\n  /*padding-top: 50px;*/\n  box-shadow: 0 2px 4px 0 rgba(3, 27, 78, 0.1);\n  z-index: 99;\n}\ndiv.filters-container span.clear-filters {\n    font-size: 16px;\n    color: #3e8f3e;\n    font-family: \"Lato\", sans-serif;\n    cursor: pointer;\n    display: block;\n    float: left;\n    margin-bottom: 20px;\n}\ndiv.filters-container span.clear-filters img {\n      margin-right: 10px;\n      float: left;\n      margin-top: 6px;\n}\ndiv.filters-container input[type=\"text\"].search-filters {\n    box-shadow: none;\n    border-radius: 3px;\n    color: #BABABA;\n    font-size: 16px;\n    font-family: \"Lato\", sans-serif;\n    background-repeat: no-repeat;\n    background-position: 6px;\n    padding-left: 35px;\n    padding-top: 5px;\n    padding-bottom: 5px;\n}\ndiv.filters-container label.filter-label {\n    font-family: \"Lato\", sans-serif;\n    text-transform: uppercase;\n    font-weight: bold;\n    color: black;\n    margin-top: 20px;\n    margin-bottom: 10px;\n}\ndiv.filters-container div.location-filter {\n    text-align: center;\n    font-family: \"Lato\", sans-serif;\n    font-size: 16px;\n    color: #3e8f3e;\n    border-bottom: 1px solid #3e8f3e;\n    border-top: 1px solid #3e8f3e;\n    border-left: 1px solid #3e8f3e;\n    border-right: 1px solid #3e8f3e;\n    width: 30%;\n    display: inline-block;\n    height: 55px;\n    line-height: 55px;\n    cursor: pointer;\n    margin-bottom: 5px;\n}\ndiv.filters-container div.location-filter.active {\n      color: white;\n      background-color: #3e8f3e;\n}\ndiv.filters-container div.location-filter.all-locations {\n      border-top-left-radius: 3px;\n      border-bottom-left-radius: 3px;\n}\ndiv.filters-container div.location-filter.roasters {\n      border-left: none;\n      border-right: none;\n}\ndiv.filters-container div.location-filter.stations {\n      border-top-right-radius: 3px;\n      border-bottom-right-radius: 3px;\n}\ndiv.filters-container div.brew-method {\n    font-size: 16px;\n    color: #666666;\n    font-family: \"Lato\", sans-serif;\n    border-radius: 4px;\n    background-color: #F9F9FA;\n    width: 150px;\n    height: 57px;\n    float: left;\n    margin-right: 10px;\n    margin-bottom: 10px;\n    padding: 5px;\n    cursor: pointer;\n    position: relative;\n}\ndiv.filters-container div.brew-method.active {\n      color: white;\n      background-color: #3e8f3e;\n}\ndiv.filters-container div.brew-method div.brew-method-container {\n      position: absolute;\n      top: 50%;\n      transform: translateY(-50%);\n}\ndiv.filters-container div.brew-method div.brew-method-container img.brew-method-icon {\n        display: inline-block;\n        margin-right: 10px;\n        margin-left: 5px;\n        width: 20px;\n        max-height: 30px;\n}\ndiv.filters-container div.brew-method div.brew-method-container span.brew-method-name {\n        display: inline-block;\n        width: calc( 100% - 40px);\n        vertical-align: middle;\n}\ndiv.filters-container span.liked-location-label {\n    color: #666666;\n    font-size: 16px;\n    font-family: \"Lato\", sans-serif;\n    margin-left: 10px;\n}\ndiv.filters-container div.station-grid-container {\n    /*overflow: auto;\n        padding-bottom: 10px;*/\n}\ndiv.filters-container div.close-filters {\n    height: 90px;\n    width: 23px;\n    position: absolute;\n    right: -20px;\n    background-color: white;\n    border-top-right-radius: 3px;\n    border-bottom-right-radius: 3px;\n    line-height: 90px;\n    top: 50%;\n    cursor: pointer;\n    margin-top: -82px;\n    text-align: center;\n}\ndiv.filters-container span.no-results {\n    display: block;\n    text-align: center;\n    margin-top: 50px;\n    color: #666666;\n    text-transform: uppercase;\n    font-weight: 600;\n}\n\n/* Small only */\n@media screen and (max-width: 39.9375em) {\ndiv.filters-container {\n    padding-top: 25px;\n    overflow-y: auto;\n}\ndiv.filters-container span.clear-filters {\n      display: block;\n}\ndiv.filters-container div.station-grid-container {\n      height: inherit;\n}\ndiv.filters-container div.close-filters {\n      display: none;\n}\n}\n\n/* Medium only */\n/* Large only */\n", ""]);
 
 // exports
 
@@ -50109,7 +50109,7 @@ var render = function() {
                   expression: "textSearch"
                 }
               ],
-              staticClass: "search",
+              staticClass: "search-filters form-control",
               attrs: { type: "text", placeholder: "Buscar Estaciones" },
               domProps: { value: _vm.textSearch },
               on: {
@@ -51322,12 +51322,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$on('filters-updated', function (filters) {
             this.processFilters(filters);
         }.bind(this));
-
-        __WEBPACK_IMPORTED_MODULE_0__event_bus_js__["a" /* EventBus */].$on('location-selected', function (station) {
-            var latLng = new google.maps.LatLng(station.lat, station.lng);
-            this.$map.setZoom(17);
-            this.$map.panTo(latLng);
-        }.bind(this));
     }
 });
 
@@ -51688,7 +51682,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         'stationLoadStatus': function stationLoadStatus() {
             if (this.stationLoadStatus === 2) {
-                __WEBPACK_IMPORTED_MODULE_0__event_bus__["a" /* EventBus */].$emit('location-selected', { lat: parseFloat(this.station.latitude), lng: parseFloat(this.station.longitude) });
+                // TODO suscribirse a eventos por estacion
             }
             if (this.stationLoadStatus === 3) {
                 __WEBPACK_IMPORTED_MODULE_0__event_bus__["a" /* EventBus */].$emit('show-error', { notification: 'No fue posible cargar la estación!' });
@@ -51893,48 +51887,35 @@ var render = function() {
             _vm._v(_vm._s(_vm.station.name))
           ]),
           _vm._v(" "),
-          _vm._m(0),
+          _c("div", { staticClass: "grid-x" }, [
+            _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+              _c("label", { staticClass: "station-label" }, [
+                _vm._v(_vm._s(_vm.station.netName))
+              ])
+            ])
+          ]),
           _vm._v(" "),
-          _vm._m(1),
+          _c("div", { staticClass: "grid-x" }, [
+            _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+              _c("label", { staticClass: "station-label" }, [
+                _vm._v(_vm._s(_vm.station.city))
+              ])
+            ])
+          ]),
           _vm._v(" "),
-          _vm._m(2)
+          _c("div", { staticClass: "grid-x" }, [
+            _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
+              _c("label", { staticClass: "station-label" }, [
+                _vm._v(_vm._s(_vm.station.localization))
+              ])
+            ])
+          ])
         ],
         1
       )
     : _vm._e()
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "grid-x" }, [
-      _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-        _c("label", { staticClass: "station-label" }, [_vm._v("------")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "grid-x" }, [
-      _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-        _c("label", { staticClass: "station-label" }, [_vm._v("------")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "grid-x" }, [
-      _c("div", { staticClass: "large-12 medium-12 small-12 cell" }, [
-        _c("label", { staticClass: "station-label" }, [_vm._v("------------")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

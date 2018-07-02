@@ -110,8 +110,9 @@ class Station extends Model
     public function alerts()
     {
         return $this->belongsToMany(Alert::class,'alert_station','station_id','alert_id')
-            ->withPivot(['id','active'])
+            ->withPivot(['id','active','flag_level_one','flag_level_two','flag_level_three'])
             ->withTimestamps();
+
     }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

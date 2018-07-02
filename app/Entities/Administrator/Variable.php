@@ -13,7 +13,7 @@ class Variable extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name','description','excel_name','database_field_name','local_name','decimal_precision','unit', 'report_name'
+        'name','description','excel_name','database_field_name','local_name','reliability_name','decimal_precision','unit', 'report_name'
     ];
 
     protected $hidden = [

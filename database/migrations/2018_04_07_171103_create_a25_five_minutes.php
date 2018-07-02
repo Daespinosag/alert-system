@@ -13,7 +13,7 @@ class CreateA25FiveMinutes extends Migration
      */
     public function up()
     {
-        Schema::connection('alert-system')->create('a25_five_minutes',function(Blueprint $table){
+        Schema::connection('alert-system')->create('landslide',function(Blueprint $table){
             $table->increments('id');
             $table->integer('station');
             $table->float('a25_value')->nullable();
@@ -36,6 +36,6 @@ class CreateA25FiveMinutes extends Migration
      */
     public function down()
     {
-        Schema::connection('alert-system')->dropIfExists('a25_five_minutes');
+        Schema::connection('alert-system')->dropIfExists('landslide');
     }
 }

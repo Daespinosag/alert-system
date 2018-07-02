@@ -4,11 +4,11 @@ namespace App\Entities\AlertSystem;
 
 use Illuminate\Database\Eloquent\Model;
 
-class A25FiveMinutes extends Model
+class Landslide extends Model
 {
     protected $connection = 'alert-system';
 
-    protected $table = 'a25_five_minutes';
+    protected $table = 'landslide';
 
     protected $primaryKey = 'id';
 
