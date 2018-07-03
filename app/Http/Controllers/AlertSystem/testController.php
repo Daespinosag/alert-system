@@ -8,21 +8,31 @@ use App\Repositories\Administrator\ConnectionRepository;
 use App\Repositories\Administrator\StationRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
 use App\Repositories\Administrator\AlertRepository;
-use App\AlertSystem\Alerts\Landslide;
+use App\Repositories\AlertSystem\FloodRepository;
+use App\AlertSystem\Alerts\LandslideAlert;
+use App\AlertSystem\Alerts\FloodAlert;
 use Event;
 use Mail;
-
 
 class testController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $alertSystem = new Landslide(
+        $alertSystem = new FloodAlert(
+            new ConnectionRepository(),
+            new StationRepository(),
+            new FloodRepository(),
+            new AlertRepository()
+        );
+
+        $alertSystem->init();
+        dd($alertSystem);
+        /*
+        $alertSystem = new LandslideAlert(
             new ConnectionRepository(),
             new StationRepository(),
             new LandslideRepository(),
@@ -30,6 +40,7 @@ class testController extends Controller
         );
         $alertSystem->init();
         dd($alertSystem);
+        */
         /*
         Mail::send('emails.contact',['alert' => 'enviando desde el sistema de alertas'], function ($message){
             $message->to('daespinosag@unal.edu.co','Alert System')->subject('test send emails');

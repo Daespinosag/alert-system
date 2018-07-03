@@ -2,7 +2,6 @@
 
 namespace App\AlertSystem\Alerts;
 
-use App\AlertSystem\AlertSystem;
 use App\Events\AlertFiveMinutesCalculated;
 use App\Repositories\Administrator\AlertRepository;
 use App\Repositories\Administrator\StationRepository;
@@ -10,42 +9,40 @@ use App\Repositories\AlertSystem\LandslideRepository;
 use App\Repositories\Administrator\ConnectionRepository;
 use Carbon\Carbon;
 
-class Landslide extends AlertSystem implements AlertInterface
+class LandslideAlert extends AlertBase implements AlertInterface
 {
     private $connectionRepository;
 
     private $stationRepository;
 
-    private $a25FiveMinutesRepository;
+    private $landslideRepository;
+
+    private $alertRepository;
 
     public $constData = 7200;
 
     public $constDays = 24;
 
     public $externalConnection = 'external_connection_alert_system';
-    /**
-     * @var AlertRepository
-     */
-    private $alertRepository;
 
     /**
      * AlertSystem constructor.
      * @param ConnectionRepository $connectionRepository
      * @param StationRepository $stationRepository
-     * @param LandslideRepository $a25FiveMinutesRepository
+     * @param LandslideRepository $landslideRepository
      * @param AlertRepository $alertRepository
      */
     public function  __construct(
         ConnectionRepository $connectionRepository,
         StationRepository $stationRepository,
-        LandslideRepository $a25FiveMinutesRepository,
+        LandslideRepository $landslideRepository,
         AlertRepository $alertRepository
     )
     {
         $this->connectionRepository = $connectionRepository;
         $this->stationRepository = $stationRepository;
-        $this->a25FiveMinutesRepository = $a25FiveMinutesRepository;
         $this->alertRepository = $alertRepository;
+        $this->landslideRepository = $landslideRepository;
     }
 
     public function init()
@@ -66,10 +63,10 @@ class Landslide extends AlertSystem implements AlertInterface
         foreach ($stations as $station)
         {
             # se crea un nuevo modelo para la tabla a25FiveMinutes
-            $showcaseA25Table = $this->a25FiveMinutesRepository->createShowcase();
+            $showcaseA25Table = $this->landslideRepository->createShowcase();
 
             # Se extrae el ultimo valor de la tabla a25 para una estacion especifica
-            $ultimateDateA25 = $this->a25FiveMinutesRepository->getUltimateDate($station->id);
+            $ultimateDateA25 = $this->landslideRepository->getUltimateDate($station->id);
 
             # Se consulta la conexion perteneciente a la estacion
             $connection = $this->connectionRepository->findOrFail($station->connection_id);
@@ -106,12 +103,12 @@ class Landslide extends AlertSystem implements AlertInterface
                     }
                 }
 
-                $value = $this->a25FiveMinutesRepository->create($showcaseA25Table->toArray());
+                $value = $this->landslideRepository->create($showcaseA25Table->toArray());
                 array_push($arrayNewValues,$value);
             }
         }
-        dd($arrayNewValues);
+        // dd($arrayNewValues); TODO
 
-        event(new AlertFiveMinutesCalculated($arrayNewValues));
+        // event(new AlertFiveMinutesCalculated($arrayNewValues));
     }
 }

@@ -187,4 +187,73 @@ class StationRepository extends EloquentRepository
     {
 
     }
+
+    // The new method from alert-system TODO
+
+    /**
+     * @param string $alertCode
+    * @return mixed
+     */
+    public function getForAlertSystem(string $alertCode)
+    {
+        return $this->queryBuilder()
+                ->select(
+                    'station.id',
+                    'station.name',
+                    'station.station_type_id',
+                    'station.net_id',
+                    'net.connection_id',
+                    'station.table_db_name',
+                    'alert.name as alertName',
+                    'alert.code',
+                    'alert_station.flag_level_one',
+                    'alert_station.flag_level_two',
+                    'alert_station.flag_level_three'
+                )
+                ->join('alert_station', 'alert_station.station_id', '=', 'station.id')
+                ->join('alert', 'alert.id', '=', 'alert_station.alert_id')
+                ->join('net','net.id','=','station.net_id')
+                ->where('alert_station.active','=',true)
+                ->where('alert.code', '=', $alertCode)
+                ->where('station.active','=',true)
+                ->orderBY('station.id')
+                ->get();
+    }
+
+    /**
+     * @param string $alertCode
+     * @return mixed
+     */
+    public function getStationsForMaps(string $alertCode)
+    {
+        return $this->queryBuilder()
+                    ->select(
+                        'station.id',
+                        'station.name',
+                        'station.station_type_id',
+                        'station.net_id',
+                        'net.name as netName',
+                        'station.localization',
+                        'station.city',
+                        'station.latitude_degrees',
+                        'station.latitude_minutes',
+                        'station.latitude_seconds',
+                        'station.latitude_direction',
+                        'station.longitude_degrees',
+                        'station.longitude_minutes',
+                        'station.longitude_seconds',
+                        'station.longitude_direction',
+                        'alert.name as alertName',
+                        'alert.code'
+                    )
+                    ->join('alert_station', 'alert_station.station_id', '=', 'station.id')
+                    ->join('alert', 'alert.id', '=', 'alert_station.alert_id')
+                    ->join('net','net.id','=','station.net_id')
+                    ->where('alert_station.active','=',true)
+                    ->where('alert.code', '=', $alertCode)
+                    ->where('station.active','=',true)
+                    ->where('station.rt_active','=',true)
+                    ->orderBY('station.id')
+                    ->get();
+    }
 }

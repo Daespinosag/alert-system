@@ -36,4 +36,25 @@ trait StorageServerTrait
             ->first();
     }
 
+    public function calculateA10
+    (
+        string $externalConnection,
+        string $tableName,
+        string $dataOne,
+        string $timeOne,
+        string $dataTwo,
+        string $timeTwo
+    )
+    {
+        return  DB::connection($externalConnection)
+            ->table($tableName)
+            ->select(DB::raw('sum(precipitacion_real) as a10, count(precipitacion_real) as count'))
+            ->where('fecha', '=', $dataOne)
+            ->where('hora','>=',$timeOne)
+            ->where('fecha','=',$dataTwo)
+            ->where('hora','<=',$timeTwo)
+            ->where('precipitacion_real', '<>','-')
+            ->first();
+    }
+
 }
