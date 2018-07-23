@@ -63,6 +63,7 @@
 </template>
 
 <script>
+    import { ALERT_SYSTEM_CONFIG } from "../../config";
     import { EventBus } from '../../event-bus.js';
     import { StationTextFilter } from '../../mixins/filters/StationTextFilter.js';
     import { StationAlertFilter} from "../../mixins/filters/StationAlertFilter";
@@ -228,6 +229,24 @@
 
             this.$map = new google.maps.Map(document.getElementById('station-map'), {
                 center: {lat: this.latitude, lng: this.longitude},
+                zoom: this.zoom
+            });
+
+            var CaldasDeptoKMZ = new google.maps.KmlLayer({
+                url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Caldas_Departamento.kmz',
+                map: this.$map,
+                zoom: this.zoom
+            });
+
+            var CaldasMunicipiosKMZ = new google.maps.KmlLayer({
+                url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Caldas_Municipios.kmz',
+                map: this.$map,
+                zoom: this.zoom
+            });
+
+            var PerimetroUrbanoManizalesKMZ = new google.maps.KmlLayer({
+                url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Perimetro_UrbanoManizales.kmz',
+                map: this.$map,
                 zoom: this.zoom
             });
 
