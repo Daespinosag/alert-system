@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\AlertSystem;
 
+use App\AlertSystem\Connection\SearchTableInExternalStaticConnection;
+use function Couchbase\defaultDecoder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Administrator\ConnectionRepository;
@@ -16,6 +18,7 @@ use Mail;
 
 class testController extends Controller
 {
+    use SearchTableInExternalStaticConnection;
     /**
      * @var StationRepository
      */
@@ -40,6 +43,12 @@ class testController extends Controller
         $possibleAlert = ['alert-a25','alert-a10'];
 
         $stations = $this->stationRepository->getStationsFromAlertsForMaps($possibleAlert);
+
+        foreach ($stations as $station){
+            $flag = $this->searchStaticConnection($station->net->connection->name,$station->table_db_name);
+            dd($flag);
+        }
+
         dd($stations);
         /*$data = [];
 

@@ -6,7 +6,6 @@ use Facades\App\Repositories\Administrator\ConnectionRepository;
 use Config;
 use Exception;
 use DB;
-use Illuminate\Support\Facades\Artisan;
 use Log;
 /**
  *
