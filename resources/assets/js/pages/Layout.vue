@@ -39,6 +39,8 @@
     export default {
         components: {Navigation,Filters},
         created(){
+            this.$store.dispatch( 'loadAlerts' );
+            this.$store.dispatch( 'loadTypeStation' );
             this.$store.dispatch( 'loadStations' );
         },
         computed: {

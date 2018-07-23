@@ -256,4 +256,24 @@ class StationRepository extends EloquentRepository
                     ->orderBY('station.id')
                     ->get();
     }
+
+    public function getStationsFromAlertsForMaps(array $alertsCode)
+    {
+        return  $this->select('*')
+                ->where('station.active','=',true)
+                ->where('station.rt_active','=',true)
+                ->whereHas('alerts',function ($query) use ($alertsCode) {
+                    $query->whereIn('alert.code', $alertsCode)
+                        ->where('alert_station.active', '=', true)
+                        ->where('alert.active', '=', true);
+                })
+                ->with(['typeStation','net','alerts' => function ($query) use ($alertsCode){ $query->whereIn('code', $alertsCode); }])
+                ->get();
+    }
+
+    public function getUltimateDataInAlertTable($table,$stationId)
+    {
+        return DB::connection('alert-system')->table($table)->select('*')->where('station','=',$stationId)->orderBy('created_at', 'desc')->first();
+    }
+
 }

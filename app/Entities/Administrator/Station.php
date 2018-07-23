@@ -13,14 +13,14 @@ class Station extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'station_type_id','net_id','code','name','description','table_db_name','measurements_per_day','active',
+        'id','station_type_id','net_id','code','name','description','table_db_name','measurements_per_day','active',
         'rt_active','etl_active','community','start_operation','finish_operation','latitude_degrees','latitude_minutes',
         'latitude_seconds','latitude_direction','longitude_degrees','longitude_minutes','longitude_seconds','longitude_direction',
         'city','localization','basin','sub_basin','image_1','image_2','pdf_file','comment'
     ];
 
     protected $hidden = [
-        'id',
+
     ];
 
     protected $dates = [

@@ -17,6 +17,14 @@ export default {
 
     getNets: function () {
         return axios.get(ALERT_SYSTEM_CONFIG.API_URL + '/nets' );
+    },
+
+    getAlerts: function () {
+      return axios.get(ALERT_SYSTEM_CONFIG.API_URL + '/alerts' );
+    },
+
+    getTypeStation: function () {
+        return axios.get(ALERT_SYSTEM_CONFIG.API_URL + '/typeStation' );
     }
 
 }

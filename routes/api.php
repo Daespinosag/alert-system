@@ -21,4 +21,8 @@ Route::group(['prefix' => 'v1'], function()  //, 'middleware' => 'auth:api'
 
     Route::get('/nets', [ 'as'=>'v1.nets','uses'=>'API\AlertSystemController@getNets']);
 
+    Route::get('/alerts', [ 'as'=>'v1.alerts','uses'=>'API\AlertSystemController@getAlerts']);
+
+    Route::get('/typeStation', [ 'as'=>'v1.typeStation','uses'=>'API\AlertSystemController@getTypeStation']);
+
 });

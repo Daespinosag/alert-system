@@ -10,4 +10,9 @@ class StationTypeRepository extends EloquentRepository
     protected $repositoryId = 'rinvex.repository.uniqueid';
 
     protected $model = StationType::class;
+
+    public function getTypeStations(array $codes)
+    {
+        return $this->select('*')->whereIn('code',$codes)->get();
+    }
 }

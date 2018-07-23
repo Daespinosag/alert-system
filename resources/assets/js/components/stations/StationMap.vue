@@ -65,9 +65,11 @@
 <script>
     import { EventBus } from '../../event-bus.js';
     import { StationTextFilter } from '../../mixins/filters/StationTextFilter.js';
+    import { StationAlertFilter} from "../../mixins/filters/StationAlertFilter";
+    import { StationTypeFilter} from "../../mixins/filters/StationTypeFilter";
 
     export default {
-        mixins: [ StationTextFilter ],
+        mixins: [ StationTextFilter, StationAlertFilter, StationTypeFilter ],
         props: {
             'latitude': {
                 type: Number,
@@ -92,7 +94,7 @@
         data(){
             return {
                 infoWindows: [],
-                markerImg: 'images/alert-icons/station-marker'
+                markerImg: 'images/alert-icons/'
             }
         },
         computed: {
@@ -117,7 +119,7 @@
                     let marker = new google.maps.Marker({
                         position: { lat: parseFloat( this.stations[i].latitude ), lng: parseFloat( this.stations[i].longitude ) },
                         map: this.$map,
-                        icon: this.getIconAlert(this.stations[i].alertA25.alert),
+                        icon: this.getIconAlert(this.stations[i]),
                         station: this.stations[i]
                     });
 
@@ -151,48 +153,70 @@
                 }
             },
 
-            getIconAlert(alert){
+            getIconAlert(station){
                 let icon = this.markerImg;
-                switch(alert) {
-                    case 0:
-                        icon += '-green.svg';
-                        break;
-                    case 1:
-                        icon += '-yellow.svg';
-                        break;
-                    case 2:
-                        icon += '-orange.svg';
-                        break;
-                    case 3:
-                        icon += '-red.svg';
-                        break;
-                    default:
-                        icon += '-default.svg';
+                
+                if (station.dataMaximumAlert !== null){
+                    switch(station.maximumAlert) {
+                        case 0:
+                            icon += 'green-' + station.dataMaximumAlert.icon;
+                            break;
+                        case 1:
+                            icon += 'yellow-'+ station.dataMaximumAlert.icon;
+                            break;
+                        case 2:
+                            icon += 'orange-'+ station.dataMaximumAlert.icon;
+                            break;
+                        case 3:
+                            icon += 'red-'+ station.dataMaximumAlert.icon;
+                            break;
+                        default:
+                            icon += 'default-' + station.dataMaximumAlert.icon;
+                    }
+                }else{
+                    icon += 'default-station-marker.svg'
                 }
+
                 return icon;
             },
             updateFilterDisplay(){
                 EventBus.$emit('filters-updated', {
-                    text: this.textSearch
+                    text: this.textSearch,
+                    alert: this.activeAlertFilter,
+                    typeStation : this.activeTypeStationFilter
                 });
             },
-            processFilters( filters ){
-                for( let i = 0; i < this.$markers.length; i++ ){
-                    if( filters.text === null ){
-                        this.$markers[i].setMap( this.$map );
-                    }else{
+            processFilters: function (filters) {
+                for (let i = 0; i < this.$markers.length; i++) {
+                    if (filters.text === null) {
+                        this.$markers[i].setMap(this.$map);
+                    } else {
                         var textPassed = false;
+                        var alertPassed = false;
+                        var typeStationPassed = false;
 
-                        if( filters.text !== null && this.processStationTextFilter( this.$markers[i].station, filters.text ) ){
+                        if (filters.text !== null && this.processStationTextFilter(this.$markers[i].station, filters.text)) {
                             textPassed = true;
-                        }else if( filters.text === null ){
+                        } else if (filters.text === null) {
                             textPassed = true;
                         }
+
+                        if (filters.alert.length !== 0 && this.processStationAlertFilter(this.$markers[i].station, filters.alert)) {
+                            alertPassed = true;
+                        } else if (filters.alert.length === 0) {
+                            alertPassed = true;
+                        }
+
+                        if (filters.typeStation.length !== 0 && this.processStationTypeFilter(this.$markers[i].station, filters.typeStation)) {
+                            typeStationPassed = true;
+                        } else if (filters.typeStation.length === 0) {
+                            typeStationPassed = true;
+                        }
                     }
-                    if( textPassed){
-                        this.$markers[i].setMap( this.$map );
-                    }else{
-                        this.$markers[i].setMap( null );
+                    if (textPassed && alertPassed && typeStationPassed) {
+                        this.$markers[i].setMap(this.$map);
+                    } else {
+                        this.$markers[i].setMap(null);
                     }
                 }
             },

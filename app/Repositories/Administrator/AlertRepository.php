@@ -35,6 +35,11 @@ class AlertRepository extends EloquentRepository
                 ->where('alert.code','=',$alertCode)
                 ->orderBy('level_alert.level','DESC')
                 ->get();
-  }
+    }
+
+    public function getAlerts()
+    {
+        return $this->select('*')->where('active','=',true)->get()->toArray();
+    }
 
 }

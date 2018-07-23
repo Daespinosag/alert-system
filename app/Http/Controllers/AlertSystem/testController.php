@@ -17,20 +17,47 @@ use Mail;
 class testController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
+     * @var StationRepository
      */
+    private $stationRepository;
+
+    /**
+     * @param StationRepository $stationRepository
+     */
+
+    public function __construct(StationRepository $stationRepository)
+    {
+
+        $this->stationRepository = $stationRepository;
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+
     public function index()
     {
+        $possibleAlert = ['alert-a25','alert-a10'];
+
+        $stations = $this->stationRepository->getStationsFromAlertsForMaps($possibleAlert);
+        dd($stations);
+        /*$data = [];
+
+        foreach ($possibleAlert as $alert){
+            array_push($data,$this->stationRepository->getStationsForMaps($alert));
+        }
+        dd();
+*/
+        /*
         $alertSystem = new FloodAlert(
             new ConnectionRepository(),
             new StationRepository(),
             new FloodRepository(),
             new AlertRepository()
         );
-
-        $alertSystem->init();
-        dd($alertSystem);
+*/
+        //$alertSystem->init();
+        //dd($alertSystem);
         /*
         $alertSystem = new LandslideAlert(
             new ConnectionRepository(),
@@ -46,7 +73,6 @@ class testController extends Controller
             $message->to('daespinosag@unal.edu.co','Alert System')->subject('test send emails');
         });*/
     }
-
 
     /**
      * Show the form for creating a new resource.

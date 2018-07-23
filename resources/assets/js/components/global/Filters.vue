@@ -97,17 +97,17 @@
         }
 
         div.brew-method{
-            font-size: 16px;
+            //font-size: 15px;
             color: #666666;
-            font-family: "Lato", sans-serif;
+            //font-family: "Lato", sans-serif;
             border-radius: 4px;
-            background-color: #F9F9FA;
-            width: 150px;
-            height: 57px;
+            background-color: #e4e4e4;//#F9F9FA;
+            width: 180px;
+            height: 35px;
             float: left;
             margin-right: 10px;
             margin-bottom: 10px;
-            padding: 5px;
+            padding: 7px;
             cursor: pointer;
             position: relative;
 
@@ -220,20 +220,17 @@
                <input type="text" class="search-filters form-control" v-model="textSearch" placeholder="Buscar Estaciones"/>
             </div>
 
-            <div id="col-md-12 location-type-container">
+            <div id="col-md-12 location-type-container " v-if="alerts.length > 1">
                 <div class="">
                     <label class="filter-label">Tipos de alertas</label>
                 </div>
 
                 <div class="">
-                    <div class="location-filter all-locations" v-bind:class="{ 'active': activeLocationFilter === 'all' }" v-on:click="setActiveLocationFilter('all')">
+                    <div class="location-filter all-locations" v-bind:class="{ 'active': activeAlertFilter === 'all' }" v-on:click="setActiveAlertFilter('all')" >
                         Todas
                     </div>
-                    <div class="location-filter ">
-                        Inundación
-                    </div>
-                    <div class="location-filter ">
-                        Deslizamientos
+                    <div class="location-filter" v-on:click="toggleAlertFilter( alert.code )" v-bind:class="{'active' : activeAlertFilter === alert.code}" v-for="alert in alerts">
+                        {{ alert.table }}
                     </div>
                 </div>
             </div>
@@ -244,8 +241,14 @@
                         <label class="filter-label">Tipos de Estaciones</label>
                     </div>
                 </div>
-                <div>
-                    #TODO aqui van los tipos de estaciones
+                <div class="col-md-offset-1 col-md-10">
+                    <div class="brew-method" v-on:click="toggleTypeStationFilter( type.code )" v-bind:class="{'active' : activeTypeStationFilter.indexOf(type.code) >= 0 }" v-for="type in typeStation">
+                        <div class="brew-method-container">
+                            <img v-bind:src="'images/alert-icons/type-station-icon.svg'" class="brew-method-icon"/>
+                            <span class="brew-method-name">{{ type.name }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -269,7 +272,8 @@
         data(){
             return {
                 textSearch: '',
-                activeLocationFilter: 'all',
+                activeAlertFilter: 'all',
+                activeTypeStationFilter: [],
                 shownCount: 1
             }
         },
@@ -278,16 +282,16 @@
             textSearch(){
                 this.updateFilterDisplay();
             },
-
-            activeLocationFilter(){
+            activeAlertFilter(){
                 this.updateFilterDisplay();
             },
-
+            activeTypeStationFilter(){
+                this.updateFilterDisplay();
+            },
             showFilters(){
                 this.computeHeight();
-            }
+            },
         },
-
 
         mounted(){
             EventBus.$on('show-filters', function(){
@@ -306,16 +310,25 @@
             stations(){
                 return this.$store.getters.getStations;
             },
+            alerts(){
+                return this.$store.getters.getAlerts;
+            },
+            typeStation(){
+                return this.$store.getters.getTypeStation;
+            },
+
         },
 
         methods: {
-            setActiveLocationFilter( filter ){
-                this.activeLocationFilter = filter;
+            setActiveAlertFilter( filter ){
+                this.activeAlertFilter = filter;
             },
 
             updateFilterDisplay(){
                 EventBus.$emit('filters-updated', {
                     text: this.textSearch,
+                    alert: this.activeAlertFilter,
+                    typeStation: this.activeTypeStationFilter
                 });
 
                 this.$nextTick(function(){
@@ -341,7 +354,23 @@
 
             clearFilters(){
                 this.textSearch = '';
-                this.activeLocationFilter = 'all';
+                this.activeAlertFilter = 'all';
+                this.activeTypeStationFilter = [];
+            },
+
+            toggleAlertFilter( alert ){
+                this.setActiveAlertFilter(alert);
+            },
+
+            toggleTypeStationFilter(code){
+
+                var i = this.activeTypeStationFilter.indexOf(code);
+
+                if ( i >= 0 ){
+                    this.activeTypeStationFilter.splice(i,1);
+                }else {
+                    this.activeTypeStationFilter.push(code);
+                }
             }
         }
     }

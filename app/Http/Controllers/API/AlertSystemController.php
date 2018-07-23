@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Administrator\AlertRepository;
 use App\Repositories\Administrator\NetRepository;
 use App\Repositories\Administrator\StationRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
+use App\Repositories\Administrator\StationTypeRepository;
 
 class AlertSystemController extends Controller
 {
@@ -21,22 +23,36 @@ class AlertSystemController extends Controller
      * @var LandslideRepository
      */
     private $a25FiveMinutesRepository;
+    /**
+     * @var AlertRepository
+     */
+    private $alertRepository;
+    /**
+     * @var StationTypeRepository
+     */
+    private $stationTypeRepository;
 
     /**
      * AlertSystemController constructor.
      * @param StationRepository $stationRepository
      * @param NetRepository $netRepository
      * @param LandslideRepository $a25FiveMinutesRepository
+     * @param AlertRepository $alertRepository
+     * @param StationTypeRepository $stationTypeRepository
      */
     public function __construct(
         StationRepository $stationRepository,
         NetRepository $netRepository,
-        LandslideRepository $a25FiveMinutesRepository
+        LandslideRepository $a25FiveMinutesRepository,
+        AlertRepository $alertRepository,
+        StationTypeRepository $stationTypeRepository
     )
     {
         $this->stationRepository = $stationRepository;
         $this->netRepository = $netRepository;
         $this->a25FiveMinutesRepository = $a25FiveMinutesRepository;
+        $this->alertRepository = $alertRepository;
+        $this->stationTypeRepository = $stationTypeRepository;
     }
 
     /**
@@ -44,9 +60,15 @@ class AlertSystemController extends Controller
      */
     public function getStations()
     {
-        $stations =  $this->stationRepository->getStationsForMaps('alert-a25');
+        $possibleAlert = ['alert-a25','alert-a10']; # TODO esto debe entrar por parametro dependiando de las alertas permitidas para un usuario
 
-        foreach ($stations as $station){
+        $stations = $this->stationRepository->getStationsFromAlertsForMaps($possibleAlert);
+
+        foreach ($stations as $station)
+        {
+            $station->maximumAlert = 0;
+            $station->dataMaximumAlert = null;
+
             $station->longitude = $this->calculateDecimalCoordinates(
                 $station->longitude_degrees,
                 $station->longitude_minutes,
@@ -60,14 +82,23 @@ class AlertSystemController extends Controller
                 $station->latitude_direction
             );
 
-            # TODO ESTO HAY QYE ARREGLARLO PARA QUE SAQUE EL ULTIMO PERO SOLO DE LOS ULTIMOS 5 MINUTOS
-            $station->alertA25 = $this->a25FiveMinutesRepository->getUltimateDate($station->id);
-            $station->alertInundation = true;
-            $station->alertLandslide = true;
+            foreach ($station->alerts as $alert){
 
+                # TODO ESTO HAY QYE ARREGLARLO PARA QUE SAQUE EL ULTIMO PERO SOLO DE LOS ULTIMOS 5 MINUTOS
+                $alert->value = $this->stationRepository->getUltimateDataInAlertTable($alert->table,$station->id);
+
+                if (!is_null($alert->value)){
+                    if (!is_null($alert->value->alert)){
+                        if ($alert->value->alert >= $station->maximumAlert){
+                            $station->maximumAlert = $alert->value->alert;
+                            $station->dataMaximumAlert = $alert;
+                        }
+                    }
+                }
+            }
         }
 
-        return $stations;
+        return $stations->toArray();
     }
 
     /**
@@ -101,6 +132,19 @@ class AlertSystemController extends Controller
     public function getNets()
     {
         return $this->netRepository->getNets();
+    }
+
+
+    public function getAlerts()
+    {
+        return $this->alertRepository->getAlerts();
+    }
+
+    public function getTypeStation()
+    {
+        $possibility = ['M','H','PM','PG']; #Aca se definen las posibles consultas de estaciones de clima.
+
+        return $this->stationTypeRepository->getTypeStations($possibility);
     }
 
     /**

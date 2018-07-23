@@ -19,6 +19,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'test','name' => 'test'], function()
 {
-    Route::get('index', [ 'as'=>'test.index','uses'=>'AlertSystem\testController@index']);
-   
+    //Route::get('index', [ 'as'=>'test.index','uses'=>'AlertSystem\testController@index']);
+    Route::get('index', [ 'as'=>'test.index','uses'=>'API\AlertSystemController@getStations']);
+
 });
