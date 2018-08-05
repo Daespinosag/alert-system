@@ -51,7 +51,12 @@ export default new VueRouter({
                     path: 'Nets',
                     name: 'Nets',
                     component: Vue.component( 'Nets', require( './pages/Nets.vue' ) )
-                }
+                },
+                {
+                    path: 'ConsultAlert',
+                    name: 'ConsultAlert',
+                    component: Vue.component( 'ConsultAlert', require( './pages/ConsultAlert.vue' ) )
+                },
             ]
         }
     ]

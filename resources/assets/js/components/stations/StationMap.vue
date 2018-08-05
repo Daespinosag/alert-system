@@ -231,23 +231,27 @@
                 center: {lat: this.latitude, lng: this.longitude},
                 zoom: this.zoom
             });
-
+            /*
             var CaldasDeptoKMZ = new google.maps.KmlLayer({
                 url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Caldas_Departamento.kmz',
                 map: this.$map,
-                zoom: this.zoom
+                zoom: this.zoom,
+                 suppressInfoWindows: true,
             });
+            */
 
             var CaldasMunicipiosKMZ = new google.maps.KmlLayer({
-                url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Caldas_Municipios.kmz',
+                url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Caldas_Municipios_v2.kmz',
                 map: this.$map,
-                zoom: this.zoom
+                zoom: this.zoom,
+                suppressInfoWindows: true,
             });
 
             var PerimetroUrbanoManizalesKMZ = new google.maps.KmlLayer({
-                url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Perimetro_UrbanoManizales.kmz',
+                url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Manizales_PUrbanoAzul.kmz',
                 map: this.$map,
-                zoom: this.zoom
+                zoom: this.zoom,
+                suppressInfoWindows: true,
             });
 
             this.clearMarkers();

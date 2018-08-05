@@ -48,5 +48,15 @@ export const alerts = {
         getAlerts( state ){
             return state.alerts;
         },
+
+        getAlertsForForm(state){
+            var arr = [];
+
+            for (var i = 0; i < state.alerts.length; i++) {
+                arr.push({ 'value': state.alerts[i].code, 'text' : state.alerts[i].name })
+            }
+
+            return arr;
+        }
     }
 }

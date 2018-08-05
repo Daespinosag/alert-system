@@ -63,4 +63,8 @@ Vue.config.devtools = true;
 import router from './routes.js';
 import store from './store.js';
 
+import BootstrapVue from 'bootstrap-vue';
+
+Vue.use(BootstrapVue);
+
 new Vue({router, store}).$mount('#app');
