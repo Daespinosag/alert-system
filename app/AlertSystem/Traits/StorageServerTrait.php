@@ -46,15 +46,27 @@ trait StorageServerTrait
         string $timeTwo
     )
     {
-        return  DB::connection($externalConnection)
+        return DB::connection($externalConnection)
             ->table($tableName)
-            ->select(DB::raw('sum(precipitacion_real) as a10, count(precipitacion_real) as count'))
+            ->select('fecha','hora','precipitacion_real')
+            ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
+            ->orderByRaw('fecha DESC , hora DESC')
+            ->limit(2)
+            ->get()
+            ->toArray();
+    }
+
+
+
+    /*
+     DB::connection($externalConnection)
+            ->table($tableName)
+            ->select('fecha','hora','precipitacion_real')#DB::raw('sum(precipitacion_real) as a10, count(precipitacion_real) as count')
             ->where('fecha', '=', $dataOne)
             ->where('hora','>=',$timeOne)
             ->where('fecha','=',$dataTwo)
             ->where('hora','<=',$timeTwo)
-            ->where('precipitacion_real', '<>','-')
-            ->first();
-    }
+            ->get();
+    */
 
 }

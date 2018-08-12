@@ -24,14 +24,11 @@
                               label="Rango de Fechas : "
                               label-for="dates"
                               description="Seleccione el Rango de fechas para las cuales desea calcular el indicador.">
-                    <rangedate-picker
-                            format="YYYY MMM DD"
-                    ></rangedate-picker>
+                    <rangedate-picker></rangedate-picker>
                 </b-form-group>
             </b-form>
         </div>
         <div class="result">
-
         </div>
     </div>
 </template>
@@ -77,7 +74,6 @@
             loadDataAlert: function () {
                 // TODO
             }
-
         }
     }
 </script>

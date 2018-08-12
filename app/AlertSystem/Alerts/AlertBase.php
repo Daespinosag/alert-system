@@ -30,4 +30,17 @@ class AlertBase extends AlertSystem
         return $alert;
     }
 
+    public function configurationsParameters(array $parameters = [])
+    {
+        if (count($parameters) > 0 ){
+            foreach ($parameters as $configKey => $configValue){
+                if (property_exists($this, $configKey)){
+                    $this->{$configKey} = $configValue;
+                }else{
+                    dd('ERROR: no existe la propiedad '.$configKey);
+                }
+            }
+        }
+    }
+
 }

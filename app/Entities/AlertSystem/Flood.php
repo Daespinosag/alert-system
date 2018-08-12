@@ -13,7 +13,18 @@ class Flood extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'station','a10_value','alert','dif_previous_a10','num_not_change_alert','change_alert','alert_decrease','alert_increase','avg_recovered'
+        'station',
+        'a10_value',
+        'alert',
+        'dif_previous_a10',
+        'num_not_change_alert',
+        'change_alert',
+        'alert_decrease',
+        'alert_increase',
+        'avg_recovered',
+        'date_execution',
+        'date_initial',
+        'date_final'
     ];
 
     protected $hidden = [

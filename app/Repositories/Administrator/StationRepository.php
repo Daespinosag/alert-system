@@ -192,11 +192,12 @@ class StationRepository extends EloquentRepository
 
     /**
      * @param string $alertCode
-    * @return mixed
+     * @param array $stationsId
+     * @return mixed
      */
-    public function getForAlertSystem(string $alertCode)
+    public function getForAlertSystem(string $alertCode,array $stationsId = null)
     {
-        return $this->queryBuilder()
+        $data =  $this->queryBuilder()
                 ->select(
                     'station.id',
                     'station.name',
@@ -215,9 +216,11 @@ class StationRepository extends EloquentRepository
                 ->join('net','net.id','=','station.net_id')
                 ->where('alert_station.active','=',true)
                 ->where('alert.code', '=', $alertCode)
-                ->where('station.active','=',true)
-                ->orderBY('station.id')
-                ->get();
+                ->where('station.active','=',true);
+
+        if (!is_null($stationsId)) { $data->whereIn('station.id',$stationsId);}
+
+        return $data->orderBY('station.id')->get();
     }
 
     /**

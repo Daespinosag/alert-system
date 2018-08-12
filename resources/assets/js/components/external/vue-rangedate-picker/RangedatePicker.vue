@@ -52,7 +52,12 @@
           <li><button class="calendar-btn-apply" @click="setDateValue()">{{captions.ok_button}}</button></li>
         </ul>
       </div>
-      
+      <div class="time-range">
+          <div class="time-head">
+              <h3>Seleccione Rango de tiempo</h3>
+          </div>
+        <vue-slider-component  ref="slider" v-model="value" v-bind="options" ></vue-slider-component>
+      </div>
     </div>
   </div>
 </template>
@@ -126,7 +131,7 @@
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   width: 700px;
   font-size: 12px;
-  height: 300px;
+  height: 400px;
   box-shadow: -3px 4px 12px -1px #ccc;
   background: #fff;
   position: absolute;
@@ -136,6 +141,10 @@
 .calendar-head h2 {
   padding: 20px 0 0 20px;
   margin: 0;
+}
+.time-head h3 {
+    padding: 10px 0 0 10px;
+    margin: 0;
 }
 
 .close:hover {
@@ -159,6 +168,14 @@
   float: left;
   width: 75%;
   padding: 10px;
+}
+
+.time-range{
+    display: inline-block;
+    float: left;
+    width: 100%;
+    padding: 10px;
+    border-top: 1px solid #ccc;
 }
 
 .calendar-range {

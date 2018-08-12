@@ -1,4 +1,5 @@
 import fecha from 'fecha'
+import VueSliderComponent from 'vue-slider-component'
 
 const defaultConfig = {}
 const defaultI18n = 'ES'
@@ -126,6 +127,7 @@ const defaultPresets = function (i18n = defaultI18n) {
 
 export default {
   name: 'vue-rangedate-picker',
+  components: {VueSliderComponent},
   props: {
     configs: {
       type: Object,
@@ -150,7 +152,7 @@ export default {
     },
     format: {
       type: String,
-      default: 'YYYY MMM DD'
+      default: 'YYYY-MM-DD HH:mm:ss'
     },
     styles: {
       type: Object,
@@ -191,7 +193,14 @@ export default {
       showMonth: false,
       activeMonthStart: this.startActiveMonth,
       activeYearStart: this.startActiveYear,
-      activeYearEnd: this.startActiveYear
+      activeYearEnd: this.startActiveYear,
+      activeInitialTime: "00:00:00",
+      activeFinalTime: "23:55:00",
+      value:["00:00:00","23:55:00"],
+      options: {
+        data:[],
+        disable: true
+      }
     }
   },
   created () {
@@ -199,6 +208,8 @@ export default {
       this.isOpen = true
     }
     if (this.activeMonthStart === 11) this.activeYearEnd = this.activeYearStart + 1
+
+      this.getDataArray();
   },
   watch: {
     startNextActiveMonth: function (value) {
@@ -265,7 +276,7 @@ export default {
         return null
       }
       const dateparse = new Date(Date.parse(date))
-      return fecha.format(new Date(dateparse.getFullYear(), dateparse.getMonth(), dateparse.getDate() - 1), format)
+      return fecha.format(new Date(dateparse.getFullYear(), dateparse.getMonth(), dateparse.getDate() - 1,dateparse.getHours(),dateparse.getMinutes(),dateparse.getSeconds()), format)
     },
     getDayIndexInMonth: function (r, i, startMonthDay) {
       const date = (this.numOfDays * (r - 1)) + i
@@ -284,7 +295,7 @@ export default {
       } else {
         newData['end'] = null
       }
-      const resultDate = new Date(activeYear, activeMonth, result)
+      const resultDate = new Date(activeYear, activeMonth, result,(this.spliceTime(key))[0],this.spliceTime(key)[1],this.spliceTime(key)[2])
       if (!this.isFirstChoice && resultDate < this.dateRange.start) {
         this.isFirstChoice = false
         return { start: resultDate }
@@ -370,6 +381,24 @@ export default {
       if (!this.isCompact) {
         this.toggleCalendar()
       }
-    }
+    },
+    getDataArray: function (){
+          var arrResult = [];
+          var arrHour = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
+          var arrMinute = ["00:00","05:00","10:00","15:00","20:00","25:00","30:00","35:00","40:00","45:00","50:00","55:00"];
+          for (var i = 0; i < arrHour.length; i++) {
+              for (var j = 0; j < arrMinute.length; j++) {
+                  arrResult.push(arrHour[i] + ":" + arrMinute[j]);
+              }
+          }
+
+          this.options.data =  arrResult;
+      },
+      spliceTime(element){
+        var el = null;
+        if(element === 'start'){el = this.value[0].split(":");}else { el = this.value[1].split(":");}
+        return el;
+      }
+
   }
 }

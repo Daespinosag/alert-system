@@ -15,6 +15,7 @@ use App\AlertSystem\Alerts\LandslideAlert;
 use App\AlertSystem\Alerts\FloodAlert;
 use Event;
 use Mail;
+use Carbon\Carbon;
 
 class testController extends Controller
 {
@@ -40,6 +41,7 @@ class testController extends Controller
 
     public function index()
     {
+        /*
         $possibleAlert = ['alert-a25','alert-a10'];
 
         $stations = $this->stationRepository->getStationsFromAlertsForMaps($possibleAlert);
@@ -50,6 +52,7 @@ class testController extends Controller
         }
 
         dd($stations);
+        */
         /*$data = [];
 
         foreach ($possibleAlert as $alert){
@@ -57,22 +60,33 @@ class testController extends Controller
         }
         dd();
 */
-        /*
+        $configurations = [
+            'sendEmail'         => false,
+            'insertDatabase'    => true,
+            'sendEventData'     => false,
+            'initialDate'       => Carbon::parse('2018-08-10 05:13:01'),
+            'finalDate'         => Carbon::parse('2018-08-10 23:53:10'),
+            'stations'          => [85]
+        ];
+
         $alertSystem = new FloodAlert(
             new ConnectionRepository(),
             new StationRepository(),
             new FloodRepository(),
-            new AlertRepository()
+            new AlertRepository(),
+            $configurations
         );
-*/
-        //$alertSystem->init();
-        //dd($alertSystem);
+
+        $alertSystem->init();
+        dd($alertSystem);
+
         /*
         $alertSystem = new LandslideAlert(
             new ConnectionRepository(),
             new StationRepository(),
             new LandslideRepository(),
-            new AlertRepository()
+            new AlertRepository(),
+            $configurations
         );
         $alertSystem->init();
         dd($alertSystem);

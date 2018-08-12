@@ -3,6 +3,7 @@
 namespace App\Repositories\AlertSystem;
 
 use App\Entities\AlertSystem\Flood;
+use Carbon\Carbon;
 use Rinvex\Repository\Repositories\EloquentRepository;
 
 class FloodRepository extends EloquentRepository
@@ -18,8 +19,12 @@ class FloodRepository extends EloquentRepository
         return new $this->model;
     }
 
-    public function getUltimateDate($stationId)
+    public function getUltimateDate(int $stationId,string $date)
     {
-        return $this->select('*')->where('station','=',$stationId)->orderBy('created_at', 'desc')->first();
+        return $this->select('*')
+                    ->where('station','=',$stationId)
+                    ->where('date_execution','<', $date)
+                    ->orderBy('date_execution', 'desc')
+                    ->first();
     }
 }

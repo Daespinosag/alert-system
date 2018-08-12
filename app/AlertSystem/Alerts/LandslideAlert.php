@@ -25,24 +25,36 @@ class LandslideAlert extends AlertBase implements AlertInterface
 
     public $externalConnection = 'external_connection_alert_system';
 
+    public $sendEmail = true;
+
+    public $insertDatabase = true;
+
     /**
      * AlertSystem constructor.
      * @param ConnectionRepository $connectionRepository
      * @param StationRepository $stationRepository
      * @param LandslideRepository $landslideRepository
      * @param AlertRepository $alertRepository
+     * @param array $configurations
      */
     public function  __construct(
         ConnectionRepository $connectionRepository,
         StationRepository $stationRepository,
         LandslideRepository $landslideRepository,
-        AlertRepository $alertRepository
+        AlertRepository $alertRepository,
+        array $configurations = []
     )
     {
         $this->connectionRepository = $connectionRepository;
         $this->stationRepository = $stationRepository;
         $this->alertRepository = $alertRepository;
         $this->landslideRepository = $landslideRepository;
+
+        if (count($configurations) > 0 ){
+            foreach ($configurations as $configuration){
+                dd($configuration);
+            }
+        }
     }
 
     public function init()
