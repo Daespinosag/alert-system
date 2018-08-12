@@ -11,39 +11,20 @@ trait StorageServerTrait
      * @param string $externalConnection
      * @param string $tableName
      * @param string $dataOne
+     * @param string $timeOne
      * @param string $dataTwo
-     * @param string $time
-     * @return mixed => el valor A25 y el contador de datos recuperados
+     * @param string $timeTwo
+     * @param int $constData
+     * @return mixed
      */
     public function calculateA25(
         string $externalConnection,
         string $tableName,
         string $dataOne,
-        string $dataTwo,
-        string $time
-    )
-    {
-        return  DB::connection($externalConnection)
-            ->table($tableName)
-            ->select(DB::raw('sum(precipitacion_real) as a25, count(precipitacion_real) as count'))
-            ->where('fecha', '=', $dataOne)
-            ->where('hora','>=',$time)
-            ->orWhere('fecha','>=',$dataOne)
-            ->where('fecha','<=',$dataTwo)
-            ->orWhere('fecha','=',$dataTwo)
-            ->where('hora','<=',$time)
-            ->where('precipitacion_real', '<>','-')
-            ->first();
-    }
-
-    public function calculateA10
-    (
-        string $externalConnection,
-        string $tableName,
-        string $dataOne,
         string $timeOne,
         string $dataTwo,
-        string $timeTwo
+        string $timeTwo,
+        int $constData
     )
     {
         return DB::connection($externalConnection)
@@ -51,7 +32,38 @@ trait StorageServerTrait
             ->select('fecha','hora','precipitacion_real')
             ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
             ->orderByRaw('fecha DESC , hora DESC')
-            ->limit(2)
+            ->limit($constData)
+            ->get()
+            ->toArray();
+    }
+
+    /**
+     * @param string $externalConnection
+     * @param string $tableName
+     * @param string $dataOne
+     * @param string $timeOne
+     * @param string $dataTwo
+     * @param string $timeTwo
+     * @param int $constData
+     * @return mixed
+     */
+    public function calculateA10
+    (
+        string $externalConnection,
+        string $tableName,
+        string $dataOne,
+        string $timeOne,
+        string $dataTwo,
+        string $timeTwo,
+        int $constData
+    )
+    {
+        return DB::connection($externalConnection)
+            ->table($tableName)
+            ->select('fecha','hora','precipitacion_real')
+            ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
+            ->orderByRaw('fecha DESC , hora DESC')
+            ->limit($constData)
             ->get()
             ->toArray();
     }

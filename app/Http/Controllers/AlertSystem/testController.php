@@ -68,7 +68,7 @@ class testController extends Controller
             'finalDate'         => Carbon::parse('2018-08-10 23:53:10'),
             'stations'          => [85]
         ];
-
+/*
         $alertSystem = new FloodAlert(
             new ConnectionRepository(),
             new StationRepository(),
@@ -76,11 +76,10 @@ class testController extends Controller
             new AlertRepository(),
             $configurations
         );
-
         $alertSystem->init();
         dd($alertSystem);
+*/
 
-        /*
         $alertSystem = new LandslideAlert(
             new ConnectionRepository(),
             new StationRepository(),
@@ -90,7 +89,7 @@ class testController extends Controller
         );
         $alertSystem->init();
         dd($alertSystem);
-        */
+
         /*
         Mail::send('emails.contact',['alert' => 'enviando desde el sistema de alertas'], function ($message){
             $message->to('daespinosag@unal.edu.co','Alert System')->subject('test send emails');

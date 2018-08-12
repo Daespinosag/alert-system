@@ -27,11 +27,13 @@ class CreateA25FiveMinutes extends Migration
             $table->boolean('change_alert')->default(false);
             $table->boolean('alert_decrease')->default(false);
             $table->boolean('alert_increase')->default(false);
+            $table->boolean('error')->default(false);
 
             $table->dateTime('date_execution')->nullable();
             $table->dateTime('date_initial')->nullable();
             $table->dateTime('date_final')->nullable();
 
+            $table->string('comment')->nullable();
             $table->timestamps();
         });
     }

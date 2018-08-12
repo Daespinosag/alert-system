@@ -11,13 +11,13 @@ use Carbon\Carbon;
 
 class LandslideAlert extends AlertBase implements AlertInterface
 {
-    private $connectionRepository;
+    public $connectionRepository;
 
-    private $stationRepository;
+    public $stationRepository;
 
-    private $landslideRepository;
+    public $landslideRepository;
 
-    private $alertRepository;
+    public $alertRepository;
 
     public $constData = 7200;
 
@@ -27,7 +27,21 @@ class LandslideAlert extends AlertBase implements AlertInterface
 
     public $sendEmail = true;
 
+    public $sendEventData = false;
+
     public $insertDatabase = true;
+
+    public $initialDate = null;
+
+    public $finalDate = null;
+
+    public $stations = null;
+
+    public $levels = null;
+
+    public $datesRangesSearch = [];
+
+    public $values = [];
 
     /**
      * AlertSystem constructor.
@@ -50,77 +64,51 @@ class LandslideAlert extends AlertBase implements AlertInterface
         $this->alertRepository = $alertRepository;
         $this->landslideRepository = $landslideRepository;
 
-        if (count($configurations) > 0 ){
-            foreach ($configurations as $configuration){
-                dd($configuration);
-            }
-        }
+        $this->configurationsParameters($configurations,'alert-a25');
     }
 
     public function init()
     {
-        # Consultar las estaciones que tienen registrada y activa la alerta de a25
-        $stations = $this->stationRepository->getForAlertSystem('alert-a25');
+        $this->processAlert(
+            $this->connectionRepository,
+            $this->landslideRepository,
+            'calculateA25',
+            'exterminateAlert',
+            'precipitacion_real'
+        );
 
-        $actualDateTime = Carbon::now();
-        $dateTwo = $actualDateTime->format('Y-m-d');
-        $dateOne = $actualDateTime->addDay(-$this->constDays)->format('Y-m-d');
-        $time = $actualDateTime->format('H:i:s');
+        if ($this->insertDatabase){ $this->createInAlertSpecificTable($this->landslideRepository);}
 
-        # Consultar los diferentes niveles de la alerta a25
-        $alertLevels = $this->alertRepository->getLevelAlert('alert-a25');
-
-        $arrayNewValues = [];
-
-        foreach ($stations as $station)
-        {
-            # se crea un nuevo modelo para la tabla a25FiveMinutes
-            $showcaseA25Table = $this->landslideRepository->createShowcase();
-
-            # Se extrae el ultimo valor de la tabla a25 para una estacion especifica
-            $ultimateDateA25 = $this->landslideRepository->getUltimateDate($station->id);
-
-            # Se consulta la conexion perteneciente a la estacion
-            $connection = $this->connectionRepository->findOrFail($station->connection_id);
-
-            # Se busca la tabla en la central de acopio  y se crea la coneccion
-            $resultConnection = $this->searchExternalConnection($connection,$station->table_db_name,$this->externalConnection);
-
-            if ($resultConnection){
-                # Se consultan los datos de a25 en la central de acopio
-                $result = $this->calculateA25($this->externalConnection,$station->table_db_name,$dateOne,$dateTwo,$time);
-
-                $showcaseA25Table->station = $station->id;
-
-                if (!is_null($result->a25)){
-                    $showcaseA25Table->a25_value = $result->a25;
-
-                    # Se examina el nivel de alerta
-                    $showcaseA25Table->alert = $this->exterminateAlert($result->a25,$alertLevels);
-                }
-
-                $showcaseA25Table->avg_recovered = round ($result->count / $this->constData * 100,2);
-
-                if (!is_null($ultimateDateA25)){
-                    $showcaseA25Table->dif_previous_a25 = abs(round($ultimateDateA25->a25_value - $showcaseA25Table->a25_value,2));
-
-                    if ($showcaseA25Table->alert == $ultimateDateA25->alert){
-                        $showcaseA25Table->num_not_change_alert = $ultimateDateA25->num_not_change_alert + 1;
-                    }else{
-                        $showcaseA25Table->num_not_change_alert = 0;
-                        $showcaseA25Table->change_alert = true;
-
-                        if ($showcaseA25Table->alert < $ultimateDateA25->alert){ $showcaseA25Table->alert_decrease = true;}
-                        else{$showcaseA25Table->alert_increase = true;}
-                    }
-                }
-
-                $value = $this->landslideRepository->create($showcaseA25Table->toArray());
-                array_push($arrayNewValues,$value);
-            }
+        if ($this->sendEventData){
+            # TODO enviar evento
+            // event(new AlertFiveMinutesCalculated($arrayNewValues));
         }
-        // dd($arrayNewValues); TODO
+    }
 
-        // event(new AlertFiveMinutesCalculated($arrayNewValues));
+    /**
+     * @param Carbon $initialDate
+     * @param Carbon $finalDate
+     */
+    public function configureDatesToSearch(Carbon $initialDate, Carbon $finalDate)
+    {
+        $flag = true;
+        $initial = $this->standardizationDate($initialDate);
+        $final = $this->standardizationDate($finalDate);
+
+        while ($flag){
+            $temporalAnt= (clone($initial))->addDay(- $this->constDays);
+
+            array_push($this->datesRangesSearch,[
+                'date_execute'  => clone($initial),
+                'finalDate'     => $initial->format('Y-m-d'),
+                'initialDate'   => $temporalAnt->format('Y-m-d'),
+                'finalTime'     => (clone($initial))->addSeconds( -1 )->format('H:i:s'),
+                'initialTime'   => $initial->format('H:i:s'),
+            ]);
+
+            $flag = (boolean)($final->greaterThan($initial));
+
+            $initial->addSeconds(300);
+        }
     }
 }

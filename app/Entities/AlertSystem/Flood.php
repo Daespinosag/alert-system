@@ -24,7 +24,9 @@ class Flood extends Model
         'avg_recovered',
         'date_execution',
         'date_initial',
-        'date_final'
+        'date_final',
+        'error',
+        'comment'
     ];
 
     protected $hidden = [
