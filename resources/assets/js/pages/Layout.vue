@@ -35,7 +35,6 @@
     import Navigation from '../components/global/Navigation.vue';
     import Filters from '../components/global/Filters.vue';
 
-
     export default {
         components: {Navigation,Filters},
         created(){

@@ -27,6 +27,7 @@
         "bootstrap-vue": "^2.0.0-rc.11",
         "fecha": "^2.3.2",
         "select2": "^4.0.6-rc.1",
+        "vue-circle-menu": "^1.1.1",
         "vue-select": "^2.0.1",
         "vue-slider-component": "^2.7.5"
     }

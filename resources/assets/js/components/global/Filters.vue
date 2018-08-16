@@ -251,13 +251,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-12 station-grid-container" id="station-grid">
-                <station-card v-for="station in stations" :key="station.id" :station="station"></station-card>
-                <div class="col-md-8 col-md-offset-2">
-                    <span class="no-results" v-if="shownCount === 0">No Results</span>
-                </div>
-            </div>
         </div>
     </transition>
 </template>
@@ -265,10 +258,8 @@
 <script>
     import { EventBus } from '../../event-bus.js';
 
-    import StationCard from '../../components/stations/StationCard.vue';
-
     export default {
-        components: {StationCard},
+        components: {},
         data(){
             return {
                 textSearch: '',

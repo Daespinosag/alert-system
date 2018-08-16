@@ -31,11 +31,6 @@ export default new VueRouter({
             component: Vue.component( 'Layout', require( './pages/Layout.vue' ) ),
             children: [
                 {
-                    path: 'home',
-                    name: 'home',
-                    component: Vue.component( 'Home', require( './pages/Home.vue' ) )
-                },
-                {
                     path: 'stations',
                     name: 'stations',
                     component: Vue.component( 'Stations', require( './pages/Stations.vue' ) ),

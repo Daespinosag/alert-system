@@ -175,6 +175,7 @@
     export default {
         components: {IndividualStationMap,Loader},
         created(){
+            this.$store.dispatch( 'changeStationsView', 'map' );
             this.$store.dispatch( 'loadStation', {
                 id: this.$route.params.id
             });

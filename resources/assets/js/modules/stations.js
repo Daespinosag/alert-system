@@ -18,6 +18,8 @@ export const stations = {
 
         station: {},
         stationLoadStatus: 0,
+
+        stationsView : 'map'
     },
     actions: {
         loadStations( { commit } ){
@@ -45,6 +47,9 @@ export const stations = {
                     commit( 'setStation', {} );
                     commit( 'setStationLoadStatus', 3 );
                 });
+        },
+        changeStationsView( { commit, state, dispatch }, view ){
+            commit( 'setStationsView', view );
         }
     },
     mutations: {
@@ -62,6 +67,10 @@ export const stations = {
 
         setStation( state, station ){
             state.station = station;
+        },
+
+        setStationsView(state,view){
+            state.stationsView = view;
         }
     },
     getters: {
@@ -79,6 +88,10 @@ export const stations = {
 
         getStation( state ){
             return state.station;
+        },
+
+        getStationsView(state){
+            return state.stationsView;
         }
     }
 }

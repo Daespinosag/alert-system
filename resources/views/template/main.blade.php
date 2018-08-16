@@ -34,12 +34,12 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-theme.min.css') }}" media="all">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/reset.css') }}" media="all">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/unal.css') }}" media="all">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/base.css') }}" media="all">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/tablet.css') }}" media="all">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/phone.css') }}" media="all">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/small.css') }}" media="all">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/printer.css') }}" media="print">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/metisMenu.css') }}" media="all">
+    <!-- <link rel="stylesheet" type="text/css" href="{{ asset('css/base.css') }}" media="all"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{ asset('css/tablet.css') }}" media="all"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{ asset('css/phone.css') }}" media="all"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{ asset('css/small.css') }}" media="all"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{ asset('css/printer.css') }}" media="print"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="{{ asset('css/metisMenu.css') }}" media="all"> -->
     <link rel="stylesheet" type="text/css" href="{{ asset('libraries/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" media="all">
     <link rel="stylesheet" type="text/css" href="{{ asset('libraries/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.min.css') }}" media="all">
 
@@ -55,9 +55,7 @@
     <body>
         <div id="app">
             <main class="detalle">
-                <div class="row">
-                    @yield('content')
-                </div>
+                @yield('content')
             </main>
         </div>
 
@@ -65,8 +63,8 @@
 
         <script src="{{ asset(elixir('js/app.js'))  }}"></script>
         <script src="{{ asset('js/unal.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('js/sb-admin-2.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('js/metisMenu.js') }}" type="text/javascript"></script>
+        <!-- <script src="{{ asset('js/sb-admin-2.js') }}" type="text/javascript"></script> -->
+        <!-- <script src="{{ asset('js/metisMenu.js') }}" type="text/javascript"></script> -->
         {{--[if lt IE 9]--}}
         <script src="{{ asset('js/html5shiv.js') }}" type="text/javascript"></script>
         {{--[endif]--}}

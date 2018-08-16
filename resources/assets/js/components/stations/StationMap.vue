@@ -18,14 +18,14 @@
             bottom: 0px;
         }
 
-        div.cafe-info-window{
-            div.cafe-name{
+        div.station-info-window{
+            div.station-name{
                 display: block;
                 text-align: center;
                 color: #2b542c;
                 font-family: 'Josefin Sans', sans-serif;
             }
-            div.cafe-address{
+            div.station-address{
                 display: block;
                 text-align: center;
                 margin-top: 5px;
@@ -56,9 +56,7 @@
 
 <template>
     <div id="station-map-container">
-        <div id="station-map">
-
-        </div>
+        <div id="station-map"> </div>
     </div>
 </template>
 
@@ -189,7 +187,7 @@
             },
             processFilters: function (filters) {
                 for (let i = 0; i < this.$markers.length; i++) {
-                    if (filters.text === null) {
+                    if (filters.text === null && filters.alert === 'all' && filters.typeStation.length === 0) {
                         this.$markers[i].setMap(this.$map);
                     } else {
                         var textPassed = false;
@@ -214,6 +212,7 @@
                             typeStationPassed = true;
                         }
                     }
+
                     if (textPassed && alertPassed && typeStationPassed) {
                         this.$markers[i].setMap(this.$map);
                     } else {
@@ -231,14 +230,14 @@
                 center: {lat: this.latitude, lng: this.longitude},
                 zoom: this.zoom
             });
-            /*
+
             var CaldasDeptoKMZ = new google.maps.KmlLayer({
                 url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Caldas_Departamento.kmz',
                 map: this.$map,
                 zoom: this.zoom,
                  suppressInfoWindows: true,
             });
-            */
+
 
             var CaldasMunicipiosKMZ = new google.maps.KmlLayer({
                 url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Caldas_Municipios_v2.kmz',

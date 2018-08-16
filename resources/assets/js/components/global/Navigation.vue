@@ -40,8 +40,6 @@
             <div class="col-md-7">
                 <div class="col-md-11">
                     <div class="btn btn-group">
-                        <router-link :to="{ name: 'home'}" class="btn btn-default" ><span class="">Inicio</span></router-link>
-
                         <router-link :to="{ name: 'stations' }" class="btn btn-default"><span class="">Stations</span></router-link>
                     </div>
                     <div class="col-md-8">

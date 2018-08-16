@@ -12,7 +12,7 @@ export default {
     },
 
     getStation: function (id){
-        return axios.get(ALERT_SYSTEM_CONFIG.API_URL + '/station/' + id);
+        return axios.get(ALERT_SYSTEM_CONFIG.API_URL + '/station/' + id );
     },
 
     getNets: function () {
