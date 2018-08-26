@@ -92,12 +92,14 @@ class testController extends Controller
         $alertSystem->init();
         dd($alertSystem);
 */
-
+/*
         Mail::send('emails.testEmail',['alert' => 'enviando desde el sistema de alertas'], function ($message){
             $message->to('daespinosag@unal.edu.co','Alert System')->subject('test send emails');
         });
+*/
 
-        
+        Mail::to('daespinosag@unal.edu.co')->send(new \App\Mail\TestEmail());
+        //return new \App\Mail\TestEmail();
     }
 
     /**
