@@ -1,6 +1,4 @@
-/*
-    Imports the Roast API URL from the config.
-*/
+
 import { ALERT_SYSTEM_CONFIG } from '../config.js';
 
 export default {

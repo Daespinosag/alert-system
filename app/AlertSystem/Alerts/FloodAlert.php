@@ -91,8 +91,9 @@ class FloodAlert extends AlertBase implements AlertInterface
 
         if ($this->sendEventData){
             # TODO enviar evento
-    }
+        }
 
+        return $this;
     }
 
 

@@ -60,17 +60,17 @@ class testController extends Controller
         }
         dd();
 */
-        /*
+
         $configurations = [
             'sendEmail'         => false,
-            'insertDatabase'    => true,
+            'insertDatabase'    => false,
             'sendEventData'     => false,
             'initialDate'       => Carbon::parse('2018-08-10 05:13:01'),
             'finalDate'         => Carbon::parse('2018-08-10 23:53:10'),
             'stations'          => [85]
         ];
-        */
-/*
+
+
         $alertSystem = new FloodAlert(
             new ConnectionRepository(),
             new StationRepository(),
@@ -80,7 +80,7 @@ class testController extends Controller
         );
         $alertSystem->init();
         dd($alertSystem);
-*/
+
 /*
         $alertSystem = new LandslideAlert(
             new ConnectionRepository(),

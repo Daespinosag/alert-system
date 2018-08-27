@@ -4,10 +4,16 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Administrator\AlertRepository;
+use App\Repositories\Administrator\ConnectionRepository;
 use App\Repositories\Administrator\NetRepository;
 use App\Repositories\Administrator\StationRepository;
+use App\Repositories\AlertSystem\FloodRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
 use App\Repositories\Administrator\StationTypeRepository;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use App\AlertSystem\Alerts\FloodAlert;
+use App\AlertSystem\Alerts\LandslideAlert;
 
 class AlertSystemController extends Controller
 {
@@ -31,6 +37,18 @@ class AlertSystemController extends Controller
      * @var StationTypeRepository
      */
     private $stationTypeRepository;
+    /**
+     * @var ConnectionRepository
+     */
+    private $connectionRepository;
+    /**
+     * @var FloodRepository
+     */
+    private $floodRepository;
+    /**
+     * @var LandslideRepository
+     */
+    private $landslideRepository;
 
     /**
      * AlertSystemController constructor.
@@ -39,13 +57,19 @@ class AlertSystemController extends Controller
      * @param LandslideRepository $a25FiveMinutesRepository
      * @param AlertRepository $alertRepository
      * @param StationTypeRepository $stationTypeRepository
+     * @param ConnectionRepository $connectionRepository
+     * @param FloodRepository $floodRepository
+     * @param LandslideRepository $landslideRepository
      */
     public function __construct(
         StationRepository $stationRepository,
         NetRepository $netRepository,
         LandslideRepository $a25FiveMinutesRepository,
         AlertRepository $alertRepository,
-        StationTypeRepository $stationTypeRepository
+        StationTypeRepository $stationTypeRepository,
+        ConnectionRepository $connectionRepository,
+        FloodRepository $floodRepository,
+        LandslideRepository $landslideRepository
     )
     {
         $this->stationRepository = $stationRepository;
@@ -53,6 +77,9 @@ class AlertSystemController extends Controller
         $this->a25FiveMinutesRepository = $a25FiveMinutesRepository;
         $this->alertRepository = $alertRepository;
         $this->stationTypeRepository = $stationTypeRepository;
+        $this->connectionRepository = $connectionRepository;
+        $this->floodRepository = $floodRepository;
+        $this->landslideRepository = $landslideRepository;
     }
 
     /**
@@ -145,6 +172,47 @@ class AlertSystemController extends Controller
         $possibility = ['M','H','PM','PG']; #Aca se definen las posibles consultas de estaciones de clima.
 
         return $this->stationTypeRepository->getTypeStations($possibility);
+    }
+
+    public function consultAlert(Request $request)
+    {
+        $object = null;
+        $initialDate = Carbon::parse($request->get('initialDate'))->format('Y-m-d');
+        $finalDate = Carbon::parse($request->get('finalDate'))->format('Y-m-d');
+
+        $configurations = [
+            'sendEmail'         => false,
+            'insertDatabase'    => false,
+            'sendEventData'     => false,
+            'initialDate'       => Carbon::parse($initialDate.' 00:00:00'),
+            'finalDate'         => Carbon::parse($finalDate.' 23:55:00'),
+            'stations'          => [$request->get('station')]
+        ];
+
+
+        if ($request->get('alert') == 'alert-a10'){
+
+            $object = (new FloodAlert(
+                $this->connectionRepository,
+                $this->stationRepository,
+                $this->floodRepository,
+                $this->alertRepository,
+                $configurations
+            ))->init()->values;
+        }
+
+        if ($request->get('alert') == 'alert-a25'){
+            $object = (new LandslideAlert(
+                $this->connectionRepository,
+                $this->stationRepository,
+                $this->landslideRepository,
+                $this->alertRepository,
+                $configurations
+            ))->init()->values;
+        }
+
+        return $object;
+
     }
 
     /**

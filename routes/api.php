@@ -25,4 +25,6 @@ Route::group(['prefix' => 'v1'], function()  //, 'middleware' => 'auth:api'
 
     Route::get('/typeStation', [ 'as'=>'v1.typeStation','uses'=>'API\AlertSystemController@getTypeStation']);
 
+    Route::post('/consultAlert', [ 'as'=>'v1.consultAlert','uses'=>'API\AlertSystemController@consultAlert']);
+
 });

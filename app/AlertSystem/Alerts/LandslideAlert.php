@@ -83,6 +83,8 @@ class LandslideAlert extends AlertBase implements AlertInterface
             # TODO enviar evento
             // event(new AlertFiveMinutesCalculated($arrayNewValues));
         }
+
+        return $this;
     }
 
     /**

@@ -1,6 +1,6 @@
 <template>
   <div class="calendar-root">
-    <div class="input-date" @click="toggleCalendar()"> {{getDateString(dateRange.start)}} - {{getDateString(dateRange.end)}}</div>
+    <div class="input-date" @click="toggleCalendar()"> {{getDateString(dateRange.start)}} || {{getDateString(dateRange.end)}}</div>
     <div class="calendar" :class="{'calendar-mobile ': isCompact, 'calendar-right-to-left': isRighttoLeft}" v-if="isOpen">
       <div class="calendar-head" v-if="!isCompact">
         <h2>{{captions.title}}</h2>
@@ -49,14 +49,8 @@
             :class="{'active-preset': presetActive === item.label}">
             {{item.label}}
           </li>
-          <li><button class="calendar-btn-apply" @click="setDateValue()">{{captions.ok_button}}</button></li>
+          <li><button class="calendar-btn-apply" @click.prevent="setDateValue()">{{captions.ok_button}}</button></li>
         </ul>
-      </div>
-      <div class="time-range">
-          <div class="time-head">
-              <h3>Seleccione Rango de tiempo</h3>
-          </div>
-        <vue-slider-component  ref="slider" v-model="value" v-bind="options" ></vue-slider-component>
       </div>
     </div>
   </div>
