@@ -60,14 +60,14 @@ class testController extends Controller
         }
         dd();
 */
-
+/*
         $configurations = [
             'sendEmail'         => false,
-            'insertDatabase'    => false,
+            'insertDatabase'    => true,
             'sendEventData'     => false,
-            'initialDate'       => Carbon::parse('2018-08-10 05:13:01'),
-            'finalDate'         => Carbon::parse('2018-08-10 23:53:10'),
-            'stations'          => [85]
+            'initialDate'       => Carbon::parse('2017-11-07 00:00:00'),
+            'finalDate'         => Carbon::parse('2017-11-07 23:55:00'),
+            'stations'          => [6,105]
         ];
 
 
@@ -80,7 +80,7 @@ class testController extends Controller
         );
         $alertSystem->init();
         dd($alertSystem);
-
+*/
 /*
         $alertSystem = new LandslideAlert(
             new ConnectionRepository(),
@@ -98,7 +98,7 @@ class testController extends Controller
         });
 */
 
-        Mail::to('daespinosag@unal.edu.co')->send(new \App\Mail\TestEmail());
+        //Mail::to('jdzambranona@unal.edu.co')->send(new \App\Mail\TestEmail());
         //return new \App\Mail\TestEmail();
     }
 

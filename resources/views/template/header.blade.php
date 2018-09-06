@@ -42,7 +42,7 @@
         </div>
     </div>
     <div id="bs-navbar" class="navbar-collapse collapse navigation"><br>
-        <div class="site-url"><a href=""> Sistema de Alerta Temprana</a></div>
+        <div class="site-url"><a href=""> Sistemas de Alerta Temprana</a></div>
         <div class="pull-right">
             <img class="hidden-print" alt="Escudo de la República de Colombia" src="{{ asset('images/sealColombia.png') }}" width="50" height="50" />
             <img class="visible-print margin-img" alt="Escudo de la República de Colombia" src="{{ asset('images/sealColombia_black.png') }}" width="50" height="50" />

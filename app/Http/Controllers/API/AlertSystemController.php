@@ -169,7 +169,7 @@ class AlertSystemController extends Controller
 
     public function getTypeStation()
     {
-        $possibility = ['M','H','PM','PG']; #Aca se definen las posibles consultas de estaciones de clima.
+        $possibility = ['M','H']; #Aca se definen las posibles consultas de estaciones de clima.
 
         return $this->stationTypeRepository->getTypeStations($possibility);
     }
@@ -211,7 +211,23 @@ class AlertSystemController extends Controller
             ))->init()->values;
         }
 
-        return $object;
+        $columns = [
+            ['prop'=> 'station', 'label'=> 'station' ],
+            ['prop'=> 'date_execution', 'label'=> 'date_execution' ],
+            ['prop'=> 'date_final', 'label'=> 'date_final' ],
+            ['prop'=> 'date_initial', 'label'=> 'date_initial' ],
+            ['prop'=> 'a10_value', 'label'=> 'a10_value' ],
+            ['prop'=> 'dif_previous_a10', 'label'=> 'dif_previous_a10' ],
+            ['prop'=> 'change_alert', 'label'=> 'change_alert' ],
+            ['prop'=> 'num_not_change_alert', 'label'=> 'num_not_change_alert' ],
+            ['prop'=> 'alert_decrease', 'label'=> 'alert_decrease' ],
+            ['prop'=> 'alert_increase', 'label'=> 'alert_increase' ],
+            ['prop'=> 'avg_recovered', 'label'=> 'avg_recovered' ],
+            ['prop'=> 'error', 'label'=> 'error' ],
+            ['prop'=> 'comment', 'label'=> 'comment' ]
+        ];
+
+        return ['result'=> $object,'columns'=> $columns];
 
     }
 

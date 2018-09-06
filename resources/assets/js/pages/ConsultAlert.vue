@@ -35,13 +35,17 @@
     .big-form{
         width: 70%;
     }
+    .table-locale{
+        height: 400px;
+        overflow: auto;
+    }
 
 </style>
 <template>
     <div  class="consult-container">
         <div class="local">
             <div :class="{'sub-container': true, 'big-form': bigForm, 'small-form': !bigForm }" id="form" v-if="showForm">
-                <h1> Consultar Alertas </h1>
+                <h1> Consultar indicadores de alerta </h1>
                 <b-card title="" sub-title="">
                     <b-form @submit.prevent="loadDataAlert"  @reset.prevent="onReset">
                         <b-form-group id="alert"
@@ -72,8 +76,14 @@
                 </b-card>
             </div>
             <div :class="{'sub-container': true, 'big-result': bigResult, 'small-result': !bigResult }" v-if="showResult">
-                <h1>Resultado de la consulta</h1>
-                <loader v-show="resultAlert === 1" :width="100" :height="100"></loader>
+                    <h1>Resultado de la consulta</h1>
+                    <loader v-show="resultAlert === 1" :width="100" :height="100"></loader>
+
+                    <data-tables :data="result" v-if="resultAlert ===2" class="table-locale">
+                        <el-table-column type="selection" width="55"></el-table-column>
+                        <el-table-column v-for="column in resultColumns" :prop="column.prop" :label="column.label" :key="column.prop" sortable="custom">
+                        </el-table-column>
+                    </data-tables>
             </div>
         </div>
     </div>
@@ -99,7 +109,8 @@
                 startDate: '',
                 endDate: '',
                 resultAlert:  0,
-                result: null,
+                result: [],
+                resultColumns :[],
             }
         },
         computed: {
@@ -146,7 +157,8 @@
                     'initialDate'   : this.startDate,
                     'finalDate'     : this.endDate
                 }).then(function (response) {
-                    that.result = response.data;
+                    that.result = response.data.result;
+                    that.resultColumns = response.data.columns;
                     that.resultAlert = 2;
                 }).catch(function (error) {
                     that.resultAlert = 3;

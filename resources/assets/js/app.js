@@ -64,7 +64,17 @@ import router from './routes.js';
 import store from './store.js';
 
 import BootstrapVue from 'bootstrap-vue';
-
 Vue.use(BootstrapVue);
+
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
+
+import lang from 'element-ui/lib/locale/lang/en';
+import locale from 'element-ui/lib/locale';
+locale.use(lang);
+
+import VueDataTables from 'vue-data-tables';
+Vue.use(VueDataTables);
 
 new Vue({router, store}).$mount('#app');
