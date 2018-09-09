@@ -1,51 +1,58 @@
 @component('mail::message')
 
-    <h1>Lista de estaciones - Alerta inundación</h1>
+<h1>{{ $title }}</h1>
+<h2>Estaciones con umbral superado</h2>
 
+@foreach ($data->red as $item)
 @component('mail::panel',[
     'alertColor'        => 'red',
-    'title'             => 'Nombre Estación',
-    'valueAlert'        => 100,
-    'previousDeference' => 10,
-    'initialDate'       => '2018-08-01 12:10:10',
-    'finalDate'         => '2018-08-01 12:15:10',
-    'alertStatus'       => '/images/alert-icons/alert-increase.png'
+    'title'             => $item->name_station,
+    'valueAlert'        => $item->a10_value,
+    'previousDeference' => $item->dif_previous_a10,
+    'initialDate'       => $item->date_initial,
+    'finalDate'         => $item->date_final,
+    'alertStatus'       => $item->alert_status
 ])
-
 @endcomponent
+@endforeach
 
+@foreach ($data->orange as $item)
 @component('mail::panel',[
-    'alertColor'        => 'orange',
-    'title'             => 'Nombre Estación',
-    'valueAlert'        => 100,
-    'previousDeference' => 10,
-    'initialDate'       => '2018-08-01 12:10:10',
-    'finalDate'         => '2018-08-01 12:15:10',
-    'alertStatus'       => '/images/alert-icons/alert-equal.png'
+        'alertColor'        => 'orange',
+        'title'             => $item->name_station,
+        'valueAlert'        => $item->a10_value,
+        'previousDeference' => $item->dif_previous_a10,
+        'initialDate'       => $item->date_initial,
+        'finalDate'         => $item->date_final,
+        'alertStatus'       => $item->alert_status
 ])
 @endcomponent
+@endforeach
 
+@foreach ($data->yellow as $item)
 @component('mail::panel',[
-'alertColor'        => 'yellow',
-'title'             => 'Nombre Estación',
-'valueAlert'        => 100,
-'previousDeference' => 10,
-'initialDate'       => '2018-08-01 12:10:10',
-'finalDate'         => '2018-08-01 12:15:10',
-'alertStatus'       => '/images/alert-icons/alert-equal.png'
+        'alertColor'        => 'yellow',
+        'title'             => $item->name_station,
+        'valueAlert'        => $item->a10_value,
+        'previousDeference' => $item->dif_previous_a10,
+        'initialDate'       => $item->date_initial,
+        'finalDate'         => $item->date_final,
+        'alertStatus'       => $item->alert_status
 ])
 @endcomponent
+@endforeach
 
+@foreach ($data->green as $item)
 @component('mail::panel',[
-'alertColor'        => 'green',
-'title'             => 'Nombre Estación',
-'valueAlert'        => 100,
-'previousDeference' => 10,
-'initialDate'       => '2018-08-01 12:10:10',
-'finalDate'         => '2018-08-01 12:15:10',
-'alertStatus'       => '/images/alert-icons/alert-decrease.png'
+        'alertColor'        => 'green',
+        'title'             => $item->name_station,
+        'valueAlert'        => $item->a10_value,
+        'previousDeference' => $item->dif_previous_a10,
+        'initialDate'       => $item->date_initial,
+        'finalDate'         => $item->date_final,
+        'alertStatus'       => $item->alert_status
 ])
 @endcomponent
-
+@endforeach
 
 @endcomponent

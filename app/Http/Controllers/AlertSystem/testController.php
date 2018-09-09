@@ -31,7 +31,6 @@ class testController extends Controller
 
     public function __construct(StationRepository $stationRepository)
     {
-
         $this->stationRepository = $stationRepository;
     }
 
@@ -60,14 +59,16 @@ class testController extends Controller
         }
         dd();
 */
-/*
+
         $configurations = [
-            'sendEmail'         => false,
-            'insertDatabase'    => true,
-            'sendEventData'     => false,
-            'initialDate'       => Carbon::parse('2017-11-07 00:00:00'),
-            'finalDate'         => Carbon::parse('2017-11-07 23:55:00'),
-            'stations'          => [6,105]
+            'sendEmail'             => false,
+            'sendEmailChanges'      => true,
+            'insertDatabase'        => true,
+            'sendEventData'         => false,
+            'sendEventDataChanges'  => false,
+            'initialDate'           => Carbon::parse('2017-11-07 23:00:00'),//2017-11-07 00:00:00
+            'finalDate'             => Carbon::parse('2017-11-07 23:00:00'),
+            //'stations'              => [6,105]
         ];
 
 
@@ -79,8 +80,22 @@ class testController extends Controller
             $configurations
         );
         $alertSystem->init();
-        dd($alertSystem);
+
+        dd($alertSystem,'test controller');
+/*
+        $data = $alertSystem->getAlertsDefences();
+
+        if ($data->changes){
+            Mail::to('ideaalertas@gmail.com')
+                ->bcc(['daespinosag@unal.edu.co','mayordan01@gmail.com'])
+                ->send(new \App\Mail\TestEmail('Alerta por Inundación', $data));
+        }
 */
+
+        //dd($alertSystem->values);
+
+        //return new \App\Mail\TestEmail('Alerta por Inundación', $data);
+
 /*
         $alertSystem = new LandslideAlert(
             new ConnectionRepository(),

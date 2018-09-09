@@ -36,6 +36,7 @@ trait SearchTableInExternalStaticConnection
     private function searchInMultiplesConnection($extractTable)
     {
         $connections = ConnectionRepository::getStationsNotIn([1]);
+
         $i = 0;
         $flag = false;
         $response = false;
@@ -43,8 +44,8 @@ trait SearchTableInExternalStaticConnection
         while ($i < $limit and !$flag){
             $response = $this->searchTable($connections[$i]->name,$extractTable);
             if ($response !== false){ $flag = true;}
+            $i ++;
         }
-
         return $response;
     }
 

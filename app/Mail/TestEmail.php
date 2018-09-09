@@ -14,14 +14,24 @@ class TestEmail extends Mailable
 
     protected $theme = 'email_style';
 
+    private $title;
+
+    private $data;
+    private $messajeSubject;
+
+
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param $title
+     * @param $data
+     * @param $messageSubject
      */
-    public function __construct()
+    public function __construct($title, $data, $messageSubject)
     {
-        //
+        $this->title = $title;
+        $this->data = $data;
+        $this->messajeSubject = $messageSubject;
     }
 
     /**
@@ -31,6 +41,9 @@ class TestEmail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.testEmail');
+        return $this
+            ->subject($this->messajeSubject)
+            ->markdown('emails.testEmail')
+            ->with(['title' => $this->title, 'data' => (object)$this->data]);
     }
 }

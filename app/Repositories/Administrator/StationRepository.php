@@ -218,7 +218,7 @@ class StationRepository extends EloquentRepository
                 ->where('alert.code', '=', $alertCode)
                 ->where('station.active','=',true);
 
-        if (!is_null($stationsId)) { $data->whereIn('station.id',$stationsId);}
+        if ( !is_null($stationsId) ) { $data->whereIn('station.id',$stationsId);}
 
         return $data->orderBY('station.id')->get();
     }

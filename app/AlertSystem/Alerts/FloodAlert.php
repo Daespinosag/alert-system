@@ -7,6 +7,7 @@ use App\Repositories\Administrator\ConnectionRepository;
 use App\Repositories\Administrator\StationRepository;
 use App\Repositories\AlertSystem\FloodRepository;
 use Carbon\Carbon;
+use Mail;
 
 class FloodAlert extends AlertBase implements AlertInterface
 {
@@ -33,9 +34,13 @@ class FloodAlert extends AlertBase implements AlertInterface
 
     public $externalConnection = 'external_connection_alert_system';
 
-    public $sendEmail = true;
+    public $sendEmail = false;
+
+    public $sendEmailChanges = true;
 
     public $sendEventData = false;
+
+    public $sendEventDataChanges = false;
 
     public $insertDatabase = true;
 
@@ -48,6 +53,8 @@ class FloodAlert extends AlertBase implements AlertInterface
     public $datesRangesSearch = [];
 
     public $values = [];
+
+    public $dateExecution = '';
 
     /**
      * flood constructor.
@@ -89,8 +96,26 @@ class FloodAlert extends AlertBase implements AlertInterface
 
         if ($this->insertDatabase){ $this->createInAlertSpecificTable($this->floodRepository);}
 
-        if ($this->sendEventData){
+        if ($this->sendEmailChanges){
+            $data = $this->getAlertsDefences();
+
+            if ($data->changes){
+                Mail::to('ideaalertas@gmail.com')
+                    ->bcc(['daespinosag@unal.edu.co'])
+                    ->send(new \App\Mail\TestEmail('Alerta por Inundación', $data,'(test) Cambio Indicadores Inundación ('.$this->dateExecution.')'));
+            }
+        }
+
+        if ($this->sendEmail){
+            # TODO
+        }
+
+        if ($this->sendEventDataChanges){
             # TODO enviar evento
+        }
+
+        if ($this->sendEventData){
+            # TODO
         }
 
         return $this;
@@ -129,6 +154,9 @@ class FloodAlert extends AlertBase implements AlertInterface
         $flag = true;
         $initial = $this->standardizationDate($initialDate);
         $final = $this->standardizationDate($finalDate);
+
+        # se calcula la fecha inicial para enviarlo en es estado del correo
+        $this->dateExecution = (clone($initialDate))->format('Y-m-d H:i:s');
 
         while ($flag){
             $temporalAnt= (clone($initial))->addSeconds( - $this->constSeconds);

@@ -103,7 +103,7 @@ class AlertBase extends AlertSystem
         $objectRepository->date_initial = (!is_null($initialValue)) ? $initialValue->fecha.' '.$initialValue->hora : null;
 
         # se suma el valor de la columna entrante para calcular el valor de la alerta
-        $objectRepository->a10_value = array_sum(array_column($values, $variable));
+        $objectRepository->a10_value = array_sum(array_column($values, $variable)) + 2 * rand(2,5); #TODO EL Valor rand y el +2 hay que quitarlo porque es para pruebas
 
         # se calcula el promedio de datos recuperados frente a la cantidad TOTAL
         $objectRepository->avg_recovered = round (count($values) / $this->constData * 100,2);
@@ -149,7 +149,7 @@ class AlertBase extends AlertSystem
         string  $variable
     )
     {
-        foreach ($this->stations as $station)
+        foreach ($this->stations as $key => $station)
         {
             # Se consulta la conexion perteneciente a la estacion
             $connection = $connectionRepository->findOrFail($station->connection_id);
@@ -192,6 +192,7 @@ class AlertBase extends AlertSystem
                 # se ingresa el valor calculado al array global de valores
                 array_push($this->values, $temporalVal->toArray());
             }
+            //if ($key == 8){dd($this);}
         }
     }
 
@@ -212,6 +213,7 @@ class AlertBase extends AlertSystem
     public function initializationObject($station, $objectRepository, array $dateSearch)
     {
         $objectRepository->station = $station->id;
+        $objectRepository->name_station = $station->name;
         $objectRepository->date_execution = $dateSearch['date_execute']->format('Y-m-d H:i:s');
         $objectRepository->dif_previous_a10 = null;
         $objectRepository->num_not_change_alert = null;
@@ -222,6 +224,37 @@ class AlertBase extends AlertSystem
         $objectRepository->comment = null;
 
         return $objectRepository;
+    }
+
+    public function getAlertsDefences()
+    {
+        $arr = ['red'=>[],'orange'=>[],'yellow'=>[],'green'=>[],'changes' => false];
+
+        foreach ($this->values as $data){
+            if ($data['change_alert']){
+
+                $arr['changes'] = true;
+
+                $data['alert_status'] =  ($data['alert_decrease']) ? '/images/alert-icons/alert-decrease.png' : '/images/alert-icons/alert-increase.png';
+
+                switch ($data['alert']) {
+                    case 0:
+                        array_push($arr['green'],(object)$data);
+                        break;
+                    case 1:
+                        array_push($arr['yellow'],(object)$data);
+                        break;
+                    case 2:
+                        array_push($arr['orange'],(object)$data);
+                        break;
+                    case 3:
+                        array_push($arr['red'],(object)$data);
+                        break;
+                }
+            }
+        }
+
+        return (object)$arr;
     }
 
 }

@@ -8,6 +8,7 @@ use App\Repositories\Administrator\StationRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
 use App\Repositories\Administrator\ConnectionRepository;
 use Carbon\Carbon;
+use Mail;
 
 class LandslideAlert extends AlertBase implements AlertInterface
 {
@@ -25,9 +26,13 @@ class LandslideAlert extends AlertBase implements AlertInterface
 
     public $externalConnection = 'external_connection_alert_system';
 
-    public $sendEmail = true;
+    public $sendEmail = false;
+
+    public $sendEmailChanges = true;
 
     public $sendEventData = false;
+
+    public $sendEventDataChanges = false;
 
     public $insertDatabase = true;
 
@@ -42,6 +47,8 @@ class LandslideAlert extends AlertBase implements AlertInterface
     public $datesRangesSearch = [];
 
     public $values = [];
+
+    public $dateExecution = '#';
 
     /**
      * AlertSystem constructor.
@@ -69,6 +76,7 @@ class LandslideAlert extends AlertBase implements AlertInterface
 
     public function init()
     {
+        # Se ejecuta el proceso de calculo de la alerta
         $this->processAlert(
             $this->connectionRepository,
             $this->landslideRepository,
@@ -77,12 +85,34 @@ class LandslideAlert extends AlertBase implements AlertInterface
             'precipitacion_real'
         );
 
-        if ($this->insertDatabase){ $this->createInAlertSpecificTable($this->landslideRepository);}
+        # Se envia un email con las alertas por estaciones que presentaron algun cambio
+        if ($this->sendEmailChanges){
+            $data = $this->getAlertsDefences();
 
-        if ($this->sendEventData){
+            if ($data->changes){
+                Mail::to('ideaalertas@gmail.com')
+                    ->bcc(['daespinosag@unal.edu.co'])
+                    ->send(new \App\Mail\TestEmail('Alerta por Deslizamiento', $data,'(test) Cambio Indicadores Deslizamiento ('.$this->dateExecution.')'));
+            }
+        }
+
+        # Se envia un email con las alertas por estacion
+        if ($this->sendEmail){
+            # TODO
+        }
+
+        # Se envia un evento con las aleras por estaciones que cambian
+        if ($this->sendEventDataChanges){
             # TODO enviar evento
+        }
+
+        # Se encia un evento con las alertas por estacion
+        if ($this->sendEventData){
             // event(new AlertFiveMinutesCalculated($arrayNewValues));
         }
+
+        # Se inserta en la base de datos la alerta
+        if ($this->insertDatabase){ $this->createInAlertSpecificTable($this->landslideRepository);}
 
         return $this;
     }
@@ -96,6 +126,9 @@ class LandslideAlert extends AlertBase implements AlertInterface
         $flag = true;
         $initial = $this->standardizationDate($initialDate);
         $final = $this->standardizationDate($finalDate);
+
+        # se calcula la fecha inicial para enviarlo en es estado del correo
+        $this->dateExecution = (clone($initialDate))->format('Y-m-d H:i:s');
 
         while ($flag){
             $temporalAnt= (clone($initial))->addDay(- $this->constDays);
