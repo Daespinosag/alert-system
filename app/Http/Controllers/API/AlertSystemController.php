@@ -11,6 +11,7 @@ use App\Repositories\AlertSystem\FloodRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
 use App\Repositories\Administrator\StationTypeRepository;
 use Carbon\Carbon;
+use function Couchbase\defaultDecoder;
 use Illuminate\Http\Request;
 use App\AlertSystem\Alerts\FloodAlert;
 use App\AlertSystem\Alerts\LandslideAlert;
@@ -102,6 +103,7 @@ class AlertSystemController extends Controller
                 $station->longitude_seconds,
                 $station->longitude_direction
             );
+
             $station->latitude = $this->calculateDecimalCoordinates(
                 $station->latitude_degrees,
                 $station->latitude_minutes,

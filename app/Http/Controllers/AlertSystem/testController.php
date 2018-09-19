@@ -40,11 +40,11 @@ class testController extends Controller
 
     public function index()
     {
-        /*
         $possibleAlert = ['alert-a25','alert-a10'];
 
         $stations = $this->stationRepository->getStationsFromAlertsForMaps($possibleAlert);
-
+        dd($stations);
+/*
         foreach ($stations as $station){
             $flag = $this->searchStaticConnection($station->net->connection->name,$station->table_db_name);
             dd($flag);
