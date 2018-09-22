@@ -7,8 +7,8 @@
 @component('mail::panel',[
     'alertColor'        => 'red',
     'title'             => $item->name_station,
-    'valueAlert'        => $item->a10_value,
-    'previousDeference' => $item->dif_previous_a10,
+    'valueAlert'        => $item->{$alert.'_value'},
+    'previousDeference' => $item->{'dif_previous_'.$alert},
     'initialDate'       => $item->date_initial,
     'finalDate'         => $item->date_final,
     'alertStatus'       => $item->alert_status
@@ -20,8 +20,8 @@
 @component('mail::panel',[
         'alertColor'        => 'orange',
         'title'             => $item->name_station,
-        'valueAlert'        => $item->a10_value,
-        'previousDeference' => $item->dif_previous_a10,
+        'valueAlert'        => $item->{$alert.'_value'},
+        'previousDeference' => $item->{'dif_previous_'.$alert},
         'initialDate'       => $item->date_initial,
         'finalDate'         => $item->date_final,
         'alertStatus'       => $item->alert_status
@@ -33,8 +33,8 @@
 @component('mail::panel',[
         'alertColor'        => 'yellow',
         'title'             => $item->name_station,
-        'valueAlert'        => $item->a10_value,
-        'previousDeference' => $item->dif_previous_a10,
+        'valueAlert'        => $item->{$alert.'_value'},
+        'previousDeference' => $item->{'dif_previous_'.$alert},
         'initialDate'       => $item->date_initial,
         'finalDate'         => $item->date_final,
         'alertStatus'       => $item->alert_status
@@ -46,8 +46,8 @@
 @component('mail::panel',[
         'alertColor'        => 'green',
         'title'             => $item->name_station,
-        'valueAlert'        => $item->a10_value,
-        'previousDeference' => $item->dif_previous_a10,
+        'valueAlert'        => $item->{$alert.'_value'},
+        'previousDeference' => $item->{'dif_previous_'.$alert},
         'initialDate'       => $item->date_initial,
         'finalDate'         => $item->date_final,
         'alertStatus'       => $item->alert_status

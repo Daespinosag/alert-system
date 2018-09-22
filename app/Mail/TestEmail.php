@@ -17,7 +17,10 @@ class TestEmail extends Mailable
     private $title;
 
     private $data;
-    private $messajeSubject;
+
+    private $messageSubject;
+
+    public $alert;
 
 
     /**
@@ -26,12 +29,14 @@ class TestEmail extends Mailable
      * @param $title
      * @param $data
      * @param $messageSubject
+     * @param string $alert
      */
-    public function __construct($title, $data, $messageSubject)
+    public function __construct($title = 'title', $data = [], $messageSubject = 'Subject',$alert = 'a25')
     {
         $this->title = $title;
         $this->data = $data;
-        $this->messajeSubject = $messageSubject;
+        $this->messageSubject = $messageSubject;
+        $this->alert = $alert;
     }
 
     /**
@@ -42,7 +47,7 @@ class TestEmail extends Mailable
     public function build()
     {
         return $this
-            ->subject($this->messajeSubject)
+            ->subject($this->messageSubject)
             ->markdown('emails.testEmail')
             ->with(['title' => $this->title, 'data' => (object)$this->data]);
     }

@@ -40,11 +40,11 @@ class testController extends Controller
 
     public function index()
     {
+        /*
         $possibleAlert = ['alert-a25','alert-a10'];
 
         $stations = $this->stationRepository->getStationsFromAlertsForMaps($possibleAlert);
-        dd($stations);
-/*
+
         foreach ($stations as $station){
             $flag = $this->searchStaticConnection($station->net->connection->name,$station->table_db_name);
             dd($flag);
@@ -59,19 +59,19 @@ class testController extends Controller
         }
         dd();
 */
-
+#inicio a las 14:35:21
         $configurations = [
             'sendEmail'             => false,
             'sendEmailChanges'      => true,
             'insertDatabase'        => true,
             'sendEventData'         => false,
             'sendEventDataChanges'  => false,
-            'initialDate'           => Carbon::parse('2017-11-07 23:00:00'),//2017-11-07 00:00:00
-            'finalDate'             => Carbon::parse('2017-11-07 23:00:00'),
+            'initialDate'           => Carbon::parse('2017-11-07 23:50:00'),//2017-11-07 00:00:00
+            'finalDate'             => Carbon::parse('2017-11-07 23:50:00'),
             //'stations'              => [6,105]
         ];
 
-
+/*
         $alertSystem = new FloodAlert(
             new ConnectionRepository(),
             new StationRepository(),
@@ -82,6 +82,7 @@ class testController extends Controller
         $alertSystem->init();
 
         dd($alertSystem,'test controller');
+*/
 /*
         $data = $alertSystem->getAlertsDefences();
 
@@ -96,7 +97,7 @@ class testController extends Controller
 
         //return new \App\Mail\TestEmail('Alerta por Inundación', $data);
 
-/*
+
         $alertSystem = new LandslideAlert(
             new ConnectionRepository(),
             new StationRepository(),
@@ -105,8 +106,8 @@ class testController extends Controller
             $configurations
         );
         $alertSystem->init();
-        dd($alertSystem);
-*/
+        dd($alertSystem,'test controller');
+
 /*
         Mail::send('emails.testEmail',['alert' => 'enviando desde el sistema de alertas'], function ($message){
             $message->to('daespinosag@unal.edu.co','Alert System')->subject('test send emails');

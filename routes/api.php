@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['prefix' => 'v1'], function()  //, 'middleware' => 'auth:api'
+Route::group(['prefix' => 'v1'], function()  //,'middleware' => 'auth:api'
 {
     Route::get('/stations', [ 'as'=>'v1.stations','uses'=>'API\AlertSystemController@getStations']);
 

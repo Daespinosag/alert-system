@@ -4,6 +4,7 @@ namespace App\AlertSystem\Alerts;
 
 use App\AlertSystem\AlertSystem;
 use Carbon\Carbon;
+use function Couchbase\defaultDecoder;
 
 class AlertBase extends AlertSystem
 {
@@ -28,6 +29,7 @@ class AlertBase extends AlertSystem
                 }
             }
         }
+
         return $alert;
     }
 
@@ -103,20 +105,23 @@ class AlertBase extends AlertSystem
         $objectRepository->date_initial = (!is_null($initialValue)) ? $initialValue->fecha.' '.$initialValue->hora : null;
 
         # se suma el valor de la columna entrante para calcular el valor de la alerta
-        $objectRepository->a10_value = array_sum(array_column($values, $variable)) + 2 * rand(2,5); #TODO EL Valor rand y el +2 hay que quitarlo porque es para pruebas
+        $objectRepository->{$this->code.'_value'} = array_sum(array_column($values, $variable));
+
+        #if ($this->code == 'a25'){$objectRepository->{$this->code.'_value'} = 100 * rand(1,4); } # Todo Quitar
+        #if ($this->code == 'a10'){$objectRepository->{$this->code.'_value'} = 6 * rand(1,3); } # Todo Quitar
 
         # se calcula el promedio de datos recuperados frente a la cantidad TOTAL
         $objectRepository->avg_recovered = round (count($values) / $this->constData * 100,2);
 
         # se examina el valor de la alerta para la estacion
-        $objectRepository->alert = $this->{$examineFunction}($station,$objectRepository->a10_value);
+        $objectRepository->alert = $this->{$examineFunction}($station,$objectRepository->{$this->code.'_value'} );
 
         #comparacion con la alerta exactamente anterior
         if (!is_null($ultimateObjectRepository)) {
 
             $objectRepository->num_not_change_alert = $ultimateObjectRepository->num_not_change_alert + 1;
 
-            $objectRepository->dif_previous_a10 = abs(round($ultimateObjectRepository->a10_value - $objectRepository->a10_value, 2));
+            $objectRepository->{'dif_previous_'.$this->code} = abs(round($ultimateObjectRepository->{$this->code.'_value'}  - $objectRepository->{$this->code.'_value'} , 2));
 
             if (!($objectRepository->alert == $ultimateObjectRepository->alert)) {
 
@@ -162,9 +167,7 @@ class AlertBase extends AlertSystem
 
             foreach ($this->datesRangesSearch as $dateSearch)
             {
-                $temporalVal = null;
-
-                # se inicializan las columnas del objeto
+                       # se inicializan las columnas del objeto
                 $floodTable = $this->initializationObject($station,$alertRepositorySpecifies->createShowcase(),$dateSearch);
 
                 # Se extrae el ultimo valor de la tabla a10 para una estacion especifica
@@ -172,11 +175,11 @@ class AlertBase extends AlertSystem
 
                 if ($resultConnection)
                 {
-                    # Se consultan los datos de a10 en la central de acopio
+                    # Se consultan los datos del tipo de alerta en central de acopio (trait storagueServerTrair)
                     $result = $this->{$functionToCalculation}($resultConnection,$station->table_db_name,$dateSearch['initialDate'],$dateSearch['initialTime'],$dateSearch['finalDate'],$dateSearch['finalTime'], $this->constData);
 
-                    if (!is_null($result)){
-                        $temporalVal = $this->generateStatistics($station, $floodTable, $result, $ultimateDateTable,$eliminateFunction ,$variable);
+                    if (count($result) > 0){
+                        $floodTable = $this->generateStatistics($station, $floodTable, $result, $ultimateDateTable,$eliminateFunction ,$variable);
                     }else{
                        $floodTable->error = true;
                        $floodTable->comment = ' | no datos en adquisicion | ';
@@ -186,13 +189,13 @@ class AlertBase extends AlertSystem
                     $floodTable->comment = ' | no fue posible encontrar estacion en adquisicion | ';
                 }
 
-                $ultimateDateTable = $temporalVal;
+                $ultimateDateTable = $floodTable;
                 $flag = false;
 
                 # se ingresa el valor calculado al array global de valores
-                array_push($this->values, $temporalVal->toArray());
+               array_push($this->values, $floodTable->toArray());
             }
-            //if ($key == 8){dd($this);}
+            #if ($key == 15){dd($this);}
         }
     }
 
@@ -215,7 +218,7 @@ class AlertBase extends AlertSystem
         $objectRepository->station = $station->id;
         $objectRepository->name_station = $station->name;
         $objectRepository->date_execution = $dateSearch['date_execute']->format('Y-m-d H:i:s');
-        $objectRepository->dif_previous_a10 = null;
+        $objectRepository->{'dif_previous_'.$this->code} = null;
         $objectRepository->num_not_change_alert = null;
         $objectRepository->change_alert = false;
         $objectRepository->alert_decrease = false;
@@ -234,7 +237,6 @@ class AlertBase extends AlertSystem
             if ($data['change_alert']){
 
                 $arr['changes'] = true;
-
                 $data['alert_status'] =  ($data['alert_decrease']) ? '/images/alert-icons/alert-decrease.png' : '/images/alert-icons/alert-increase.png';
 
                 switch ($data['alert']) {
@@ -254,7 +256,9 @@ class AlertBase extends AlertSystem
             }
         }
 
-        return (object)$arr;
+        $this->valuesChangeAlert = (object)$arr;
+
+        return $this->valuesChangeAlert;
     }
 
 }

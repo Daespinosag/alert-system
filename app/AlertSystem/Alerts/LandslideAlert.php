@@ -12,6 +12,8 @@ use Mail;
 
 class LandslideAlert extends AlertBase implements AlertInterface
 {
+    public $code = 'a25';
+
     public $connectionRepository;
 
     public $stationRepository;
@@ -48,7 +50,11 @@ class LandslideAlert extends AlertBase implements AlertInterface
 
     public $values = [];
 
+    public $valuesChangeAlert = [];
+
     public $dateExecution = '#';
+
+    public $temporalMultiplication = 10; # TODO esto se quita cuando terminen las pruebas
 
     /**
      * AlertSystem constructor.
@@ -91,8 +97,13 @@ class LandslideAlert extends AlertBase implements AlertInterface
 
             if ($data->changes){
                 Mail::to('ideaalertas@gmail.com')
-                    ->bcc(['daespinosag@unal.edu.co'])
-                    ->send(new \App\Mail\TestEmail('Alerta por Deslizamiento', $data,'(test) Cambio Indicadores Deslizamiento ('.$this->dateExecution.')'));
+                    ->bcc(['daespinosag@unal.edu.co'])#,'acastillorua@unal.edu.co','jdzambranona@unal.edu.co','fmejiaf@unal.edu.co'
+                    ->send(new \App\Mail\TestEmail(
+                        'Alerta por Deslizamiento',
+                        $data,
+                        '(test) Cambio Indicadores Deslizamiento ('.$this->dateExecution.') - ('.Carbon::now()->format('Y-m-d H:i:s').')',
+                        $this->code
+                    ));
             }
         }
 

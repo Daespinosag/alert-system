@@ -13,13 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('test');
-});
+Route::get('/', function () { return view('test'); })->middleware('auth');
 
 Route::group(['prefix' => 'test','name' => 'test'], function()
 {
-    //Route::get('index', [ 'as'=>'test.index','uses'=>'AlertSystem\testController@index']);
-    Route::get('index', [ 'as'=>'test.index','uses'=>'API\AlertSystemController@getStations']);
-
+    Route::get('index', [ 'as'=>'test.index','uses'=>'AlertSystem\testController@index']);
+    //Route::get('index', [ 'as'=>'test.index','uses'=>'API\AlertSystemController@getStations']);
 });
+
+Auth::routes();

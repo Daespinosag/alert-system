@@ -7,10 +7,12 @@ use App\Repositories\Administrator\ConnectionRepository;
 use App\Repositories\Administrator\StationRepository;
 use App\Repositories\AlertSystem\FloodRepository;
 use Carbon\Carbon;
+use function Couchbase\defaultDecoder;
 use Mail;
 
 class FloodAlert extends AlertBase implements AlertInterface
 {
+    public $code = 'a10';
     /**
      * @var ConnectionRepository
      */
@@ -54,7 +56,11 @@ class FloodAlert extends AlertBase implements AlertInterface
 
     public $values = [];
 
-    public $dateExecution = '';
+    public $valuesChangeAlert = [];
+
+    public $dateExecution = '#';
+
+    public $temporalMultiplication = 10; # TODO esto se quita cuando terminen las pruebas
 
     /**
      * flood constructor.
@@ -98,11 +104,15 @@ class FloodAlert extends AlertBase implements AlertInterface
 
         if ($this->sendEmailChanges){
             $data = $this->getAlertsDefences();
-
             if ($data->changes){
                 Mail::to('ideaalertas@gmail.com')
-                    ->bcc(['daespinosag@unal.edu.co'])
-                    ->send(new \App\Mail\TestEmail('Alerta por Inundación', $data,'(test) Cambio Indicadores Inundación ('.$this->dateExecution.')'));
+                    ->bcc(['daespinosag@unal.edu.co']) #,'acastillorua@unal.edu.co','jdzambranona@unal.edu.co','fmejiaf@unal.edu.co'
+                    ->send(new \App\Mail\TestEmail(
+                        'Alerta por Inundación',
+                        $data,
+                        '(test) Cambio Indicadores Inundación ('.$this->dateExecution.') - ('.Carbon::now()->format('Y-m-d H:i:s').')',
+                        $this->code
+                    ));
             }
         }
 
