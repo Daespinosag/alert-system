@@ -19,10 +19,11 @@ class CreateUsersTable extends Migration
             $table->integer('role_id');
 
             $table->string('name');
-            $table->string('institution');
+            $table->string('institution')->nullable();
             $table->string('email')->unique();
 
-            $table->boolean('validate_email')->default(false);
+            $table->boolean('confirmed')->default(false);
+            $table->string('confirmed_code')->nullable();
             $table->boolean('accepted')->default(false);
 
             $table->string('password',500);

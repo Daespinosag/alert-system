@@ -22,3 +22,10 @@ Route::group(['prefix' => 'test','name' => 'test'], function()
 });
 
 Auth::routes();
+
+Route::get('/register/verify/{code}', 'Auth\GuestController@verify');
+
+Route::get('/logout', function (){
+    Auth::logout();
+    return redirect('/login');
+});

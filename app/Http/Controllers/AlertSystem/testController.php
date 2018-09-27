@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\AlertSystem;
 
 use App\AlertSystem\Connection\SearchTableInExternalStaticConnection;
-use function Couchbase\defaultDecoder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Administrator\ConnectionRepository;

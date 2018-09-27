@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Entities\AlertSystem\User;
 use App\Http\Controllers\Controller;
+use App\Mail\ConfirmationEmailUser;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Mail;
 
 class RegisterController extends Controller
 {
@@ -27,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/test';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -51,9 +53,6 @@ class RegisterController extends Controller
             'name'              => 'required|string|max:255',
             'institution'       => '',
             'email'             => 'required|string|email|max:255|unique:users',
-            'validate_email'    => '',
-            'validate'          => '',
-            'active'            => '',
             'password'          => 'required|string|min:6|confirmed',
         ]);
     }
@@ -66,14 +65,20 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $data['confirmed_code'] = str_random(25);
+
+        $user  = User::create([
+            'role_id'           => 3, # hace referencia al rol consultor
             'name'              => $data['name'],
             'institution'       => $data['institution'],
             'email'             => $data['email'],
-            'validate_email'    => $data['validate_email'],
-            'validate'          => $data['validate'],
-            'active'            => $data['active'],
+            'confirmed_code'    => $data['confirmed_code'],
             'password'          => bcrypt($data['password']),
         ]);
+
+        Mail::to($data['email'])->send(new ConfirmationEmailUser($data['confirmed_code'],$data['name']));
+
+        return $user;
+
     }
 }

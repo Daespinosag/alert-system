@@ -13,6 +13,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        /*
         DB::connection('alert-system')->table('users')->insert(
             [
                 [
@@ -24,5 +25,6 @@ class UserSeeder extends Seeder
                 ],
             ]
         );
+        */
     }
 }
