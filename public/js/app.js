@@ -59275,6 +59275,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -59466,6 +59467,19 @@ var staticRenderFns = [
               _c("a", { attrs: { href: "index.html#" } }, [
                 _vm._v("Administrativos")
               ])
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "item_Egresados #>" }, [
+              _c(
+                "a",
+                {
+                  attrs: {
+                    href:
+                      "http://cdiac.manizales.unal.edu.co/alert-system/logout"
+                  }
+                },
+                [_vm._v("Cerrar sesión")]
+              )
             ])
           ])
         ])

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -36,4 +37,20 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    /**
+     * @param Request $request
+     * @param $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function authenticated(Request $request, $user)
+    {
+        if (!$user->confirmed) {
+            auth()->logout();
+            return back()->with('warning', 'Debe confirmar tu cuenta. Le hemos enviado un código de activación, verifique su correo electrónico.');
+        }
+        return redirect()->intended($this->redirectPath());
+    }
+
+
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities;
+namespace App\Entities\AlertSystem;
 
 use Illuminate\Database\Eloquent\Model;
 

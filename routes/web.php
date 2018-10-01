@@ -24,6 +24,8 @@ Route::group(['prefix' => 'test','name' => 'test'], function()
 Auth::routes();
 
 Route::get('/register/verify/{code}', 'Auth\GuestController@verify');
+Route::get('/reConfirmation/index', [ 'as'=>'reConfirmation.index','uses'=> 'Auth\GuestController@reConfirmationIndex']);
+Route::post('/reConfirmation/sedEmail', [ 'as'=>'reConfirmation.sedEmail','uses'=> 'Auth\GuestController@reConfirmationSendEmail']);
 
 Route::get('/logout', function (){
     Auth::logout();

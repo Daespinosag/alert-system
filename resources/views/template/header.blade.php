@@ -15,7 +15,7 @@
     </div>
 
     <div class="firstMenu">
-        <ul class="socialLinks hidden-xs">
+        <!--<ul class="socialLinks hidden-xs">
             <li>
                 <a href="https://www.facebook.com/UNColombia" target="_blank" class="facebook" title="Página oficial en Facebook"></a>
             </li>
@@ -28,15 +28,12 @@
             <li>
                 <a href="http://agenciadenoticias.unal.edu.co/nc/sus/type/rss2.html" target="_blank" class="rss" title="Suscripción a canales de información RSS"></a>
             </li>
-        </ul>
+        </ul> -->
         <div class="navbar-default">
             <nav id="profiles">
                 <ul class="nav navbar-nav dropdown-menu">
-                    <li class="item_Aspirantes #>"><a href="index.html#">Aspirantes</a></li>
-                    <li class="item_Estudiantes #>"><a href="index.html#">Estudiantes</a></li>
-                    <li class="item_Egresados #>"><a href="index.html#">Egresados</a></li>
-                    <li class="item_Docentes #>"><a href="index.html#">Docentes</a></li>
-                    <li class="item_Administrativos #>"><a href="index.html#">Administrativos</a></li>
+                    <li class="item_Egresados #>"><a href="{{ route('login') }}">Inicio de sesión</a></li>
+                    <li class="item_Egresados #>"><a href="{{ route('register') }}">Petición de registro</a></li>
                 </ul>
             </nav>
         </div>

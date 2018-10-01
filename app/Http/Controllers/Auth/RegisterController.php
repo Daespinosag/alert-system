@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Entities\AlertSystem\User;
 use App\Http\Controllers\Controller;
 use App\Mail\ConfirmationEmailUser;
+use App\Repositories\AlertSystem\PermissionRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Repositories\AlertSystem\UserPermissionRepository;
 use Mail;
 
 class RegisterController extends Controller
@@ -30,15 +33,30 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
+    /**
+     * @var UserPermissionRepository
+     */
+    private $userPermissionRepository;
+    /**
+     * @var PermissionRepository
+     */
+    private $permissionRepository;
 
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param UserPermissionRepository $userPermissionRepository
+     * @param PermissionRepository $permissionRepository
      */
-    public function __construct()
+    public function __construct(
+        UserPermissionRepository $userPermissionRepository,
+        PermissionRepository $permissionRepository
+    )
     {
         $this->middleware('guest');
+
+        $this->userPermissionRepository = $userPermissionRepository;
+        $this->permissionRepository = $permissionRepository;
     }
 
     /**
@@ -53,6 +71,8 @@ class RegisterController extends Controller
             'name'              => 'required|string|max:255',
             'institution'       => '',
             'email'             => 'required|string|email|max:255|unique:users',
+            'flood'             => '',
+            'landslide'         => '',
             'password'          => 'required|string|min:6|confirmed',
         ]);
     }
@@ -65,7 +85,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $data['confirmed_code'] = str_random(25);
+        $data['confirmed_code'] = sha1(time());
 
         $user  = User::create([
             'role_id'           => 3, # hace referencia al rol consultor
@@ -76,9 +96,35 @@ class RegisterController extends Controller
             'password'          => bcrypt($data['password']),
         ]);
 
+
+        $this->userPermissionRepository->assignPermissionUser(
+            ($this->permissionRepository->getPermissionFromCode('permission-a10'))->id,
+            $user->id,
+            array_key_exists('flood',$data),
+            array_key_exists('flood',$data)
+        );
+
+        $this->userPermissionRepository->assignPermissionUser(
+            ($this->permissionRepository->getPermissionFromCode('permission-a25'))->id,
+            $user->id,
+            array_key_exists('landslide',$data),
+            array_key_exists('landslide',$data)
+        );
+
         Mail::to($data['email'])->send(new ConfirmationEmailUser($data['confirmed_code'],$data['name']));
 
         return $user;
+    }
 
+    /**
+     * @param Request $request
+     * @param $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function registered(Request $request, $user)
+    {
+        $this->guard()->logout();
+
+        return redirect('/login')->with('status', 'Le enviamos un código de activación. Verifique su correo electrónico y haga clic en el enlace para verificar.');
     }
 }

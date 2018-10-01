@@ -31,6 +31,7 @@
                         <li class="item_Egresados #>"><a href="index.html#">Egresados</a></li>
                         <li class="item_Docentes #>"><a href="index.html#">Docentes</a></li>
                         <li class="item_Administrativos #>"><a href="index.html#">Administrativos</a></li>
+                        <li class="item_Egresados #>"><a href="http://cdiac.manizales.unal.edu.co/alert-system/logout">Cerrar sesión</a></li>
                     </ul>
                 </nav>
             </div>

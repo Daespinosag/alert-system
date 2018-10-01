@@ -1,13 +1,29 @@
-@extends('layouts.app')
+@extends('template.public_main')
 
 @section('content')
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Inicio de sesión</div>
+                <div class="panel-heading">
+                    Inicio de sesión
+
+                    <a class="btn btn-link pull-right" href="{{ route('reConfirmation.index') }}"> Reenviar Confirmación correo electrónico </a>
+                </div>
 
                 <div class="panel-body">
+
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                    @if (session('warning'))
+                        <div class="alert alert-warning">
+                            {{ session('warning') }}
+                        </div>
+                    @endif
+
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
 

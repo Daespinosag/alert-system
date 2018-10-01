@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('template.public_main')
 
 @section('content')
 <div class="container">
@@ -52,6 +52,23 @@
                                 @endif
                             </div>
                         </div>
+
+                        <div class="form-group ">
+                            <label for="institution" class="col-md-4 control-label">Suscribir alertas : </label>
+
+                            <div class="col-md-6">
+                                <label class="btn btn-success">
+                                    <input id="flood"  class="" type="checkbox" autocomplete="off" name="flood" checked>
+                                    <span class=""> Inundación</span>
+                                </label>
+
+                                <label class="btn btn-success">
+                                    <input id="landslide" type="checkbox" autocomplete="off" name="landslide" checked>
+                                    <span class="">Deslizamiento</span>
+                                </label>
+                            </div>
+                        </div>
+                        <br>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-4 control-label">Contraseña : </label>
