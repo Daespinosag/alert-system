@@ -26,6 +26,8 @@
 
         <error-notification></error-notification>
 
+        <float-button></float-button>
+
         <router-view></router-view>
 
         <filters></filters>
@@ -38,10 +40,11 @@
     import Navigation from '../components/global/Navigation.vue';
     import Filters from '../components/global/Filters.vue';
     import ErrorNotification from '../components/global/ErrorNotification.vue';
+    import FloatButton from '../components/global/FloatButton';
 
     export default {
         props: { user: null },
-        components: {Navigation,Filters,ErrorNotification},
+        components: {Navigation,Filters,ErrorNotification,FloatButton},
         created(){
             // se pregunta si es la primera vez que carga el usuario
             if (this.$store.userLoadStatus !== 2 && this.user !== null){

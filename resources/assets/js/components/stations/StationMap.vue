@@ -228,16 +228,18 @@
 
             this.$map = new google.maps.Map(document.getElementById('station-map'), {
                 center: {lat: this.latitude, lng: this.longitude},
-                zoom: this.zoom
+                zoom: this.zoom,
+                streetViewControl: false,
+                mapTypeControl: false,
+                disableDefaultUI: true
             });
 
             var CaldasDeptoKMZ = new google.maps.KmlLayer({
                 url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Caldas_Departamento.kmz',
                 map: this.$map,
                 zoom: this.zoom,
-                 suppressInfoWindows: true,
+                suppressInfoWindows: true,
             });
-
 
             var CaldasMunicipiosKMZ = new google.maps.KmlLayer({
                 url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Caldas_Municipios_v2.kmz',

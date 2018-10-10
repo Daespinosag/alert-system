@@ -31,25 +31,16 @@
                         <li class="item_Egresados #>"><a href="index.html#">Egresados</a></li>
                         <li class="item_Docentes #>"><a href="index.html#">Docentes</a></li>
                         <li class="item_Administrativos #>"><a href="index.html#">Administrativos</a></li>
+                        <li class="item_Egresados #>" v-show="true" ><router-link :to="{ name: 'ConsultAlert' }"><span class="">Consultas</span></router-link></li>
+                        <li class="item_Egresados #>" v-show="true" ><router-link :to="{ name: 'stations' }"><span class="">Inicio</span></router-link></li>
                         <li class="item_Egresados #>"><a href="http://cdiac.manizales.unal.edu.co/alert-system/logout">Cerrar sesión</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
         <div id="bs-navbar" class="navbar-collapse collapse navigation"><br>
-            <div class="site-url"><a href=""> Sistema de Alerta Temprana</a></div>
+            <div class="site-url"><a href=""> Sistemas de Alerta Temprana</a></div>
             <div class="col-md-7">
-                <div class="col-md-11">
-                    <div class="btn btn-group">
-                        <router-link :to="{ name: 'stations' }" class="btn btn-default"><span class="">Stations</span></router-link>
-                    </div>
-                    <div class="col-md-8">
-                        <a class="filters" v-bind:class="{'active': showFilters}" v-on:click="toggleShowFilters()">
-                            <img class="chevron" src="images/chevron-right.svg"/>
-                            <img class="chevron-active" src="images/chevron-right-active.svg"/> Filtros
-                        </a>
-                    </div>
-                </div>
                 <div class="col-md-1">
                     <img class="hidden-print" alt="Escudo de la República de Colombia" src="images/sealColombia.png" width="50" height="50" />
                     <img class="visible-print margin-img" alt="Escudo de la República de Colombia" src="images/sealColombia_black.png" width="50" height="50" />
@@ -61,24 +52,13 @@
 </template>
 
 <script>
-    import { EventBus } from '../../event-bus.js';
 
     export default {
-        computed: {
-            showFilters(){
-                return this.$store.getters.getShowFilters;
-            }
-        },
+        computed: {},
         methods: {
-            toggleShowFilters(){
-                this.$store.dispatch( 'toggleShowFilters', { showFilters : !this.showFilters } );
-            },
             setShowPopOut(){
                 this.$store.dispatch( 'toggleShowPopOut', { showPopOut: true } );
             },
-            clearFilters(){
-                EventBus.$emit('clear-filters');
-            }
         }
     }
 </script>
