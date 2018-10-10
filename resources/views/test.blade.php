@@ -2,7 +2,7 @@
 
 @section('content')
     <div id="app">
-        <router-view></router-view>
+        <router-view @prop('user', $user)></router-view>
     </div>
 @endsection
 

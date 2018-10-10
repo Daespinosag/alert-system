@@ -28,7 +28,7 @@ export default new VueRouter({
         {
             path: '/',
             name: 'layout',
-            component: Vue.component( 'Layout', require( './pages/Layout.vue' ) ),
+            component: Vue.component( 'Layout', require( './pages/Layout.vue' )),
             children: [
                 {
                     path: 'stations',

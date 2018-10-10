@@ -18,22 +18,29 @@ export const typeStation = {
     },
     actions: {
         loadTypeStation( { commit } ){
+
             commit( 'setTypeStationLoadStatus', 1 );
 
-            StationsAPI.getTypeStation()
-                .then( function( response ){
-                    commit( 'setTypeStation', response.data );
-                    commit( 'setTypeStationLoadStatus', 2 );
-                })
-                .catch( function(){
-                    commit( 'setTypeStation', [] );
-                    commit( 'setTypeStationLoadStatus', 3 );
-                });
+            return new Promise((resolve, reject) => {
+
+                StationsAPI.getTypeStation()
+                    .then( function( response ){
+                        commit( 'setTypeStation', response.data );
+                        commit( 'setTypeStationLoadStatus', 2 );
+                        resolve(response);
+                    })
+                    .catch( function(error){
+                        commit( 'setTypeStation', [] );
+                        commit( 'setTypeStationLoadStatus', 3 );
+                        reject(error);
+                    });
+            })
+
         }
     },
     mutations: {
         setTypeStationLoadStatus( state, status ){
-            state.typeStationLoadStatus = status;
+            state.typeStationsLoadStatus = status;
         },
 
         setTypeStation( state, typeStation ){
@@ -42,7 +49,7 @@ export const typeStation = {
     },
     getters: {
         getTypeStationLoadStatus( state ){
-            return state.typeStationLoadStatus;
+            return state.typeStationsLoadStatus;
         },
 
         getTypeStation( state ){

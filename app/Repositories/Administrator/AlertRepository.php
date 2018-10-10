@@ -37,9 +37,21 @@ class AlertRepository extends EloquentRepository
                 ->get();
     }
 
+    /**
+     * @return mixed
+     */
     public function getAlerts()
     {
         return $this->select('*')->where('active','=',true)->get()->toArray();
+    }
+
+    /**
+     * @param array $codes
+     * @return mixed
+     */
+    public function getAlertsWhereIn(array $codes)
+    {
+        return $this->select('*')->where('active','=',true)->whereIn('code',$codes)->get()->toArray();
     }
 
 }

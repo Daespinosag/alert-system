@@ -15,13 +15,15 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'v1'], function()  //,'middleware' => 'auth:api'
 {
-    Route::get('/stations', [ 'as'=>'v1.stations','uses'=>'API\AlertSystemController@getStations']);
+    Route::post('/getAuthUser', [ 'as'=>'v1.getAuthUser','uses'=>'API\AlertSystemController@getAuthUser']);
+
+    Route::post('/stations', [ 'as'=>'v1.stations','uses'=>'API\AlertSystemController@getStations']);
 
     Route::get('/station/{id}', [ 'as'=>'v1.station','uses'=>'API\AlertSystemController@getStation']);
 
     Route::get('/nets', [ 'as'=>'v1.nets','uses'=>'API\AlertSystemController@getNets']);
 
-    Route::get('/alerts', [ 'as'=>'v1.alerts','uses'=>'API\AlertSystemController@getAlerts']);
+    Route::post('/alerts', [ 'as'=>'v1.alerts','uses'=>'API\AlertSystemController@getAlerts']);
 
     Route::get('/typeStation', [ 'as'=>'v1.typeStation','uses'=>'API\AlertSystemController@getTypeStation']);
 

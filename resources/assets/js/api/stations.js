@@ -5,8 +5,8 @@ export default {
     /*
         GET /api/v1/stations
      */
-    getStations: function(){
-        return axios.get( ALERT_SYSTEM_CONFIG.API_URL + '/stations' );
+    getStations: function(alerts){
+        return axios.post( ALERT_SYSTEM_CONFIG.API_URL + '/stations',alerts );
     },
 
     getStation: function (id){
@@ -17,8 +17,8 @@ export default {
         return axios.get(ALERT_SYSTEM_CONFIG.API_URL + '/nets' );
     },
 
-    getAlerts: function () {
-      return axios.get(ALERT_SYSTEM_CONFIG.API_URL + '/alerts' );
+    getAlerts: function (permissions) {
+      return axios.post(ALERT_SYSTEM_CONFIG.API_URL + '/alerts', permissions );
     },
 
     getTypeStation: function () {

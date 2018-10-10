@@ -13,6 +13,7 @@ use App\Repositories\AlertSystem\FloodRepository;
 use App\AlertSystem\Alerts\LandslideAlert;
 use App\AlertSystem\Alerts\FloodAlert;
 use Event;
+use Illuminate\Support\Facades\Auth;
 use Mail;
 use Carbon\Carbon;
 
@@ -39,6 +40,7 @@ class testController extends Controller
 
     public function index()
     {
+        dd( Auth::guard('api')->user());
         /*
         $possibleAlert = ['alert-a25','alert-a10'];
 

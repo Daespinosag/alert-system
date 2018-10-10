@@ -23,7 +23,7 @@ class UserRepository extends EloquentRepository
      * @param string $code
      * @return mixed
      */
-    public function getUserFromConfirmationCode(string $code)
+    public function getUserFromConfirmationCode(string $code) : User
     {
         return $this->select('*')->where('confirmed_code', $code)->where('confirmed', false)->first();
     }
@@ -32,7 +32,7 @@ class UserRepository extends EloquentRepository
      * @param User $user
      * @return User
      */
-    public function confirmedUser(User $user)
+    public function confirmedUser(User $user) : User
     {
         $user->confirmed = true;
         $user->confirmed_code = null;
@@ -53,15 +53,24 @@ class UserRepository extends EloquentRepository
     /**
      * @param string $email
      * @param array $updates
-     * @return
+     * @return mixed
      */
     public function updateFromEmail(string $email, array $updates = [])
     {
         return $this->queryBuilder()->where('email',$email)->update($updates);
     }
 
-    public function getUser($id)
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getUser(int $id) : User
     {
         return $this->select('*')->where('id',$id)->first();
+    }
+
+    public function getCompleteUser(int $id) : User
+    {
+        return $this->select('*')->where('id',$id)->with('permissions')->first();
     }
 }

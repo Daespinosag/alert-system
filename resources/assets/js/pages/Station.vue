@@ -191,8 +191,8 @@
                     // TODO suscribirse a eventos por estacion
                 }
                 if( this.stationLoadStatus === 3 ){
-                    EventBus.$emit('show-error', { notification: 'No fue posible cargar la estación!'} );
                     this.$router.push({ name: 'stations' });
+                    EventBus.$emit('show-error', { notification: 'No fue posible cargar la información para la estación', collapsible : true} );
                 }
             }
         },

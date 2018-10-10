@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () { return view('test'); })->middleware('auth');
+Route::get('/', [ 'as'=> '/' , 'uses' => 'AlertSystem\AlertSystemController@loadVueLayout' ])->middleware('auth');
 
 Route::group(['prefix' => 'test','name' => 'test'], function()
 {

@@ -17,18 +17,24 @@ export const alerts = {
         alertsLoadStatus: 0,
     },
     actions: {
-        loadAlerts( { commit } ){
+        loadAlerts( { commit }, permissions ){
+
             commit( 'setAlertsLoadStatus', 1 );
 
-            StationsAPI.getAlerts()
-                .then( function( response ){
-                    commit( 'setAlerts', response.data );
-                    commit( 'setAlertsLoadStatus', 2 );
-                })
-                .catch( function(){
-                    commit( 'setAlerts', [] );
-                    commit( 'setAlertsLoadStatus', 3 );
-                });
+            return new Promise((resolve, reject) => {
+                StationsAPI.getAlerts(permissions)
+                    .then( function( response ){
+                        commit( 'setAlerts', response.data );
+                        commit( 'setAlertsLoadStatus', 2 );
+                        resolve(response);
+
+                    })
+                    .catch( function(error){
+                        commit( 'setAlerts', [] );
+                        commit( 'setAlertsLoadStatus', 3 );
+                        reject(error);
+                    });
+            });
         }
     },
     mutations: {

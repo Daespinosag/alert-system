@@ -3,7 +3,7 @@
 namespace App\Entities\AlertSystem;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Entities\AlertSystem\User;
 
 class Role extends Model
 {
@@ -24,5 +24,13 @@ class Role extends Model
     protected $dates = [
         'created_at', 'updated_at'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function originalState()
+    {
+        return $this->hasOne(User::class,'user_id','id');
+    }
 
 }

@@ -11,10 +11,10 @@ use App\Repositories\AlertSystem\FloodRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
 use App\Repositories\Administrator\StationTypeRepository;
 use Carbon\Carbon;
-use function Couchbase\defaultDecoder;
 use Illuminate\Http\Request;
 use App\AlertSystem\Alerts\FloodAlert;
 use App\AlertSystem\Alerts\LandslideAlert;
+use Illuminate\Support\Facades\Auth;
 
 class AlertSystemController extends Controller
 {
@@ -84,11 +84,12 @@ class AlertSystemController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return mixed
      */
-    public function getStations()
+    public function getStations(Request $request)
     {
-        $possibleAlert = ['alert-a25','alert-a10']; # TODO esto debe entrar por parametro dependiando de las alertas permitidas para un usuario
+        $possibleAlert = array_column($request->get('alerts'),'code');
 
         $stations = $this->stationRepository->getStationsFromAlertsForMaps($possibleAlert);
 
@@ -164,9 +165,18 @@ class AlertSystemController extends Controller
     }
 
 
-    public function getAlerts()
+    public function getAlerts(Request $request)
     {
-        return $this->alertRepository->getAlerts();
+        $permissions =  $request->get('permissions');
+        $arr = [];
+
+        foreach ($permissions as $permission){
+            if ($permission['pivot']['active'] and $permission['type'] == 'permission-alert'){
+                array_push($arr, str_replace("permission-","alert-",$permission['code']) );
+            }
+        }
+
+        return (count($arr) > 0 ) ? $this->alertRepository->getAlertsWhereIn($arr) : null ;
     }
 
     public function getTypeStation()
@@ -231,6 +241,11 @@ class AlertSystemController extends Controller
 
         return ['result'=> $object,'columns'=> $columns];
 
+    }
+
+    public function getAuthUser()
+    {
+        return Auth::guard('api')->user();
     }
 
     /**

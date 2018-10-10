@@ -22,18 +22,22 @@ export const stations = {
         stationsView : 'map'
     },
     actions: {
-        loadStations( { commit } ){
+        loadStations( { commit }, alerts ){
             commit( 'setStationsLoadStatus', 1 );
 
-            StationsAPI.getStations()
-                .then( function( response ){
-                    commit( 'setStations', response.data );
-                    commit( 'setStationsLoadStatus', 2 );
-                })
-                .catch( function(){
-                    commit( 'setStations', [] );
-                    commit( 'setStationsLoadStatus', 3 );
-                });
+            return new Promise((resolve, reject) => {
+                StationsAPI.getStations(alerts)
+                    .then( function( response ){
+                        commit( 'setStations', response.data );
+                        commit( 'setStationsLoadStatus', 2 );
+                        resolve(response);
+                    })
+                    .catch( function(error){
+                        commit( 'setStations', [] );
+                        commit( 'setStationsLoadStatus', 3 );
+                        reject(error);
+                    });
+            });
         },
         loadStation( { commit }, data ){
             commit( 'setStationLoadStatus', 1 );
