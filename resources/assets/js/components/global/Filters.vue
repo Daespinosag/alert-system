@@ -6,17 +6,9 @@
         position: fixed;
         left: 0;
         bottom: 0;
-        top: 105px;
-
-       /* position: absolute;
-        top: 0px;
-        left: 0px;
-        right: 0px;
-        bottom: 0px;*/
-
+        top: 30px;
         max-width: 550px;
         width: 100%;
-        /*padding-top: 50px;*/
         box-shadow: 0 2px 4px 0 rgba(3,27,78,0.10);
         z-index: 99;
 
@@ -42,7 +34,6 @@
             color: #BABABA;
             font-size: 16px;
             font-family: "Lato", sans-serif;
-            //background-image: url('images/search-icon.svg');
             background-repeat: no-repeat;
             background-position: 6px;
             padding-left: 35px;
@@ -97,11 +88,9 @@
         }
 
         div.brew-method{
-            //font-size: 15px;
             color: #666666;
-            //font-family: "Lato", sans-serif;
             border-radius: 4px;
-            background-color: #e4e4e4;//#F9F9FA;
+            background-color: #e4e4e4;
             width: 180px;
             height: 35px;
             float: left;

@@ -1,11 +1,7 @@
 <style lang="scss">
-    /*div#station-map{
-        width: 100%;
-        height: 400px;
-    }*/
     div#station-map-container{
         position: absolute;
-        top: 100px;
+        top: 5px;
         left: 0px;
         right: 0px;
         bottom: 0px;

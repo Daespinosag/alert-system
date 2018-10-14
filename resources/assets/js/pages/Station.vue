@@ -2,7 +2,7 @@
     div#station-page{
         position: absolute;
         right: 30px;
-        top: 125px;
+        top: 30px;
         background: #FFFFFF;
         box-shadow: 0 2px 4px 0 rgba(3,27,78,0.10);
         width: 100%;

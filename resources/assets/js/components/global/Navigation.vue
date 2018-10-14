@@ -9,7 +9,7 @@
         </div>
 
         <div class="firstMenu">
-            <ul class="socialLinks hidden-xs">
+            <!--<ul class="socialLinks hidden-xs">
                 <li>
                     <a href="https://www.facebook.com/UNColombia" target="_blank" class="facebook" title="Página oficial en Facebook"></a>
                 </li>
@@ -22,37 +22,21 @@
                 <li>
                     <a href="http://agenciadenoticias.unal.edu.co/nc/sus/type/rss2.html" target="_blank" class="rss" title="Suscripción a canales de información RSS"></a>
                 </li>
-            </ul>
+            </ul> -->
             <div class="navbar-default">
                 <nav id="profiles">
                     <ul class="nav navbar-nav dropdown-menu">
-                        <li class="item_Aspirantes #>"><a href="index.html#">Aspirantes</a></li>
-                        <li class="item_Estudiantes #>"><a href="index.html#">Estudiantes</a></li>
-                        <li class="item_Egresados #>"><a href="index.html#">Egresados</a></li>
-                        <li class="item_Docentes #>"><a href="index.html#">Docentes</a></li>
-                        <li class="item_Administrativos #>"><a href="index.html#">Administrativos</a></li>
-                        <li class="item_Egresados #>" v-show="true" ><router-link :to="{ name: 'ConsultAlert' }"><span class="">Consultas</span></router-link></li>
-                        <li class="item_Egresados #>" v-show="true" ><router-link :to="{ name: 'stations' }"><span class="">Inicio</span></router-link></li>
-                        <li class="item_Egresados #>"><a href="http://cdiac.manizales.unal.edu.co/alert-system/logout">Cerrar sesión</a></li>
+                        <li class="item_Egresados #>"><router-link :to="{ name: 'stations' }"><span class=""> Sistemas de Alerta Temprana</span></router-link></li>
+                        <li class="item_Egresados #>" v-show="true" ><router-link :to="{ name: 'ConsultAlert' }" v-show="$route.name != 'ConsultAlert'"><span class="">Consultar Alertas</span></router-link></li>
+                        <li class="item_Egresados #>"><a href="http://cdiac.manizales.unal.edu.co/alert-system/logout">Cerrar Sesión</a></li>
                     </ul>
                 </nav>
             </div>
-        </div>
-        <div id="bs-navbar" class="navbar-collapse collapse navigation"><br>
-            <div class="site-url"><a href=""> Sistemas de Alerta Temprana</a></div>
-            <div class="col-md-7">
-                <div class="col-md-1">
-                    <img class="hidden-print" alt="Escudo de la República de Colombia" src="images/sealColombia.png" width="50" height="50" />
-                    <img class="visible-print margin-img" alt="Escudo de la República de Colombia" src="images/sealColombia_black.png" width="50" height="50" />
-                </div>
-            </div>
-
         </div>
     </div>
 </template>
 
 <script>
-
     export default {
         computed: {},
         methods: {

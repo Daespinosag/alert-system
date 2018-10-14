@@ -4,7 +4,7 @@
             width: 23px;
             position: absolute;
             left: 0px;
-            background-color: white;
+            background-color: #2F3133;
             border-top-right-radius: 3px;
             border-bottom-right-radius: 3px;
             line-height: 90px;

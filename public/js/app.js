@@ -59010,7 +59010,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\ndiv.show-filters {\n    height: 90px;\n    width: 23px;\n    position: absolute;\n    left: 0px;\n    background-color: white;\n    border-top-right-radius: 3px;\n    border-bottom-right-radius: 3px;\n    line-height: 90px;\n    top: 50%;\n    cursor: pointer;\n    margin-top: -45px;\n    z-index: 9;\n    text-align: center;\n}\n", ""]);
+exports.push([module.i, "\ndiv.show-filters {\n    height: 90px;\n    width: 23px;\n    position: absolute;\n    left: 0px;\n    background-color: #2F3133;\n    border-top-right-radius: 3px;\n    border-bottom-right-radius: 3px;\n    line-height: 90px;\n    top: 50%;\n    cursor: pointer;\n    margin-top: -45px;\n    z-index: 9;\n    text-align: center;\n}\n", ""]);
 
 // exports
 
@@ -59284,22 +59284,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     computed: {},
@@ -59335,163 +59319,61 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "firstMenu" }, [
-      _vm._m(0),
-      _vm._v(" "),
       _c("div", { staticClass: "navbar-default" }, [
         _c("nav", { attrs: { id: "profiles" } }, [
           _c("ul", { staticClass: "nav navbar-nav dropdown-menu" }, [
-            _vm._m(1),
-            _vm._v(" "),
-            _vm._m(2),
-            _vm._v(" "),
-            _vm._m(3),
-            _vm._v(" "),
-            _vm._m(4),
-            _vm._v(" "),
-            _vm._m(5),
-            _vm._v(" "),
             _c(
               "li",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: true,
-                    expression: "true"
-                  }
-                ],
-                staticClass: "item_Egresados #>"
-              },
-              [
-                _c("router-link", { attrs: { to: { name: "ConsultAlert" } } }, [
-                  _c("span", {}, [_vm._v("Consultas")])
-                ])
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "li",
-              {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: true,
-                    expression: "true"
-                  }
-                ],
-                staticClass: "item_Egresados #>"
-              },
+              { staticClass: "item_Egresados #>" },
               [
                 _c("router-link", { attrs: { to: { name: "stations" } } }, [
-                  _c("span", {}, [_vm._v("Inicio")])
+                  _c("span", {}, [_vm._v(" Sistemas de Alerta Temprana")])
                 ])
               ],
               1
             ),
             _vm._v(" "),
-            _vm._m(6)
+            _c(
+              "li",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: true,
+                    expression: "true"
+                  }
+                ],
+                staticClass: "item_Egresados #>"
+              },
+              [
+                _c(
+                  "router-link",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.$route.name != "ConsultAlert",
+                        expression: "$route.name != 'ConsultAlert'"
+                      }
+                    ],
+                    attrs: { to: { name: "ConsultAlert" } }
+                  },
+                  [_c("span", {}, [_vm._v("Consultar Alertas")])]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _vm._m(0)
           ])
         ])
       ])
-    ]),
-    _vm._v(" "),
-    _vm._m(7)
+    ])
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "socialLinks hidden-xs" }, [
-      _c("li", [
-        _c("a", {
-          staticClass: "facebook",
-          attrs: {
-            href: "https://www.facebook.com/UNColombia",
-            target: "_blank",
-            title: "Página oficial en Facebook"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", {
-          staticClass: "twitter",
-          attrs: {
-            href: "https://twitter.com/UNColombia",
-            target: "_blank",
-            title: "Cuenta oficial en Twitter"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", {
-          staticClass: "youtube",
-          attrs: {
-            href: "https://www.youtube.com/channel/UCnE6Zj2llVxcvL5I38B0Ceg",
-            target: "_blank",
-            title: "Canal oficial de Youtube"
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("li", [
-        _c("a", {
-          staticClass: "rss",
-          attrs: {
-            href: "http://agenciadenoticias.unal.edu.co/nc/sus/type/rss2.html",
-            target: "_blank",
-            title: "Suscripción a canales de información RSS"
-          }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "item_Aspirantes #>" }, [
-      _c("a", { attrs: { href: "index.html#" } }, [_vm._v("Aspirantes")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "item_Estudiantes #>" }, [
-      _c("a", { attrs: { href: "index.html#" } }, [_vm._v("Estudiantes")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "item_Egresados #>" }, [
-      _c("a", { attrs: { href: "index.html#" } }, [_vm._v("Egresados")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "item_Docentes #>" }, [
-      _c("a", { attrs: { href: "index.html#" } }, [_vm._v("Docentes")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "item_Administrativos #>" }, [
-      _c("a", { attrs: { href: "index.html#" } }, [_vm._v("Administrativos")])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -59504,54 +59386,9 @@ var staticRenderFns = [
             href: "http://cdiac.manizales.unal.edu.co/alert-system/logout"
           }
         },
-        [_vm._v("Cerrar sesión")]
+        [_vm._v("Cerrar Sesión")]
       )
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "navbar-collapse collapse navigation",
-        attrs: { id: "bs-navbar" }
-      },
-      [
-        _c("br"),
-        _vm._v(" "),
-        _c("div", { staticClass: "site-url" }, [
-          _c("a", { attrs: { href: "" } }, [
-            _vm._v(" Sistemas de Alerta Temprana")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-md-7" }, [
-          _c("div", { staticClass: "col-md-1" }, [
-            _c("img", {
-              staticClass: "hidden-print",
-              attrs: {
-                alt: "Escudo de la República de Colombia",
-                src: "images/sealColombia.png",
-                width: "50",
-                height: "50"
-              }
-            }),
-            _vm._v(" "),
-            _c("img", {
-              staticClass: "visible-print margin-img",
-              attrs: {
-                alt: "Escudo de la República de Colombia",
-                src: "images/sealColombia_black.png",
-                width: "50",
-                height: "50"
-              }
-            })
-          ])
-        ])
-      ]
-    )
   }
 ]
 render._withStripped = true
@@ -59649,7 +59486,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\ndiv.filters-container {\n  background-color: white;\n  position: fixed;\n  left: 0;\n  bottom: 0;\n  top: 105px;\n  /* position: absolute;\n    top: 0px;\n    left: 0px;\n    right: 0px;\n    bottom: 0px;*/\n  max-width: 550px;\n  width: 100%;\n  /*padding-top: 50px;*/\n  box-shadow: 0 2px 4px 0 rgba(3, 27, 78, 0.1);\n  z-index: 99;\n}\ndiv.filters-container span.clear-filters {\n    font-size: 16px;\n    color: #3e8f3e;\n    font-family: \"Lato\", sans-serif;\n    cursor: pointer;\n    display: block;\n    float: left;\n    margin-bottom: 20px;\n}\ndiv.filters-container span.clear-filters img {\n      margin-right: 10px;\n      float: left;\n      margin-top: 6px;\n}\ndiv.filters-container input[type=\"text\"].search-filters {\n    box-shadow: none;\n    border-radius: 3px;\n    color: #BABABA;\n    font-size: 16px;\n    font-family: \"Lato\", sans-serif;\n    background-repeat: no-repeat;\n    background-position: 6px;\n    padding-left: 35px;\n    padding-top: 5px;\n    padding-bottom: 5px;\n}\ndiv.filters-container label.filter-label {\n    font-family: \"Lato\", sans-serif;\n    text-transform: uppercase;\n    font-weight: bold;\n    color: black;\n    margin-top: 20px;\n    margin-bottom: 10px;\n}\ndiv.filters-container div.location-filter {\n    text-align: center;\n    font-family: \"Lato\", sans-serif;\n    font-size: 16px;\n    color: #3e8f3e;\n    border-bottom: 1px solid #3e8f3e;\n    border-top: 1px solid #3e8f3e;\n    border-left: 1px solid #3e8f3e;\n    border-right: 1px solid #3e8f3e;\n    width: 30%;\n    display: inline-block;\n    height: 55px;\n    line-height: 55px;\n    cursor: pointer;\n    margin-bottom: 5px;\n}\ndiv.filters-container div.location-filter.active {\n      color: white;\n      background-color: #3e8f3e;\n}\ndiv.filters-container div.location-filter.all-locations {\n      border-top-left-radius: 3px;\n      border-bottom-left-radius: 3px;\n}\ndiv.filters-container div.location-filter.roasters {\n      border-left: none;\n      border-right: none;\n}\ndiv.filters-container div.location-filter.stations {\n      border-top-right-radius: 3px;\n      border-bottom-right-radius: 3px;\n}\ndiv.filters-container div.brew-method {\n    color: #666666;\n    border-radius: 4px;\n    background-color: #e4e4e4;\n    width: 180px;\n    height: 35px;\n    float: left;\n    margin-right: 10px;\n    margin-bottom: 10px;\n    padding: 7px;\n    cursor: pointer;\n    position: relative;\n}\ndiv.filters-container div.brew-method.active {\n      color: white;\n      background-color: #3e8f3e;\n}\ndiv.filters-container div.brew-method div.brew-method-container {\n      position: absolute;\n      top: 50%;\n      transform: translateY(-50%);\n}\ndiv.filters-container div.brew-method div.brew-method-container img.brew-method-icon {\n        display: inline-block;\n        margin-right: 10px;\n        margin-left: 5px;\n        width: 20px;\n        max-height: 30px;\n}\ndiv.filters-container div.brew-method div.brew-method-container span.brew-method-name {\n        display: inline-block;\n        width: calc( 100% - 40px);\n        vertical-align: middle;\n}\ndiv.filters-container span.liked-location-label {\n    color: #666666;\n    font-size: 16px;\n    font-family: \"Lato\", sans-serif;\n    margin-left: 10px;\n}\ndiv.filters-container div.station-grid-container {\n    /*overflow: auto;\n        padding-bottom: 10px;*/\n}\ndiv.filters-container div.close-filters {\n    height: 90px;\n    width: 23px;\n    position: absolute;\n    right: -20px;\n    background-color: white;\n    border-top-right-radius: 3px;\n    border-bottom-right-radius: 3px;\n    line-height: 90px;\n    top: 50%;\n    cursor: pointer;\n    margin-top: -82px;\n    text-align: center;\n}\ndiv.filters-container span.no-results {\n    display: block;\n    text-align: center;\n    margin-top: 50px;\n    color: #666666;\n    text-transform: uppercase;\n    font-weight: 600;\n}\n\n/* Small only */\n@media screen and (max-width: 39.9375em) {\ndiv.filters-container {\n    padding-top: 25px;\n    overflow-y: auto;\n}\ndiv.filters-container span.clear-filters {\n      display: block;\n}\ndiv.filters-container div.station-grid-container {\n      height: inherit;\n}\ndiv.filters-container div.close-filters {\n      display: none;\n}\n}\n\n/* Medium only */\n/* Large only */\n", ""]);
+exports.push([module.i, "\ndiv.filters-container {\n  background-color: white;\n  position: fixed;\n  left: 0;\n  bottom: 0;\n  top: 30px;\n  max-width: 550px;\n  width: 100%;\n  box-shadow: 0 2px 4px 0 rgba(3, 27, 78, 0.1);\n  z-index: 99;\n}\ndiv.filters-container span.clear-filters {\n    font-size: 16px;\n    color: #3e8f3e;\n    font-family: \"Lato\", sans-serif;\n    cursor: pointer;\n    display: block;\n    float: left;\n    margin-bottom: 20px;\n}\ndiv.filters-container span.clear-filters img {\n      margin-right: 10px;\n      float: left;\n      margin-top: 6px;\n}\ndiv.filters-container input[type=\"text\"].search-filters {\n    box-shadow: none;\n    border-radius: 3px;\n    color: #BABABA;\n    font-size: 16px;\n    font-family: \"Lato\", sans-serif;\n    background-repeat: no-repeat;\n    background-position: 6px;\n    padding-left: 35px;\n    padding-top: 5px;\n    padding-bottom: 5px;\n}\ndiv.filters-container label.filter-label {\n    font-family: \"Lato\", sans-serif;\n    text-transform: uppercase;\n    font-weight: bold;\n    color: black;\n    margin-top: 20px;\n    margin-bottom: 10px;\n}\ndiv.filters-container div.location-filter {\n    text-align: center;\n    font-family: \"Lato\", sans-serif;\n    font-size: 16px;\n    color: #3e8f3e;\n    border-bottom: 1px solid #3e8f3e;\n    border-top: 1px solid #3e8f3e;\n    border-left: 1px solid #3e8f3e;\n    border-right: 1px solid #3e8f3e;\n    width: 30%;\n    display: inline-block;\n    height: 55px;\n    line-height: 55px;\n    cursor: pointer;\n    margin-bottom: 5px;\n}\ndiv.filters-container div.location-filter.active {\n      color: white;\n      background-color: #3e8f3e;\n}\ndiv.filters-container div.location-filter.all-locations {\n      border-top-left-radius: 3px;\n      border-bottom-left-radius: 3px;\n}\ndiv.filters-container div.location-filter.roasters {\n      border-left: none;\n      border-right: none;\n}\ndiv.filters-container div.location-filter.stations {\n      border-top-right-radius: 3px;\n      border-bottom-right-radius: 3px;\n}\ndiv.filters-container div.brew-method {\n    color: #666666;\n    border-radius: 4px;\n    background-color: #e4e4e4;\n    width: 180px;\n    height: 35px;\n    float: left;\n    margin-right: 10px;\n    margin-bottom: 10px;\n    padding: 7px;\n    cursor: pointer;\n    position: relative;\n}\ndiv.filters-container div.brew-method.active {\n      color: white;\n      background-color: #3e8f3e;\n}\ndiv.filters-container div.brew-method div.brew-method-container {\n      position: absolute;\n      top: 50%;\n      transform: translateY(-50%);\n}\ndiv.filters-container div.brew-method div.brew-method-container img.brew-method-icon {\n        display: inline-block;\n        margin-right: 10px;\n        margin-left: 5px;\n        width: 20px;\n        max-height: 30px;\n}\ndiv.filters-container div.brew-method div.brew-method-container span.brew-method-name {\n        display: inline-block;\n        width: calc( 100% - 40px);\n        vertical-align: middle;\n}\ndiv.filters-container span.liked-location-label {\n    color: #666666;\n    font-size: 16px;\n    font-family: \"Lato\", sans-serif;\n    margin-left: 10px;\n}\ndiv.filters-container div.station-grid-container {\n    /*overflow: auto;\n        padding-bottom: 10px;*/\n}\ndiv.filters-container div.close-filters {\n    height: 90px;\n    width: 23px;\n    position: absolute;\n    right: -20px;\n    background-color: white;\n    border-top-right-radius: 3px;\n    border-bottom-right-radius: 3px;\n    line-height: 90px;\n    top: 50%;\n    cursor: pointer;\n    margin-top: -82px;\n    text-align: center;\n}\ndiv.filters-container span.no-results {\n    display: block;\n    text-align: center;\n    margin-top: 50px;\n    color: #666666;\n    text-transform: uppercase;\n    font-weight: 600;\n}\n\n/* Small only */\n@media screen and (max-width: 39.9375em) {\ndiv.filters-container {\n    padding-top: 25px;\n    overflow-y: auto;\n}\ndiv.filters-container span.clear-filters {\n      display: block;\n}\ndiv.filters-container div.station-grid-container {\n      height: inherit;\n}\ndiv.filters-container div.close-filters {\n      display: none;\n}\n}\n\n/* Medium only */\n/* Large only */\n", ""]);
 
 // exports
 
@@ -59661,17 +59498,6 @@ exports.push([module.i, "\ndiv.filters-container {\n  background-color: white;\n
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__event_bus_js__ = __webpack_require__(16);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -60512,7 +60338,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\ndiv#menu-button {\n  background-color: #196c4b;\n  width: 56px;\n  height: 56px;\n  border-radius: 50px;\n  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);\n  text-align: center;\n  z-index: 9;\n  cursor: pointer;\n  position: absolute;\n  right: 60px;\n  bottom: 30px;\n  color: white;\n  line-height: 50px;\n  font-size: 40px;\n}\n", ""]);
+exports.push([module.i, "\n.menu-button {\n  background-color: #196c4b;\n  width: 100px;\n  height: 25px;\n  border-radius: 5px;\n  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);\n  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);\n  text-align: center;\n  z-index: 9;\n  cursor: pointer;\n  position: absolute;\n  top: 60px;\n  color: white;\n  padding: 5px 20px;\n  left: 250px;\n}\n.initial-position {\n  left: 250px;\n}\n.active-position {\n  left: 570px;\n}\n", ""]);
 
 // exports
 
@@ -60548,10 +60374,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            initialClass: 'initial-position',
+            activeClass: 'active-position',
+            menuButton: 'menu-button',
+            isActive: true
+        };
+    },
+
     computed: {
         showFilters: function showFilters() {
             return this.$store.getters.getShowFilters;
@@ -60578,14 +60422,40 @@ var render = function() {
   return _c(
     "div",
     {
-      attrs: { id: "menu-button" },
+      directives: [
+        {
+          name: "show",
+          rawName: "v-show",
+          value: _vm.$route.name == "stations",
+          expression: "$route.name == 'stations'"
+        }
+      ],
+      class: [
+        {
+          "initial-position": !this.showFilters,
+          "active-position": this.showFilters
+        },
+        "menu-button"
+      ],
       on: {
         click: function($event) {
           _vm.toggleShowFilters()
         }
       }
     },
-    [_vm._v(" +")]
+    [
+      _c(
+        "i",
+        {
+          class: {
+            "fa fa-angle-double-right": !this.showFilters,
+            "fa fa-angle-double-left": this.showFilters
+          },
+          attrs: { "aria-hidden": "true" }
+        },
+        [_vm._v(" Filtros")]
+      )
+    ]
   )
 }
 var staticRenderFns = []
@@ -60879,7 +60749,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "/*div#station-map{\n    width: 100%;\n    height: 400px;\n}*/\ndiv#station-map-container {\n  position: absolute;\n  top: 100px;\n  left: 0px;\n  right: 0px;\n  bottom: 0px;\n}\ndiv#station-map-container div#station-map {\n    position: absolute;\n    top: 0px;\n    left: 0px;\n    right: 0px;\n    bottom: 0px;\n}\ndiv#station-map-container div.station-info-window div.station-name {\n    display: block;\n    text-align: center;\n    color: #2b542c;\n    font-family: 'Josefin Sans', sans-serif;\n}\ndiv#station-map-container div.station-info-window div.station-address {\n    display: block;\n    text-align: center;\n    margin-top: 5px;\n    color: #1f648b;\n    font-family: 'Lato', sans-serif;\n}\ndiv#station-map-container div.station-info-window div.station-address span.street {\n      font-size: 14px;\n      display: block;\n}\ndiv#station-map-container div.station-info-window div.station-address span.city {\n      font-size: 12px;\n}\ndiv#station-map-container div.station-info-window div.station-address span.state {\n      font-size: 12px;\n}\ndiv#station-map-container div.station-info-window div.station-address span.zip {\n      font-size: 12px;\n      display: block;\n}\ndiv#station-map-container div.station-info-window div.station-address a {\n      color: #FFFFFF;\n      font-weight: bold;\n}\n", ""]);
+exports.push([module.i, "\ndiv#station-map-container {\n  position: absolute;\n  top: 5px;\n  left: 0px;\n  right: 0px;\n  bottom: 0px;\n}\ndiv#station-map-container div#station-map {\n    position: absolute;\n    top: 0px;\n    left: 0px;\n    right: 0px;\n    bottom: 0px;\n}\ndiv#station-map-container div.station-info-window div.station-name {\n    display: block;\n    text-align: center;\n    color: #2b542c;\n    font-family: 'Josefin Sans', sans-serif;\n}\ndiv#station-map-container div.station-info-window div.station-address {\n    display: block;\n    text-align: center;\n    margin-top: 5px;\n    color: #1f648b;\n    font-family: 'Lato', sans-serif;\n}\ndiv#station-map-container div.station-info-window div.station-address span.street {\n      font-size: 14px;\n      display: block;\n}\ndiv#station-map-container div.station-info-window div.station-address span.city {\n      font-size: 12px;\n}\ndiv#station-map-container div.station-info-window div.station-address span.state {\n      font-size: 12px;\n}\ndiv#station-map-container div.station-info-window div.station-address span.zip {\n      font-size: 12px;\n      display: block;\n}\ndiv#station-map-container div.station-info-window div.station-address a {\n      color: #FFFFFF;\n      font-weight: bold;\n}\n", ""]);
 
 // exports
 
@@ -60895,10 +60765,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_filters_StationTextFilter_js__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mixins_filters_StationAlertFilter__ = __webpack_require__(92);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mixins_filters_StationTypeFilter__ = __webpack_require__(93);
-//
-//
-//
-//
 //
 //
 //
@@ -61789,7 +61655,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\ndiv#toggle-stations-view {\n  position: absolute;\n  z-index: 999999;\n  right: 45px;\n  top: 110px;\n  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);\n  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);\n  border-radius: 5px;\n}\ndiv#toggle-stations-view span.toggle-button {\n    cursor: pointer;\n    display: inline-block;\n    padding: 5px 20px;\n    background-color: #FFFFFF;\n    font-family: \"Lato\", sans-serif;\n    text-align: center;\n}\ndiv#toggle-stations-view span.toggle-button.map-view {\n      border-top-left-radius: 5px;\n      border-bottom-left-radius: 5px;\n}\ndiv#toggle-stations-view span.toggle-button.map-view.active {\n        color: white;\n        background-color: #3d3d3d;\n}\ndiv#toggle-stations-view span.toggle-button.list-view {\n      border-top-right-radius: 5px;\n      border-bottom-right-radius: 5px;\n}\ndiv#toggle-stations-view span.toggle-button.list-view.active {\n        color: white;\n        background-color: #3d3d3d;\n}\n", ""]);
+exports.push([module.i, "\ndiv#toggle-stations-view {\n  position: absolute;\n  z-index: 999999;\n  right: 45px;\n  top: 60px;\n  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);\n  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);\n  border-radius: 5px;\n}\ndiv#toggle-stations-view span.toggle-button {\n    cursor: pointer;\n    display: inline-block;\n    padding: 5px 20px;\n    background-color: #FFFFFF;\n    font-family: \"Lato\", sans-serif;\n    text-align: center;\n}\ndiv#toggle-stations-view span.toggle-button.map-view {\n      border-top-left-radius: 5px;\n      border-bottom-left-radius: 5px;\n}\ndiv#toggle-stations-view span.toggle-button.map-view.active {\n        color: white;\n        background-color: #3d3d3d;\n}\ndiv#toggle-stations-view span.toggle-button.list-view {\n      border-top-right-radius: 5px;\n      border-bottom-right-radius: 5px;\n}\ndiv#toggle-stations-view span.toggle-button.list-view.active {\n        color: white;\n        background-color: #3d3d3d;\n}\n", ""]);
 
 // exports
 
@@ -62070,7 +61936,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\ndiv#station-page {\n  position: absolute;\n  right: 30px;\n  top: 125px;\n  background: #FFFFFF;\n  box-shadow: 0 2px 4px 0 rgba(3, 27, 78, 0.1);\n  width: 100%;\n  max-width: 480px;\n  padding: 20px;\n  padding-top: 10px;\n}\ndiv#station-page img.close-icon {\n    float: right;\n    cursor: pointer;\n    margin-top: 10px;\n}\ndiv#station-page h2.station-title {\n    color: #342C0C;\n    font-size: 36px;\n    line-height: 44px;\n    font-family: \"Lato\", sans-serif;\n    font-weight: bolder;\n}\ndiv#station-page span.location-number {\n    display: inline-block;\n    color: #8E8E8E;\n    font-size: 18px;\n}\ndiv#station-page span.location-number span.location-image-container {\n      width: 35px;\n      text-align: center;\n      display: inline-block;\n}\ndiv#station-page label.station-label {\n    font-family: \"Lato\", sans-serif;\n    text-transform: uppercase;\n    font-weight: bold;\n    color: black;\n    margin-top: 20px;\n    margin-bottom: 10px;\n}\ndiv#station-page div.location-type {\n    color: white;\n    font-family: \"Lato\", sans-serif;\n    font-size: 16px;\n    width: 105px;\n    height: 45px;\n    text-align: center;\n    line-height: 45px;\n    border-radius: 3px;\n}\ndiv#station-page div.location-type img {\n      margin-right: 5px;\n}\ndiv#station-page div.location-type.roaster {\n      background-color: #a6ffa1;\n}\ndiv#station-page div.location-type.station {\n      background-color: #3D281E;\n}\ndiv#station-page div.location-type.station img {\n        margin-top: -6px;\n}\ndiv#station-page div.brew-method {\n    font-size: 16px;\n    color: #666666;\n    font-family: \"Lato\", sans-serif;\n    border-radius: 4px;\n    background-color: #F9F9FA;\n    width: 150px;\n    height: 57px;\n    float: left;\n    margin-right: 10px;\n    margin-bottom: 10px;\n    padding: 5px;\n    cursor: pointer;\n    position: relative;\n}\ndiv#station-page div.brew-method div.brew-method-container {\n      position: absolute;\n      top: 50%;\n      transform: translateY(-50%);\n}\ndiv#station-page div.brew-method div.brew-method-container img.brew-method-icon {\n        display: inline-block;\n        margin-right: 10px;\n        margin-left: 5px;\n        width: 20px;\n        max-height: 30px;\n}\ndiv#station-page div.brew-method div.brew-method-container span.brew-method-name {\n        display: inline-block;\n        width: calc( 100% - 40px);\n        vertical-align: middle;\n}\ndiv#station-page div.address-container {\n    color: #666666;\n    font-size: 18px;\n    line-height: 23px;\n    font-family: \"Lato\", sans-serif;\n    margin-bottom: 5px;\n}\ndiv#station-page div.address-container span.address {\n      display: block;\n}\ndiv#station-page div.address-container span.city-state {\n      display: block;\n}\ndiv#station-page div.address-container span.zip {\n      display: block;\n}\ndiv#station-page a.station-website {\n    font-family: \"Lato\", sans-serif;\n    color: #543729;\n    font-size: 18px;\n}\ndiv#station-page a.suggest-station-edit {\n    font-family: \"Lato\", sans-serif;\n    color: #054E7A;\n    font-size: 14px;\n    display: inline-block;\n    margin-top: 30px;\n    text-decoration: underline;\n}\n\n/* Small only */\n@media screen and (max-width: 39.9375em) {\ndiv#station-page {\n    position: fixed;\n    right: 0px;\n    left: 0px;\n    top: 0px;\n    bottom: 0px;\n    z-index: 99999;\n}\n}\n\n/* Medium only */\n/* Large only */\n", ""]);
+exports.push([module.i, "\ndiv#station-page {\n  position: absolute;\n  right: 30px;\n  top: 30px;\n  background: #FFFFFF;\n  box-shadow: 0 2px 4px 0 rgba(3, 27, 78, 0.1);\n  width: 100%;\n  max-width: 480px;\n  padding: 20px;\n  padding-top: 10px;\n}\ndiv#station-page img.close-icon {\n    float: right;\n    cursor: pointer;\n    margin-top: 10px;\n}\ndiv#station-page h2.station-title {\n    color: #342C0C;\n    font-size: 36px;\n    line-height: 44px;\n    font-family: \"Lato\", sans-serif;\n    font-weight: bolder;\n}\ndiv#station-page span.location-number {\n    display: inline-block;\n    color: #8E8E8E;\n    font-size: 18px;\n}\ndiv#station-page span.location-number span.location-image-container {\n      width: 35px;\n      text-align: center;\n      display: inline-block;\n}\ndiv#station-page label.station-label {\n    font-family: \"Lato\", sans-serif;\n    text-transform: uppercase;\n    font-weight: bold;\n    color: black;\n    margin-top: 20px;\n    margin-bottom: 10px;\n}\ndiv#station-page div.location-type {\n    color: white;\n    font-family: \"Lato\", sans-serif;\n    font-size: 16px;\n    width: 105px;\n    height: 45px;\n    text-align: center;\n    line-height: 45px;\n    border-radius: 3px;\n}\ndiv#station-page div.location-type img {\n      margin-right: 5px;\n}\ndiv#station-page div.location-type.roaster {\n      background-color: #a6ffa1;\n}\ndiv#station-page div.location-type.station {\n      background-color: #3D281E;\n}\ndiv#station-page div.location-type.station img {\n        margin-top: -6px;\n}\ndiv#station-page div.brew-method {\n    font-size: 16px;\n    color: #666666;\n    font-family: \"Lato\", sans-serif;\n    border-radius: 4px;\n    background-color: #F9F9FA;\n    width: 150px;\n    height: 57px;\n    float: left;\n    margin-right: 10px;\n    margin-bottom: 10px;\n    padding: 5px;\n    cursor: pointer;\n    position: relative;\n}\ndiv#station-page div.brew-method div.brew-method-container {\n      position: absolute;\n      top: 50%;\n      transform: translateY(-50%);\n}\ndiv#station-page div.brew-method div.brew-method-container img.brew-method-icon {\n        display: inline-block;\n        margin-right: 10px;\n        margin-left: 5px;\n        width: 20px;\n        max-height: 30px;\n}\ndiv#station-page div.brew-method div.brew-method-container span.brew-method-name {\n        display: inline-block;\n        width: calc( 100% - 40px);\n        vertical-align: middle;\n}\ndiv#station-page div.address-container {\n    color: #666666;\n    font-size: 18px;\n    line-height: 23px;\n    font-family: \"Lato\", sans-serif;\n    margin-bottom: 5px;\n}\ndiv#station-page div.address-container span.address {\n      display: block;\n}\ndiv#station-page div.address-container span.city-state {\n      display: block;\n}\ndiv#station-page div.address-container span.zip {\n      display: block;\n}\ndiv#station-page a.station-website {\n    font-family: \"Lato\", sans-serif;\n    color: #543729;\n    font-size: 18px;\n}\ndiv#station-page a.suggest-station-edit {\n    font-family: \"Lato\", sans-serif;\n    color: #054E7A;\n    font-size: 14px;\n    display: inline-block;\n    margin-top: 30px;\n    text-decoration: underline;\n}\n\n/* Small only */\n@media screen and (max-width: 39.9375em) {\ndiv#station-page {\n    position: fixed;\n    right: 0px;\n    left: 0px;\n    top: 0px;\n    bottom: 0px;\n    z-index: 99999;\n}\n}\n\n/* Medium only */\n/* Large only */\n", ""]);
 
 // exports
 
