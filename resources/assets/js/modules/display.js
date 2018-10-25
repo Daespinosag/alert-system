@@ -2,6 +2,7 @@ export const display = {
     state: {
         showFilters: false,
         showPopOut: false,
+        existenceFiltersActive: false,
     },
 
     actions: {
@@ -21,7 +22,12 @@ export const display = {
 
         setShowPopOut( state, show ){
             state.showPopOut = show;
+        },
+
+        setExistenceFiltersActive(state,show){
+            state.existenceFiltersActive = show;
         }
+
     },
 
     getters: {
@@ -31,6 +37,11 @@ export const display = {
 
         getShowPopOut( state ){
             return state.showPopOut;
+        },
+
+        getExistenceFiltersActive(state){
+            return state.existenceFiltersActive;
         }
+
     }
 }

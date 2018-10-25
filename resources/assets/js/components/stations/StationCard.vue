@@ -46,6 +46,13 @@
             }
         }
 
+        .alert-state{
+            border-radius: 10px;
+            width: 20px;
+            height: 20px;
+
+        }
+
         &:hover{
             -webkit-transform: scaleX(1.041) scaleY(1.041);
             transform: scaleX(1.041) scaleY(1.041);
@@ -55,15 +62,19 @@
 </style>
 
 <template>
-    <div class="col-md-5 station-card-container" v-show="show">
+    <div class="col-md-5 station-card-container" v-show="show && station.active"><!-- v-show="show" -->
         <router-link :to="{ name: 'station', params: { id: station.id } }" v-on:click.native="panToLocation( station )">
             <div class="station-card">
                 <span class="title">{{ station.name }}</span>
                 <span class="address">
-          <span class="street">{{ station.city }}</span>
-          <span class="city">{{ station.basin }}</span> <span class="state">{{ station.sub_basin }}</span>
-          <span class="zip">{{ station.localization }}</span>
-        </span>
+                    <span class="street">{{ station.city }}</span>
+                    <span class="city">{{ station.basin }}</span> <span class="state">{{ station.sub_basin }}</span>
+                </span>
+
+                <span v-for="alert in station.alerts" :key="alert.id" class="address">
+                   <span>{{ alert.name }}</span> : <span>{{ (alert.value !== null) ? alert.value[alert.code.replace('alert-','')+'_value'] : '-' }}</span> <span class="pull-right alert-state" v-bind:style="{'background-color': getColorAlert((alert.value !== null) ? alert.value.alert : -1)}"></span>
+                   <br>
+                </span>
             </div>
         </router-link>
     </div>
@@ -88,45 +99,39 @@
             EventBus.$on('filters-updated', function( filters ){
                 this.processFilters( filters );
             }.bind(this));
+
         },
         methods: {
             processFilters: function (filters) {
                 if (filters.text === null && filters.alert === 'all' && filters.typeStation.length === 0) {
                     this.show = true;
                 } else {
-                    var textPassed = false;
-                    var alertPassed = false;
-                    var typeStationPassed = false;
-
-                    if( filters.text !== null && this.processStationTextFilter(this.station, filters.text )){
-                        textPassed = true;
-                    }else if( filters.text === null ){
-                        textPassed = true;
-                    }
-
-                    if (filters.alert.length !== 0 && this.processStationAlertFilter(this.station, filters.alert)) {
-                        alertPassed = true;
-                    } else if (filters.alert.length === 0) {
-                        alertPassed = true;
-                    }
-
-                    if (filters.typeStation.length !== 0 && this.processStationTypeFilter(this.station, filters.typeStation)) {
-                        typeStationPassed = true;
-                    } else if (filters.typeStation.length === 0) {
-                        typeStationPassed = true;
-                    }
+                    this.show = (this.processStationTextFilter(this.station, filters.text ) && this.processStationAlertFilter(this.station, filters.alert) && this.processStationTypeFilter(this.station, filters.typeStation));
                 }
-
-                if (textPassed && alertPassed && typeStationPassed) {
-                    this.show = true;
-                } else {
-                    this.show = false;
-                }
-
             },
             panToLocation( station ){
 
             },
+            getColorAlert(value){
+                let val = 'gray';
+                switch(value) {
+                    case 0:
+                        val = 'green';
+                        break;
+                    case 1:
+                        val = 'yellow';
+                        break;
+                    case 2:
+                        val = 'orange';
+                        break;
+                    case 3:
+                        val = 'red';
+                        break;
+                    default:
+                        val = 'gray';
+                }
+                return val;
+            }
         }
     }
 </script>

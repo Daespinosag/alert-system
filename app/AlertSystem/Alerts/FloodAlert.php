@@ -2,64 +2,120 @@
 
 namespace App\AlertSystem\Alerts;
 
+use App\Events\AlertEchoCalculatedEvent;
 use App\Repositories\Administrator\AlertRepository;
 use App\Repositories\Administrator\ConnectionRepository;
 use App\Repositories\Administrator\StationRepository;
 use App\Repositories\AlertSystem\FloodRepository;
 use Carbon\Carbon;
-use function Couchbase\defaultDecoder;
+use Illuminate\Database\Eloquent\Collection;
 use Mail;
 
 class FloodAlert extends AlertBase implements AlertInterface
 {
+    /**
+     * @var string
+     */
     public $code = 'a10';
+
     /**
      * @var ConnectionRepository
      */
     public $connectionRepository;
+
     /**
      * @var StationRepository
      */
     public $stationRepository;
+
     /**
      * @var FloodRepository
      */
     public $floodRepository;
+
     /**
      * @var AlertRepository
      */
     public $alertRepository;
 
+    /**
+     * @var int
+     */
     public $constSeconds = 600;
 
+    /**
+     * @var int
+     */
     public $constData = 2;
 
+    /**
+     * @var string
+     */
     public $externalConnection = 'external_connection_alert_system';
 
+    /**
+     * @var bool
+     */
     public $sendEmail = false;
 
+    /**
+     * @var bool
+     */
     public $sendEmailChanges = true;
 
+    /**
+     * @var bool
+     */
     public $sendEventData = false;
 
+    /**
+     * @var bool
+     */
     public $sendEventDataChanges = false;
 
+    /**
+     * @var bool
+     */
     public $insertDatabase = true;
 
+    /**
+     * @var Carbon
+     */
     public $initialDate = null;
 
+    /**
+     * @var Carbon
+     */
     public $finalDate = null;
 
+    /**
+     * @var Collection
+     */
     public $stations = null;
 
+    /**
+     * @var array
+     */
     public $datesRangesSearch = [];
 
+    /**
+     * @var array
+     */
     public $values = [];
 
+    /**
+     * @var array
+     */
     public $valuesChangeAlert = [];
 
+    /**
+     * @var string
+     */
     public $dateExecution = '#';
 
+    /**
+     * @var int
+     */
     public $temporalMultiplication = 10; # TODO esto se quita cuando terminen las pruebas
 
     /**
@@ -125,7 +181,8 @@ class FloodAlert extends AlertBase implements AlertInterface
         }
 
         if ($this->sendEventData){
-            # TODO
+            $data = $this->formatDataToEvent();
+            event(new AlertEchoCalculatedEvent($data));
         }
 
         return $this;

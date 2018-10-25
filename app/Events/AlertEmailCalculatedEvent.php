@@ -10,7 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class AlertFiveMinutesCalculated implements ShouldBroadcast
+class AlertEmailCalculatedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -33,6 +33,6 @@ class AlertFiveMinutesCalculated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('update-alerts');
+        return new PrivateChannel('channel-name');
     }
 }

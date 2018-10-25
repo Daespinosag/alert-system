@@ -2,7 +2,7 @@
 
 namespace App\AlertSystem\Alerts;
 
-use App\Events\AlertFiveMinutesCalculated;
+use App\Events\AlertEchoCalculatedEvent;
 use App\Repositories\Administrator\AlertRepository;
 use App\Repositories\Administrator\StationRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
@@ -119,7 +119,8 @@ class LandslideAlert extends AlertBase implements AlertInterface
 
         # Se encia un evento con las alertas por estacion
         if ($this->sendEventData){
-            // event(new AlertFiveMinutesCalculated($arrayNewValues));
+            $data = $this->formatDataToEvent();
+            event(new AlertEchoCalculatedEvent($data));
         }
 
         # Se inserta en la base de datos la alerta

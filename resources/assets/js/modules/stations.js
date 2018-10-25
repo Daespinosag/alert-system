@@ -75,6 +75,25 @@ export const stations = {
 
         setStationsView(state,view){
             state.stationsView = view;
+        },
+
+        setShowStationInStations(state,value){
+            state.stations[value.position].show = value.show;
+        },
+
+        updateStationAlert(state,data){
+
+            if (state.stations[data.position].alertMax < data.value.values.alert) {
+                state.stations[data.position].alertMax  = data.value.values.alert;
+                state.stations[data.position].iconMax   = (state.stations[data.position].alerts.find(alert => alert.code === 'alert-'+data.value.alert)).icon
+            }
+
+            for (let i = 0; i < state.stations[data.position].alerts.length; i++){
+                if (state.stations[data.position].alerts[i].code === 'alert-'+data.value.alert){
+                    state.stations[data.position].alerts[i].value = data.value.values;
+                    state.stations[data.position].dataMaximumAlert   = state.stations[data.position].alerts[i];
+                }
+            }
         }
     },
     getters: {
@@ -96,6 +115,9 @@ export const stations = {
 
         getStationsView(state){
             return state.stationsView;
+        },
+        getStationById : (state) => (stationId) => {
+            return state.stations.find(station => station.id === stationId);
         }
     }
 }

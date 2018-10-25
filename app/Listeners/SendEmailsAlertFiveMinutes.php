@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
+use App\Events\AlertEmailCalculatedEvent;
 use Mail;
-use App\Events\AlertFiveMinutesCalculated;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -14,18 +14,15 @@ class SendEmailsAlertFiveMinutes
      *
      * @return void
      */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(){/***/}
 
     /**
      * Handle the event.
      *
-     * @param  AlertFiveMinutesCalculated  $event
+     * @param AlertEmailCalculatedEvent $event
      * @return void
      */
-    public function handle(AlertFiveMinutesCalculated $event)
+    public function handle(AlertEmailCalculatedEvent $event)
     {
       Mail::send('emails.contact',['a25ForStations' => $event->valuesA25 ], function ($message){
           $message->to('daespinosag@unal.edu.co','Alert System')->subject('test send emails');

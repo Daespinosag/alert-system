@@ -56,13 +56,18 @@ export const alerts = {
         },
 
         getAlertsForForm(state){
-            var arr = [];
+            let arr = [];
 
-            for (var i = 0; i < state.alerts.length; i++) {
+            for (let i = 0; i < state.alerts.length; i++) {
                 arr.push({ 'value': state.alerts[i].code, 'text' : state.alerts[i].name })
             }
-
             return arr;
+        },
+        getValidateAlertExistence: (state) => (alertCode) =>{
+            for (let i = 0; i < state.alerts.length; i++){
+                if (state.alerts[i].code === alertCode){ return true;}
+            }
+            return false;
         }
     }
 }

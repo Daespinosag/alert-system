@@ -88,9 +88,24 @@
 
         data(){
             return {
-                infoWindows: [],
-                markerImg: 'images/alert-icons/'
+                infoWindows : [],
+                markerImg   : 'images/alert-icons/',
+                markers     : [],
+                map         : null,
             }
+        },
+        mounted() {
+
+            this.createMap();
+            this.includeKmzs();
+
+            this.clearMarkers();
+            this.buildMarkers();
+
+            EventBus.$on('filters-updated', function( filters ){ this.processFilters( filters );}.bind(this));
+        },
+        created() {
+            EventBus.$on('changeAlertMarketColor', function( data ){ this.changeIconMarkers(data); }.bind(this));
         },
         computed: {
             stations(){
@@ -103,22 +118,18 @@
                 this.buildMarkers();
             }
         },
-
         methods: {
             buildMarkers(){
-
-                this.$markers = [];
-
                 for( let i = 0; i < this.stations.length; i++ ){
 
                     let marker = new google.maps.Marker({
                         position: { lat: parseFloat( this.stations[i].latitude ), lng: parseFloat( this.stations[i].longitude ) },
-                        map: this.$map,
+                        map: this.map,
                         icon: this.getIconAlert(this.stations[i]),
                         station: this.stations[i]
                     });
 
-                    this.$markers.push( marker );
+                    this.markers.push( marker );
 
                     let overWindow = new google.maps.InfoWindow({
                         content: this.stations[i].name
@@ -127,11 +138,11 @@
                     this.infoWindows.push( overWindow );
 
                     marker.addListener('mouseover', function() {
-                        overWindow.open(this.$map, this);
+                        overWindow.open(this.map, this);
                     });
 
                     marker.addListener('mouseout', function() {
-                        overWindow.close(this.$map, this);
+                        overWindow.close(this.map, this);
                     });
 
                     let router = this.$router;
@@ -141,18 +152,16 @@
                     });
                 }
             },
-
             clearMarkers(){
-                for(let i = 0; i < this.$markers.length; i++ ){
-                    this.$markers[i].setMap( null );
+                for(let i = 0; i < this.markers.length; i++ ){
+                    this.markers[i].setMap( null );
                 }
             },
-
             getIconAlert(station){
                 let icon = this.markerImg;
                 
                 if (station.dataMaximumAlert !== null){
-                    switch(station.maximumAlert) {
+                    switch(station.alertMax) {
                         case 0:
                             icon += 'green-' + station.dataMaximumAlert.icon;
                             break;
@@ -182,27 +191,27 @@
                 });
             },
             processFilters: function (filters) {
-                for (let i = 0; i < this.$markers.length; i++) {
+                for (let i = 0; i < this.markers.length; i++) {
                     if (filters.text === null && filters.alert === 'all' && filters.typeStation.length === 0) {
-                        this.$markers[i].setMap(this.$map);
+                        this.markers[i].setMap(this.map);
                     } else {
                         var textPassed = false;
                         var alertPassed = false;
                         var typeStationPassed = false;
 
-                        if (filters.text !== null && this.processStationTextFilter(this.$markers[i].station, filters.text)) {
+                        if (filters.text !== null && this.processStationTextFilter(this.markers[i].station, filters.text)) {
                             textPassed = true;
                         } else if (filters.text === null) {
                             textPassed = true;
                         }
 
-                        if (filters.alert.length !== 0 && this.processStationAlertFilter(this.$markers[i].station, filters.alert)) {
+                        if (filters.alert.length !== 0 && this.processStationAlertFilter(this.markers[i].station, filters.alert)) {
                             alertPassed = true;
                         } else if (filters.alert.length === 0) {
                             alertPassed = true;
                         }
 
-                        if (filters.typeStation.length !== 0 && this.processStationTypeFilter(this.$markers[i].station, filters.typeStation)) {
+                        if (filters.typeStation.length !== 0 && this.processStationTypeFilter(this.markers[i].station, filters.typeStation)) {
                             typeStationPassed = true;
                         } else if (filters.typeStation.length === 0) {
                             typeStationPassed = true;
@@ -210,53 +219,58 @@
                     }
 
                     if (textPassed && alertPassed && typeStationPassed) {
-                        this.$markers[i].setMap(this.$map);
+                        this.markers[i].setMap(this.map);
                     } else {
-                        this.$markers[i].setMap(null);
+                        this.markers[i].setMap(null);
                     }
                 }
             },
+            changeIconMarkers(data){
+
+                let station =  this.$store.getters.getStationById(data.stationId);
+                let temporal = this.getIconAlert(station);
+
+                if (this.markers[station.position].icon !== temporal){
+
+                    this.markers[station.position].icon = temporal;
+                    if (this.markers[station.position].map !== null){
+                        this.markers[station.position].setMap(null);
+                        this.markers[station.position].setMap(this.map);
+                    }
+                }
+            },
+            createMap(){
+                this.map = new google.maps.Map(document.getElementById('station-map'), {
+                    center: {lat: this.latitude, lng: this.longitude},
+                    zoom: this.zoom,
+                    streetViewControl: false,
+                    mapTypeControl: false,
+                    disableDefaultUI: true
+                });
+            },
+            includeKmzs(){
+
+                var CaldasDeptoKMZ = new google.maps.KmlLayer({
+                    url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'c-depto.kmz',
+                    map: this.map,
+                    //zoom: this.zoom,
+                    suppressInfoWindows: true,
+                });
+
+                var CaldasMunicipiosKMZ = new google.maps.KmlLayer({
+                    url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'c-m-v2.kmz',
+                    map: this.map,
+                    //zoom: this.zoom,
+                    suppressInfoWindows: true,
+                });
+
+                var PerimetroUrbanoManizalesKMZ = new google.maps.KmlLayer({
+                    url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'm-urban-azul.kmz',
+                    map: this.map,
+                    //zoom: this.zoom,
+                    suppressInfoWindows: true,
+                });
+            }
         },
-
-        mounted(){
-
-            this.$markers = [];
-
-            this.$map = new google.maps.Map(document.getElementById('station-map'), {
-                center: {lat: this.latitude, lng: this.longitude},
-                zoom: this.zoom,
-                streetViewControl: false,
-                mapTypeControl: false,
-                disableDefaultUI: true
-            });
-
-            var CaldasDeptoKMZ = new google.maps.KmlLayer({
-                url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Caldas_Departamento.kmz',
-                map: this.$map,
-                zoom: this.zoom,
-                suppressInfoWindows: true,
-            });
-
-            var CaldasMunicipiosKMZ = new google.maps.KmlLayer({
-                url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Caldas_Municipios_v2.kmz',
-                map: this.$map,
-                zoom: this.zoom,
-                suppressInfoWindows: true,
-            });
-
-            var PerimetroUrbanoManizalesKMZ = new google.maps.KmlLayer({
-                url: ALERT_SYSTEM_CONFIG.URL_IMAGES + 'Manizales_PUrbanoAzul.kmz',
-                map: this.$map,
-                zoom: this.zoom,
-                suppressInfoWindows: true,
-            });
-
-            this.clearMarkers();
-            this.buildMarkers();
-
-            EventBus.$on('filters-updated', function( filters ){
-                this.processFilters( filters );
-            }.bind(this));
-        }
     }
 </script>

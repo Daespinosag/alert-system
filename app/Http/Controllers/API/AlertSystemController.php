@@ -92,11 +92,14 @@ class AlertSystemController extends Controller
         $possibleAlert = array_column($request->get('alerts'),'code');
 
         $stations = $this->stationRepository->getStationsFromAlertsForMaps($possibleAlert);
+        $position = 0;
 
         foreach ($stations as $station)
         {
             $station->maximumAlert = 0;
             $station->dataMaximumAlert = null;
+            $station->show = true;
+            $station->position = $position;
 
             $station->longitude = $this->calculateDecimalCoordinates(
                 $station->longitude_degrees,
@@ -112,23 +115,50 @@ class AlertSystemController extends Controller
                 $station->latitude_direction
             );
 
-            foreach ($station->alerts as $alert){
+            $temporalAlert = -1;
 
-                # TODO ESTO HAY QYE ARREGLARLO PARA QUE SAQUE EL ULTIMO PERO SOLO DE LOS ULTIMOS 5 MINUTOS
-                $alert->value = $this->stationRepository->getUltimateDataInAlertTable($alert->table,$station->id);
+            foreach ($station->alerts as $alert)
+            {
+                if ($alert->active){
 
-                if (!is_null($alert->value)){
-                    if (!is_null($alert->value->alert)){
-                        if ($alert->value->alert >= $station->maximumAlert){
-                            $station->maximumAlert = $alert->value->alert;
-                            $station->dataMaximumAlert = $alert;
+                    # TODO ESTO HAY QYE ARREGLARLO PARA QUE SAQUE EL ULTIMO PERO SOLO DE LOS ULTIMOS 5 MINUTOS
+                    $alert->value = $this->stationRepository->getUltimateDataInAlertTable($alert->table,$station->id);
+
+                    if (!is_null($alert->value)){
+                        if (!is_null($alert->value->alert)){
+                            if ($alert->value->alert >= $station->maximumAlert){
+                                $station->alertMax = $alert->value->alert;
+                                $station->dataMaximumAlert = $alert;
+                                $station->iconMax = $alert->icon;
+
+                                if (!$alert->value->error){
+                                    if ((int)$alert->value->alert > $temporalAlert){
+                                        $temporalAlert = (int)$alert->value->alert;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
+
+            $station->alertMax = $temporalAlert;
+            $station->color = $this->getStationColor($temporalAlert);
+
+            $position++;
         }
 
         return $stations->toArray();
+    }
+
+    public function getStationColor(int $temporalAlert)
+    {
+        if ($temporalAlert == 0){ return 'green';}
+        if ($temporalAlert == 1){ return 'yellow';}
+        if ($temporalAlert == 2){ return 'orange';}
+        if ($temporalAlert == 3){ return 'red';}
+
+        return 'gray';
     }
 
     /**

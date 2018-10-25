@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\AlertSystem;
 
 use App\AlertSystem\Connection\SearchTableInExternalStaticConnection;
+use App\Events\AlertEchoCalculatedEvent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Administrator\ConnectionRepository;
@@ -16,6 +17,7 @@ use Event;
 use Illuminate\Support\Facades\Auth;
 use Mail;
 use Carbon\Carbon;
+use App\Events\AlertFiveMinutesCalculated;
 
 class testController extends Controller
 {
@@ -40,7 +42,9 @@ class testController extends Controller
 
     public function index()
     {
-        dd( Auth::guard('api')->user());
+        //event(new AlertEchoCalculatedEvent(['alert'=>'a10']));
+        //dd('stop');
+        //dd( Auth::guard('api')->user());
         /*
         $possibleAlert = ['alert-a25','alert-a10'];
 
@@ -63,16 +67,17 @@ class testController extends Controller
 #inicio a las 14:35:21
         $configurations = [
             'sendEmail'             => false,
-            'sendEmailChanges'      => true,
-            'insertDatabase'        => true,
-            'sendEventData'         => false,
+            'sendEmailChanges'      => false,
+            'insertDatabase'        => false,
+            'sendEventData'         => true,
             'sendEventDataChanges'  => false,
-            'initialDate'           => Carbon::parse('2017-11-07 23:50:00'),//2017-11-07 00:00:00
-            'finalDate'             => Carbon::parse('2017-11-07 23:50:00'),
+            'initialDate'           => Carbon::parse('2017-11-07 23:55:00'),//2017-11-07 00:00:00
+            'finalDate'             => Carbon::parse('2017-11-07 23:55:00'),
             //'stations'              => [6,105]
         ];
 
 /*
+
         $alertSystem = new FloodAlert(
             new ConnectionRepository(),
             new StationRepository(),
@@ -83,7 +88,7 @@ class testController extends Controller
         $alertSystem->init();
 
         dd($alertSystem,'test controller');
-*/
+
 /*
         $data = $alertSystem->getAlertsDefences();
 

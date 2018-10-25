@@ -18,7 +18,7 @@
 
 <template>
     <div id="app-layout">
-        <div class="show-filters" v-show="!showFilters" v-on:click="toggleShowFilters()">
+        <div class="show-filters" v-show="!showFilters && $route.name  === 'stations'" v-on:click="toggleShowFilters()">
             <img src="images/grey-right.svg"/>
         </div>
 
@@ -65,7 +65,12 @@
                     },
                     error    => { this.sendEvenError('No fue posible cargar la información referente a los tipos de estación. ',false); }
                 );
-            }
+            };
+
+            Echo.channel('alert-system')
+                .listen('AlertEchoCalculatedEvent', (e) => {
+                    this.sendEventUpdateAlerts(e.data);
+                });
         },
         computed: {
             showFilters(){
@@ -78,6 +83,26 @@
             },
             sendEvenError(notification,collapsible){
                 EventBus.$emit('show-error', { notification : notification, collapsible : collapsible });
+            },
+            sendEventUpdateAlerts(values){
+                if (this.$store.getters.getValidateAlertExistence('alert-'+values[0].alert)){
+                    for (let i = 0; i < values.length; i++) {
+                        let station = this.$store.getters.getStationById(values[i].station);
+
+                        if (station !== null){
+                            this.$store.commit('updateStationAlert',{value: values[i], position: station.position});
+
+                            EventBus.$emit('changeAlertMarketColor', {
+                                code    : values[i].alert,
+                                alert   : values[i].values['alert'],
+                                stationId : station.id,
+                            });
+
+                        }else {
+                            // TODO error no se encontro la posicion de la estacion
+                        }
+                    }
+                }
             }
         },
     }

@@ -1,19 +1,35 @@
 <style lang="scss">
+    .station-list-container{
+        align-items: center;
+        display: flex;
+        margin-top: 100px;
+
+    }
+    .load-without-filters{
+        width: 90%;
+        margin-left: 10%
+    }
+
+    .load-with-filters{
+        width: 55%;
+        margin-left: 45%
+    }
 
 </style>
 
 <template>
-    <b-container class="station-list-container">
-        <b-row class = "text-center">
-            <b-col class="station-grid-container" id="station-grid">
-                <station-card v-for="station in stations" :key="station.id" :station="station"></station-card>
-                <b-col>
-                    <span class="no-results" v-if="shownCount === 0">No Hay Resultados</span>
+    <div  v-bind:class="[ this.showFilters ? 'load-with-filters' : 'load-without-filters', 'station-list-container' ]">
+        <b-container>
+            <b-row class = "text-center">
+                <b-col class="station-grid-container" id="station-grid">
+                    <station-card v-for="station in stations" :key="station.id" :station="station"></station-card>
+                    <b-col>
+                        <span class="no-results" v-if="shownCount === 0">No Hay Resultados</span>
+                    </b-col>
                 </b-col>
-            </b-col>
-        </b-row>
-    </b-container>
-
+            </b-row>
+        </b-container>
+    </div>
 </template>
 
 <script>
@@ -37,6 +53,9 @@
         computed: {
             stations(){
                 return this.$store.getters.getStations;
+            },
+            showFilters(){
+                return this.$store.getters.getShowFilters;
             }
         },
 

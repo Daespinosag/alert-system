@@ -10,20 +10,20 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class AlertFiveMinutesCalculated implements ShouldBroadcast
+class AlertEchoCalculatedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $valuesA25;
+    public $data;
 
     /**
      * Create a new event instance.
      *
-     * @param $valuesA25
+     * @param $data
      */
-    public function __construct($valuesA25)
+    public function __construct($data)
     {
-        $this->valuesA25 = $valuesA25;
+        $this->data = $data;
     }
 
     /**
@@ -33,6 +33,6 @@ class AlertFiveMinutesCalculated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('update-alerts');
+        return new Channel('alert-system');
     }
 }

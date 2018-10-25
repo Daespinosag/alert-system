@@ -201,9 +201,7 @@
                 <img src="images/grey-left.svg"/>
             </div>
             <div class="col-md-4 col-md-offset-8">
-                 <span class="clear-filters" v-show="showFilters" v-on:click="clearFilters()">
-                    <img src="images/clear-filters-icon.svg"/> Borrar Filtros
-                </span>
+                <br><br><br><!-- TODO espacio para el menu de cambio -->
             </div>
             <div class="col-md-12" id="text-container">
                <input type="text" class="search-filters form-control" v-model="textSearch" placeholder="Buscar Estaciones"/>
@@ -254,7 +252,6 @@
                 textSearch: '',
                 activeAlertFilter: 'all',
                 activeTypeStationFilter: [],
-                shownCount: 1
             }
         },
 
@@ -267,9 +264,6 @@
             },
             activeTypeStationFilter(){
                 this.updateFilterDisplay();
-            },
-            showFilters(){
-                this.computeHeight();
             },
         },
 
@@ -296,7 +290,9 @@
             typeStation(){
                 return this.$store.getters.getTypeStation;
             },
-
+            existenceFiltersActive(){
+                return this.$store.getters.getExistenceFiltersActive;
+            }
         },
 
         methods: {
@@ -305,27 +301,14 @@
             },
 
             updateFilterDisplay(){
+
+                this.$store.commit('setExistenceFiltersActive',!(this.textSearch === '' && this.activeAlertFilter === 'all' && this.activeTypeStationFilter.length === 0));
+
                 EventBus.$emit('filters-updated', {
                     text: this.textSearch,
                     alert: this.activeAlertFilter,
                     typeStation: this.activeTypeStationFilter
                 });
-
-                this.$nextTick(function(){
-                    this.computeShown();
-                });
-            },
-
-            computeShown(){
-                this.shownCount = $('.station-card-container').filter(function() {
-                    return $(this).css('display') !== 'none';
-                }).length;
-            },
-
-            computeHeight(){
-                let filtersHeight = $('#filters-container').height();
-
-                $('#station-grid').css('height', ( filtersHeight - 460 ) + 'px' );
             },
 
             toggleShowFilters(){

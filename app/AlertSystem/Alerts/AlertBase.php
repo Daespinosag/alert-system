@@ -218,6 +218,7 @@ class AlertBase extends AlertSystem
         $objectRepository->station = $station->id;
         $objectRepository->name_station = $station->name;
         $objectRepository->date_execution = $dateSearch['date_execute']->format('Y-m-d H:i:s');
+        $objectRepository->{$this->code.'_value'} = null;
         $objectRepository->{'dif_previous_'.$this->code} = null;
         $objectRepository->num_not_change_alert = null;
         $objectRepository->change_alert = false;
@@ -225,6 +226,7 @@ class AlertBase extends AlertSystem
         $objectRepository->alert_increase = false;
         $objectRepository->error = false;
         $objectRepository->comment = null;
+        $objectRepository->alert = -1;
 
         return $objectRepository;
     }
@@ -259,6 +261,30 @@ class AlertBase extends AlertSystem
         $this->valuesChangeAlert = (object)$arr;
 
         return $this->valuesChangeAlert;
+    }
+
+    /**
+     * @return array
+     */
+    public function formatDataToEvent() : array
+    {
+        $arr = [];
+
+        foreach ($this->values as $value){
+            $temporalArr = [];
+            $temporalArr['alert'] = $this->code;
+            $temporalArr['station'] = $value['station'];
+            $temporalArr['change_alert'] = $value['change_alert'];
+            $temporalArr['values'][$this->code.'_value'] = $value[$this->code.'_value'];
+            $temporalArr['values']['alert'] = $value['alert'];
+            $temporalArr['values']['date_execution'] = $value['date_execution'];
+            $temporalArr['values']['error'] = $value['error'];
+            $temporalArr['values']['comment'] = $value['comment'];
+
+            array_push($arr,$temporalArr);
+        }
+
+        return $arr;
     }
 
 }
