@@ -3,8 +3,12 @@
 namespace App\AlertSystem\Alerts;
 
 use App\AlertSystem\AlertSystem;
+use App\Events\AlertEchoCalculatedEvent;
+use App\Mail\TestEmail;
+use App\Repositories\AlertSystem\UserRepository;
 use Carbon\Carbon;
 use function Couchbase\defaultDecoder;
+use Illuminate\Support\Facades\Mail;
 
 class AlertBase extends AlertSystem
 {
@@ -285,6 +289,40 @@ class AlertBase extends AlertSystem
         }
 
         return $arr;
+    }
+
+    /**
+     * @param UserRepository $repository
+     * @param string $code
+     * @param string $name
+     * @param string $message
+     */
+    public function sendChangesEmail(UserRepository $repository, string $code, string $name, string $message)
+    {
+        $arrEmail = [];
+
+        # se extraen los datos que cambiaron de alerta
+        $data = $this->getAlertsDefences();
+
+        # se extraen los emails conpermisos para recibir la alerta
+        $emails = $repository->getEmailUserFromAlert($code);
+
+        # se cambia el formato de los arrays extraidos
+        foreach ($emails as $email){ array_push($arrEmail,$email->email);}
+
+        # se pregunta si existen cambios y si existen correos para poder enviar el email
+        if ($data->changes and count($arrEmail) > 0){
+            Mail::to('ideaalertas@gmail.com')->bcc($arrEmail)->send(new TestEmail($name, $data, $message, $code));
+        }
+    }
+
+    /**
+     *
+     */
+    public function sendEventDataAB()
+    {
+        $data = $this->formatDataToEvent();
+        event(new AlertEchoCalculatedEvent($data));
     }
 
 }

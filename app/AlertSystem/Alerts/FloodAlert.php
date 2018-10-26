@@ -2,14 +2,13 @@
 
 namespace App\AlertSystem\Alerts;
 
-use App\Events\AlertEchoCalculatedEvent;
 use App\Repositories\Administrator\AlertRepository;
 use App\Repositories\Administrator\ConnectionRepository;
 use App\Repositories\Administrator\StationRepository;
 use App\Repositories\AlertSystem\FloodRepository;
-use Carbon\Carbon;
+use App\Repositories\AlertSystem\UserRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Mail;
+use Carbon\Carbon;
 
 class FloodAlert extends AlertBase implements AlertInterface
 {
@@ -116,18 +115,24 @@ class FloodAlert extends AlertBase implements AlertInterface
     /**
      * @var int
      */
-    public $temporalMultiplication = 10; # TODO esto se quita cuando terminen las pruebas
+    public $temporalMultiplication = 10;  # TODO esto se quita cuando terminen las pruebas
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     /**
      * flood constructor.
+     * @param UserRepository $userRepository
      * @param ConnectionRepository $connectionRepository
      * @param StationRepository $stationRepository
      * @param FloodRepository $floodRepository
      * @param AlertRepository $alertRepository
-     * @param $configurations
+     * @param array $configurations
      */
     public function __construct
     (
+        UserRepository $userRepository,
         ConnectionRepository $connectionRepository,
         StationRepository $stationRepository,
         FloodRepository $floodRepository,
@@ -135,6 +140,7 @@ class FloodAlert extends AlertBase implements AlertInterface
         array $configurations = []
     )
     {
+        $this->userRepository = $userRepository;
         $this->connectionRepository = $connectionRepository;
         $this->stationRepository = $stationRepository;
         $this->floodRepository = $floodRepository;
@@ -159,17 +165,12 @@ class FloodAlert extends AlertBase implements AlertInterface
         if ($this->insertDatabase){ $this->createInAlertSpecificTable($this->floodRepository);}
 
         if ($this->sendEmailChanges){
-            $data = $this->getAlertsDefences();
-            if ($data->changes){
-                Mail::to('ideaalertas@gmail.com')
-                    ->bcc(['daespinosag@unal.edu.co']) #,'acastillorua@unal.edu.co','jdzambranona@unal.edu.co','fmejiaf@unal.edu.co'
-                    ->send(new \App\Mail\TestEmail(
-                        'Alerta por Inundación',
-                        $data,
-                        '(test) Cambio Indicadores Inundación ('.$this->dateExecution.') - ('.Carbon::now()->format('Y-m-d H:i:s').')',
-                        $this->code
-                    ));
-            }
+            $this->sendChangesEmail(
+                $this->userRepository,
+                $this->code,
+                'Alerta por Inundación',
+                '(test) Cambio Indicadores Inundación ('.$this->dateExecution.') - ('.Carbon::now()->format('Y-m-d H:i:s').')'
+            );
         }
 
         if ($this->sendEmail){
@@ -180,10 +181,7 @@ class FloodAlert extends AlertBase implements AlertInterface
             # TODO enviar evento
         }
 
-        if ($this->sendEventData){
-            $data = $this->formatDataToEvent();
-            event(new AlertEchoCalculatedEvent($data));
-        }
+        if ($this->sendEventData){ $this->sendEventDataAB();}
 
         return $this;
     }

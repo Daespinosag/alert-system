@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AlertSystem;
 
 use App\AlertSystem\Connection\SearchTableInExternalStaticConnection;
 use App\Events\AlertEchoCalculatedEvent;
+use App\Repositories\AlertSystem\UserRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Administrator\ConnectionRepository;
@@ -42,6 +43,8 @@ class testController extends Controller
 
     public function index()
     {
+
+
         //event(new AlertEchoCalculatedEvent(['alert'=>'a10']));
         //dd('stop');
         //dd( Auth::guard('api')->user());
@@ -69,15 +72,14 @@ class testController extends Controller
             'sendEmail'             => false,
             'sendEmailChanges'      => false,
             'insertDatabase'        => false,
-            'sendEventData'         => true,
+            'sendEventData'         => false,
             'sendEventDataChanges'  => false,
-            'initialDate'           => Carbon::parse('2017-11-07 23:55:00'),//2017-11-07 00:00:00
-            'finalDate'             => Carbon::parse('2017-11-07 23:55:00'),
+            'initialDate'           => Carbon::parse('2018-10-25 19:25:00'),//2017-11-07 23:55:00
+            'finalDate'             => Carbon::parse('2018-10-25 19:25:00'),
             //'stations'              => [6,105]
         ];
 
-/*
-
+        /*
         $alertSystem = new FloodAlert(
             new ConnectionRepository(),
             new StationRepository(),
@@ -103,8 +105,8 @@ class testController extends Controller
 
         //return new \App\Mail\TestEmail('Alerta por Inundación', $data);
 
-
         $alertSystem = new LandslideAlert(
+            new UserRepository(),
             new ConnectionRepository(),
             new StationRepository(),
             new LandslideRepository(),

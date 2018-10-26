@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\AlertSystem\Alerts\FloodAlert;
 use App\Repositories\Administrator\AlertRepository;
 use App\Repositories\AlertSystem\FloodRepository;
+use App\Repositories\AlertSystem\UserRepository;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Repositories\Administrator\ConnectionRepository;
@@ -50,7 +51,7 @@ class AlertExecuteCommand extends Command
 
         $configurations = [
             'sendEmailChanges'      => true,
-            'sendEventDataChanges'  => false,
+            'sendEventData'         => true,
             'initialDate'           => $date,
             'finalDate'             => $date,
         ];
@@ -68,6 +69,7 @@ class AlertExecuteCommand extends Command
     public function executeLandslideAlert(array $configurations)
     {
         (new LandslideAlert(
+            new UserRepository(),
             new ConnectionRepository(),
             new StationRepository(),
             new LandslideRepository(),
@@ -83,6 +85,7 @@ class AlertExecuteCommand extends Command
     public function executeFloodAlert(array $configurations)
     {
         (new FloodAlert(
+            new UserRepository(),
             new ConnectionRepository(),
             new StationRepository(),
             new FloodRepository(),

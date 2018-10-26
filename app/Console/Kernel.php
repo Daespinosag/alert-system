@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //$schedule->command('alert-execute')->everyFiveMinutes();
+        $schedule->command('alert-execute')->everyFiveMinutes();
     }
 
     /**

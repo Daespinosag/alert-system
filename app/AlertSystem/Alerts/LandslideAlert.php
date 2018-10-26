@@ -2,62 +2,134 @@
 
 namespace App\AlertSystem\Alerts;
 
-use App\Events\AlertEchoCalculatedEvent;
 use App\Repositories\Administrator\AlertRepository;
 use App\Repositories\Administrator\StationRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
 use App\Repositories\Administrator\ConnectionRepository;
+use App\Repositories\AlertSystem\UserRepository;
+use Illuminate\Support\Collection;
 use Carbon\Carbon;
-use Mail;
 
 class LandslideAlert extends AlertBase implements AlertInterface
 {
+    /**
+     * @var string
+     */
     public $code = 'a25';
 
+    /**
+     * @var ConnectionRepository
+     */
     public $connectionRepository;
 
+    /**
+     * @var StationRepository
+     */
     public $stationRepository;
 
+    /**
+     * @var LandslideRepository
+     */
     public $landslideRepository;
 
+    /**
+     * @var AlertRepository
+     */
     public $alertRepository;
 
+    /**
+     * @var int
+     */
     public $constData = 7200;
 
+    /**
+     * @var int
+     */
     public $constDays = 24;
 
+    /**
+     * @var string
+     */
     public $externalConnection = 'external_connection_alert_system';
 
+    /**
+     * @var bool
+     */
     public $sendEmail = false;
 
+    /**
+     * @var bool
+     */
     public $sendEmailChanges = true;
 
+    /**
+     * @var bool
+     */
     public $sendEventData = false;
 
+    /**
+     * @var bool
+     */
     public $sendEventDataChanges = false;
 
+    /**
+     * @var bool
+     */
     public $insertDatabase = true;
 
+    /**
+     * @var Carbon
+     */
     public $initialDate = null;
 
+    /**
+     * @var Carbon
+     */
     public $finalDate = null;
 
+    /**
+     * @var Collection
+     */
     public $stations = null;
 
+    /**
+     * @var Collection
+     */
     public $levels = null;
 
+    /**
+     * @var array
+     */
     public $datesRangesSearch = [];
 
+    /**
+     * @var array
+     */
     public $values = [];
 
+    /**
+     * @var array
+     */
     public $valuesChangeAlert = [];
 
+    /**
+     * @var string
+     */
     public $dateExecution = '#';
 
+    /**
+     * @var int
+     */
     public $temporalMultiplication = 10; # TODO esto se quita cuando terminen las pruebas
 
     /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
      * AlertSystem constructor.
+     * @param UserRepository $userRepository
      * @param ConnectionRepository $connectionRepository
      * @param StationRepository $stationRepository
      * @param LandslideRepository $landslideRepository
@@ -65,6 +137,7 @@ class LandslideAlert extends AlertBase implements AlertInterface
      * @param array $configurations
      */
     public function  __construct(
+        UserRepository $userRepository,
         ConnectionRepository $connectionRepository,
         StationRepository $stationRepository,
         LandslideRepository $landslideRepository,
@@ -72,6 +145,7 @@ class LandslideAlert extends AlertBase implements AlertInterface
         array $configurations = []
     )
     {
+        $this->userRepository = $userRepository;
         $this->connectionRepository = $connectionRepository;
         $this->stationRepository = $stationRepository;
         $this->alertRepository = $alertRepository;
@@ -92,20 +166,17 @@ class LandslideAlert extends AlertBase implements AlertInterface
         );
 
         # Se envia un email con las alertas por estaciones que presentaron algun cambio
-        if ($this->sendEmailChanges){
-            $data = $this->getAlertsDefences();
-
-            if ($data->changes){
-                Mail::to('ideaalertas@gmail.com')
-                    ->bcc(['daespinosag@unal.edu.co'])#,'acastillorua@unal.edu.co','jdzambranona@unal.edu.co','fmejiaf@unal.edu.co'
-                    ->send(new \App\Mail\TestEmail(
-                        'Alerta por Deslizamiento',
-                        $data,
-                        '(test) Cambio Indicadores Deslizamiento ('.$this->dateExecution.') - ('.Carbon::now()->format('Y-m-d H:i:s').')',
-                        $this->code
-                    ));
-            }
+        if ($this->sendEmailChanges)
+        {
+            $this->sendChangesEmail(
+                $this->userRepository,
+                $this->code,
+                'Alerta por Deslizamiento',
+                '(test) Cambio Indicadores Deslizamiento ('.$this->dateExecution.') - ('.Carbon::now()->format('Y-m-d H:i:s').')'
+            );
         }
+
+
 
         # Se envia un email con las alertas por estacion
         if ($this->sendEmail){
@@ -118,10 +189,7 @@ class LandslideAlert extends AlertBase implements AlertInterface
         }
 
         # Se encia un evento con las alertas por estacion
-        if ($this->sendEventData){
-            $data = $this->formatDataToEvent();
-            event(new AlertEchoCalculatedEvent($data));
-        }
+        if ($this->sendEventData){ $this->sendEventDataAB(); }
 
         # Se inserta en la base de datos la alerta
         if ($this->insertDatabase){ $this->createInAlertSpecificTable($this->landslideRepository);}
@@ -158,4 +226,5 @@ class LandslideAlert extends AlertBase implements AlertInterface
             $initial->addSeconds(300);
         }
     }
+
 }

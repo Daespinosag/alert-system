@@ -11,9 +11,7 @@ class UserRepository extends EloquentRepository
     protected $repositoryId = 'rinvex.repository.uniqueid';
     protected $model = User::class;
 
-    /**
-     * @return DB
-     */
+
     protected function queryBuilder()
     {
         return DB::connection('alert-system')->table('users');
@@ -69,8 +67,33 @@ class UserRepository extends EloquentRepository
         return $this->select('*')->where('id',$id)->first();
     }
 
+    /**
+     * @param int $id
+     * @return User
+     */
     public function getCompleteUser(int $id) : User
     {
         return $this->select('*')->where('id',$id)->with('permissions')->first();
+    }
+
+    /**
+     * @param $alertCode
+     * @return array
+     */
+    public function getEmailUserFromAlert($alertCode) : array
+    {
+        $val =  $this->queryBuilder()
+                    ->select('users.email')
+                    ->join('user_permissions', 'user_permissions.user_id', '=', 'users.id')
+                    ->join('permission', 'permission.id', '=', 'user_permissions.permission_id')
+                    ->where('users.confirmed',true)
+                    ->where('users.accepted',true)
+                    ->where('user_permissions.active',true)
+                    ->where('user_permissions.active_email',true)
+                    ->where('permission.code','permission-'.$alertCode)
+                    ->get();
+
+        return (!is_null($val)) ? $val->toArray() : [];
+
     }
 }
