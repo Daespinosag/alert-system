@@ -25,6 +25,7 @@
         <navigation></navigation>
 
         <error-notification></error-notification>
+        <success-notification></success-notification>
 
         <float-button></float-button>
 
@@ -40,42 +41,26 @@
     import Navigation from '../components/global/Navigation.vue';
     import Filters from '../components/global/Filters.vue';
     import ErrorNotification from '../components/global/ErrorNotification.vue';
+    import SuccessNotification from '../components/global/SuccesNotification.vue';
     import FloatButton from '../components/global/FloatButton';
 
     export default {
         props: { user: null },
-        components: {Navigation,Filters,ErrorNotification,FloatButton},
+        components: {Navigation,Filters,ErrorNotification,SuccessNotification,FloatButton},
         created(){
-            // se pregunta si es la primera vez que carga el usuario
-            if (this.$store.userLoadStatus !== 2 && this.user !== null){
+            /** Se carga la información inicial para que la pagina funcione correctamente**/
+            this.loadInitialInformation();
 
-                this.$store.commit('setUser', this.user);
-
-                this.$store.dispatch('loadTypeStation').then(
-                    response => {
-                        this.$store.dispatch('loadAlerts',{ permissions : this.$store.getters.getAlertPermissions}).then(
-                            response => {
-                                this.$store.dispatch('loadStations',{ alerts : this.$store.getters.getAlerts }).then(
-                                    response => { this.$router.push({ name: 'stations' }); },
-                                    error    => { this.sendEvenError('No fue posible cargar la información referente a las estaciones. ',false); }
-                                );
-                            },
-                            error    => { this.sendEvenError('No fue posible cargar la información referente a los tipos de alertas. ',false); }
-                        );
-                    },
-                    error    => { this.sendEvenError('No fue posible cargar la información referente a los tipos de estación. ',false); }
-                );
-            };
-
-            Echo.channel('alert-system')
-                .listen('AlertEchoCalculatedEvent', (e) => {
-                    this.sendEventUpdateAlerts(e.data);
-                });
+            /** Se sealiza la suscripcion a los eventos de actualizacion cincominutales para las alertas**/
+            this.subscribeEventFiveMinutes();
         },
         computed: {
             showFilters(){
                 return this.$store.getters.getShowFilters;
-            }
+            },
+            stationInStation(){
+                return this.$store.getters.getStation;
+            },
         },
         methods: {
             toggleShowFilters(){
@@ -85,24 +70,82 @@
                 EventBus.$emit('show-error', { notification : notification, collapsible : collapsible });
             },
             sendEventUpdateAlerts(values){
-                if (this.$store.getters.getValidateAlertExistence('alert-'+values[0].alert)){
+                /** Se valida la existencia de la alerta entrante**/
+                if (this.validateExistenceAlert('alert-'+values[0].alert)){
+
+                    /** Se realiza un clico por el numero de valores entrantes**/
                     for (let i = 0; i < values.length; i++) {
+
+                        /** Se consulta la eztacion que requiere actualización de información de alertas**/
                         let station = this.$store.getters.getStationById(values[i].station);
 
-                        if (station !== null){
+                        /** Se valida que la eztación exista en el array global**/
+                        if (station !== null)
+                        {
+                            /** Se actualiza la información refente a las alertas en el array global stations**/
                             this.$store.commit('updateStationAlert',{value: values[i], position: station.position});
 
-                            EventBus.$emit('changeAlertMarketColor', {
-                                code    : values[i].alert,
-                                alert   : values[i].values['alert'],
-                                stationId : station.id,
-                            });
+                            /** Se cambia el color y el valor de cada estacion en el componente STATION CARD**/
+                            this.sendEventChangeAlertMarkerColor(station.id,values[i]);
+
+                            /** Se cambia el valor en las graficas para Station page**/
+                            this.sendEventChangeAlertStationPage(station.id,values[i]);
 
                         }else {
-                            // TODO error no se encontro la posicion de la estacion
+                            this.sendEvenError( 'Error: No se encontró la estación [ id: '+values[i].station+' ]',true);
                         }
                     }
+                }else {
+                    this.sendEvenError('Error: No se encontró la alerta [ code: '+value[i].alert+' ]',true);
                 }
+                // TODO Cambiar el siguiente succes por notification !! v2
+                EventBus.$emit('show-success', { notification : 'Actualización de datos para la : '+this.$store.getters.getAlertFromCode(value[0].alert).name, collapsible : true });
+            },
+            sendEventChangeAlertStationPage(stationId,value){
+                if (this.stationInStation !== null){
+                    if (this.stationInStation.id === stationId){
+                        EventBus.$emit('change-alert-station-page', {
+                            code            : value.alert,
+                            date_execution  : value.values['date_execution'],
+                            value           : value.values[value.alert+'_value'],
+                            stationId       : stationId,
+                        });
+                    }
+                }
+            },
+            sendEventChangeAlertMarkerColor(stationId,value){
+                EventBus.$emit('changeAlertMarketColor', {
+                    code        : value.alert,
+                    alert       : value.values['alert'],
+                    stationId   : stationId,
+                });
+            },
+            validateExistenceAlert(alert) {
+                return this.$store.getters.getValidateAlertExistence(alert)
+            },
+            loadInitialInformation(){
+                if (this.$store.userLoadStatus !== 2 && this.user !== null){
+
+                    this.$store.commit('setUser', this.user);
+
+                    this.$store.dispatch('loadTypeStation').then(
+                        response => {
+                            this.$store.dispatch('loadAlerts',{ permissions : this.$store.getters.getAlertPermissions}).then(
+                                response => {
+                                    this.$store.dispatch('loadStations',{ alerts : this.$store.getters.getAlerts }).then(
+                                        response => { this.$router.push({ name: 'stations' }); },
+                                        error    => { this.sendEvenError('No fue posible cargar la información referente a las estaciones. ',false); }
+                                    );
+                                },
+                                error    => { this.sendEvenError('No fue posible cargar la información referente a los tipos de alertas. ',false); }
+                            );
+                        },
+                        error    => { this.sendEvenError('No fue posible cargar la información referente a los tipos de estación. ',false); }
+                    );
+                };
+            },
+            subscribeEventFiveMinutes(){
+                Echo.channel('alert-system').listen('AlertEchoCalculatedEvent', (e) => { this.sendEventUpdateAlerts(e.data);});
             }
         },
     }

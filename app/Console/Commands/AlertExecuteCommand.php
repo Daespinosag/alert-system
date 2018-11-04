@@ -47,51 +47,52 @@ class AlertExecuteCommand extends Command
      */
     public function handle()
     {
+        #Se inicializa la fecha a consultar
         $date = Carbon::now();
 
-        $configurations = [
-            'sendEmailChanges'      => true,
-            'sendEventData'         => true,
-            'initialDate'           => $date,
-            'finalDate'             => $date,
-        ];
+        #Se incluyen las configurciones geerales
+        $configurations = ['sendEmailChanges' => true, 'sendEventData' => true ];
 
         # Ejecutar alerta por inundacion
-        $this->executeFloodAlert($configurations);
+        $this->executeFloodAlert($configurations, clone $date,clone $date);
 
         # Ejecutar alerta por deslizamientos
-        $this->executeLandslideAlert($configurations);
+        $this->executeLandslideAlert($configurations,clone $date,clone $date);
     }
 
     /**
      * @param array $configurations
+     * @param Carbon $initialDate
+     * @param Carbon $finalDate
      */
-    public function executeLandslideAlert(array $configurations)
+    public function executeLandslideAlert(array $configurations,Carbon $initialDate,Carbon $finalDate)
     {
-        (new LandslideAlert(
-            new UserRepository(),
-            new ConnectionRepository(),
-            new StationRepository(),
-            new LandslideRepository(),
-            new AlertRepository(),
-            $configurations
-            )
-        )->init();
+        # Se configuran las fechas para realizar el calculo
+        $configurations['initialDate']  = $initialDate;
+        $configurations['finalDate']    = $finalDate;
+
+        # se crea el objeto para consultar la alerta
+        $alert = new LandslideAlert(new UserRepository(), new ConnectionRepository(), new StationRepository(), new LandslideRepository(), new AlertRepository(), $configurations);
+
+        # se ejecuta la alerta
+        $alert->init();
     }
 
     /**
      * @param array $configurations
+     * @param Carbon $initialDate
+     * @param Carbon $finalDate
      */
-    public function executeFloodAlert(array $configurations)
+    public function executeFloodAlert(array $configurations,Carbon $initialDate,Carbon $finalDate)
     {
-        (new FloodAlert(
-            new UserRepository(),
-            new ConnectionRepository(),
-            new StationRepository(),
-            new FloodRepository(),
-            new AlertRepository(),
-            $configurations
-            )
-        )->init();
+        # Se configuran las fechas para realizar el calculo
+        $configurations['initialDate']  = $initialDate;
+        $configurations['finalDate']    = $finalDate;
+
+        # se crea el objeto para consultar la alerta
+        $alert = new FloodAlert(new UserRepository(), new ConnectionRepository(), new StationRepository(), new FloodRepository(), new AlertRepository(), $configurations);
+
+        # se ejecuta la alerta
+        $alert->init();
     }
 }

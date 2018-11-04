@@ -68,30 +68,34 @@ class testController extends Controller
         dd();
 */
 #inicio a las 14:35:21
-        $configurations = [
+
+        $data = Carbon::parse('2018-11-04 12:45:00');
+
+        $configurations1 = [
             'sendEmail'             => false,
             'sendEmailChanges'      => false,
             'insertDatabase'        => false,
             'sendEventData'         => false,
             'sendEventDataChanges'  => false,
-            'initialDate'           => Carbon::parse('2018-10-25 19:25:00'),//2017-11-07 23:55:00
-            'finalDate'             => Carbon::parse('2018-10-25 19:25:00'),
+            'initialDate'           => clone $data,//2017-11-07 23:55:00
+            'finalDate'             => clone $data,
             //'stations'              => [6,105]
         ];
 
-        /*
-        $alertSystem = new FloodAlert(
+
+        $alertSystem1 = new FloodAlert(
+            new UserRepository(),
             new ConnectionRepository(),
             new StationRepository(),
             new FloodRepository(),
             new AlertRepository(),
-            $configurations
+            $configurations1
         );
-        $alertSystem->init();
+        $alertSystem1->init();
 
-        dd($alertSystem,'test controller');
-
+        //dd($alertSystem1,'test controller');
 /*
+
         $data = $alertSystem->getAlertsDefences();
 
         if ($data->changes){
@@ -105,6 +109,17 @@ class testController extends Controller
 
         //return new \App\Mail\TestEmail('Alerta por Inundación', $data);
 
+        $configurations = [
+            'sendEmail'             => false,
+            'sendEmailChanges'      => false,
+            'insertDatabase'        => false,
+            'sendEventData'         => false,
+            'sendEventDataChanges'  => false,
+            'initialDate'           => clone $data,//2017-11-07 23:55:00
+            'finalDate'             => clone $data,
+            //'stations'              => [6,105]
+        ];
+
         $alertSystem = new LandslideAlert(
             new UserRepository(),
             new ConnectionRepository(),
@@ -114,7 +129,7 @@ class testController extends Controller
             $configurations
         );
         $alertSystem->init();
-        dd($alertSystem,'test controller');
+        dd($alertSystem,$alertSystem1);
 
 /*
         Mail::send('emails.testEmail',['alert' => 'enviando desde el sistema de alertas'], function ($message){

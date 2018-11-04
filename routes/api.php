@@ -19,7 +19,7 @@ Route::group(['prefix' => 'v1'], function()  //,'middleware' => 'auth:api'
 
     Route::post('/stations', [ 'as'=>'v1.stations','uses'=>'API\AlertSystemController@getStations']);
 
-    Route::get('/station/{id}', [ 'as'=>'v1.station','uses'=>'API\AlertSystemController@getStation']);
+    Route::post('/station', [ 'as'=>'v1.station','uses'=>'API\AlertSystemController@getStation']);
 
     Route::get('/nets', [ 'as'=>'v1.nets','uses'=>'API\AlertSystemController@getNets']);
 

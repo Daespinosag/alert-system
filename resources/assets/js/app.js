@@ -77,4 +77,7 @@ locale.use(lang);
 import VueDataTables from 'vue-data-tables';
 Vue.use(VueDataTables);
 
+import HighchartsVue from 'highcharts-vue';
+Vue.use(HighchartsVue);
+
 new Vue({router, store}).$mount('#app');

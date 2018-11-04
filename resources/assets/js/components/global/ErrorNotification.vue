@@ -17,10 +17,18 @@
             margin-top: 150px;
             color: #242E38;
             font-size: 16px;
-            img{
+
+            .error-icon{
                 margin-right: 20px;
                 margin-left: 20px;
                 height: 20px;
+            }
+
+            .close-icon{
+                float: right;
+                cursor: pointer;
+                margin-top: 15px;
+                margin-right: 15px;
             }
         }
     }
@@ -30,7 +38,9 @@
     <transition name="slide-in-top">
         <div class="error-notification-container" v-show="show">
             <div class="error-notification">
-                <img src="images/alert-icons/error.svg"/> {{ errorMessage }}
+                <img class="error-icon" src="images/alert-icons/error.svg"/>
+                {{ errorMessage }}
+                <img class="close-icon" v-on:click="closeAction()" src="images/close-icon.svg"/>
             </div>
         </div>
     </transition>
@@ -53,9 +63,16 @@
                 this.collapsible = data.collapsible;
                 this.show = true;
 
-                if (this.collapsible){ setTimeout( function(){this.show = false;}.bind(this), 3000);}
+                if (this.collapsible){ setTimeout( function(){this.show = false;}.bind(this), 6000);}
 
             }.bind(this));
+        },
+        methods:{
+            closeAction(){
+                this.errorMessage = '';
+                this.collapsible = true;
+                this.show = false;
+            }
         }
     }
 </script>

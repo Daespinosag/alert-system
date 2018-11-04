@@ -16,7 +16,7 @@ export const stations = {
         stations: [],
         stationsLoadStatus: 0,
 
-        station: {},
+        station: {alerts:null,station:null},
         stationLoadStatus: 0,
 
         stationsView : 'map'
@@ -41,8 +41,7 @@ export const stations = {
         },
         loadStation( { commit }, data ){
             commit( 'setStationLoadStatus', 1 );
-
-            StationsAPI.getStation( data.id )
+            StationsAPI.getStation( data )
                 .then( function( response ){
                     commit( 'setStation', response.data );
                     commit( 'setStationLoadStatus', 2 );
@@ -110,7 +109,7 @@ export const stations = {
         },
 
         getStation( state ){
-            return state.station;
+            return state.station.station;
         },
 
         getStationsView(state){
@@ -118,6 +117,9 @@ export const stations = {
         },
         getStationById : (state) => (stationId) => {
             return state.stations.find(station => station.id === stationId);
+        },
+        getAlertsStation: (state) => (alert)=>{
+            return state.station.alerts[alert];
         }
     }
 }

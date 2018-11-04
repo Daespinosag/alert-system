@@ -68,6 +68,9 @@ export const alerts = {
                 if (state.alerts[i].code === alertCode){ return true;}
             }
             return false;
+        },
+        getAlertFromCode: (state) => (code) => {
+            return state.alerts.find(alert => alert.code === code);
         }
     }
 }

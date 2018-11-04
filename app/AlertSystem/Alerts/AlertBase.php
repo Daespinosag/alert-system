@@ -59,10 +59,10 @@ class AlertBase extends AlertSystem
         $this->stations = $this->stationRepository->getForAlertSystem($alertCode, $this->stations);
 
         # Se configuran los espacios cincominutales a calcular en la
-        $this->configureDatesToSearch(
-            (is_null($this->initialDate)) ?  Carbon::now() : $this->initialDate,
-            (is_null($this->finalDate)) ?  Carbon::now() : $this->finalDate
-        );
+        $initial = (is_null($this->initialDate)) ?  Carbon::now() : $this->initialDate;
+        $final = (is_null($this->finalDate)) ?  Carbon::now() : $this->finalDate;
+
+        $this->configureDatesToSearch($initial,$final);
 
         # Se calculan los niveles de alerta para la estacion.
         $this->levels = $this->alertRepository->getLevelAlert($alertCode);

@@ -27,10 +27,6 @@ class AlertSystemController extends Controller
      */
     private $netRepository;
     /**
-     * @var LandslideRepository
-     */
-    private $a25FiveMinutesRepository;
-    /**
      * @var AlertRepository
      */
     private $alertRepository;
@@ -55,7 +51,6 @@ class AlertSystemController extends Controller
      * AlertSystemController constructor.
      * @param StationRepository $stationRepository
      * @param NetRepository $netRepository
-     * @param LandslideRepository $a25FiveMinutesRepository
      * @param AlertRepository $alertRepository
      * @param StationTypeRepository $stationTypeRepository
      * @param ConnectionRepository $connectionRepository
@@ -65,7 +60,6 @@ class AlertSystemController extends Controller
     public function __construct(
         StationRepository $stationRepository,
         NetRepository $netRepository,
-        LandslideRepository $a25FiveMinutesRepository,
         AlertRepository $alertRepository,
         StationTypeRepository $stationTypeRepository,
         ConnectionRepository $connectionRepository,
@@ -75,7 +69,6 @@ class AlertSystemController extends Controller
     {
         $this->stationRepository = $stationRepository;
         $this->netRepository = $netRepository;
-        $this->a25FiveMinutesRepository = $a25FiveMinutesRepository;
         $this->alertRepository = $alertRepository;
         $this->stationTypeRepository = $stationTypeRepository;
         $this->connectionRepository = $connectionRepository;
@@ -162,27 +155,33 @@ class AlertSystemController extends Controller
     }
 
     /**
-     * @param $id
+     * @param Request $request
      * @return mixed
      */
-    public function getStation($id)
+    public function getStation(Request $request)
     {
-       $station = $this->stationRepository->getStation($id);
+        $stationId = $request->get('id');
+        $alerts = $request->get('alerts');
 
-        $station->longitude = $this->calculateDecimalCoordinates(
-            $station->longitude_degrees,
-            $station->longitude_minutes,
-            $station->longitude_seconds,
-            $station->longitude_direction
-        );
-        $station->latitude = $this->calculateDecimalCoordinates(
-            $station->latitude_degrees,
-            $station->latitude_minutes,
-            $station->latitude_seconds,
-            $station->latitude_direction
-        );
+        $response = ['station'=> null,'alerts'=>[]];
+        $response['station'] = $this->stationRepository->getStation($stationId);
 
-        return $station;
+        $pivot =  $this->createDateFiveMinutal(Carbon::now());
+
+        $final = (clone $pivot)->format('Y-m-d H:i:s');
+        $pivotInitial = (clone $pivot)->addDay(-1);
+        $initial = (clone $pivotInitial)->format('Y-m-d H:i:s');
+        $dateRange = $this->generateDateRange($initial,$final);
+
+        foreach ($alerts as $alert){
+            $response['alerts'][$alert['code']] = $this->{'get'.ucwords(strtolower($alert['table'])).'Station'}($stationId,$initial,$final,$dateRange);
+        }
+
+        return $response;
+
+       //$station = $this->stationRepository->getStation($id);
+
+        //return $station;
 
     }
 
@@ -290,6 +289,101 @@ class AlertSystemController extends Controller
         $val = ($direction == 'W' or $direction == 'S') ? -1 : 1;
 
         return round(( ( $degrees + ( $minutes / 60 ) + ( $seconds / 3600 )) * $val ) , 6);
+    }
+
+    /**
+     * @param int $stationId
+     * @param string $initial
+     * @param string $final
+     * @param array $dateRange
+     * @return array
+     */
+    protected function getLandslideStation(int $stationId, string $initial, string $final, array $dateRange) : array
+    {
+        $values = $this->landslideRepository->getBetweenData($stationId,$initial,$final);
+        $values = $this->formatDateAlert($dateRange,$values);
+
+        return $values;
+    }
+
+    /**
+     * @param int $stationId
+     * @param string $initial
+     * @param string $final
+     * @param array $dateRange
+     * @return array
+     */
+    protected function getFloodStation(int $stationId, string $initial, string $final, array $dateRange) :array
+    {
+        $values = $this->floodRepository->getBetweenData($stationId,$initial,$final);
+        $values = $this->formatDateAlert($dateRange,$values);
+
+        return $values;
+    }
+
+    /**
+     * @param array $dateRange
+     * @param array $data
+     * @return array
+     */
+    private function formatDateAlert(array $dateRange, array $data) : array
+    {
+        $dates = [];
+        $values = [];
+
+        foreach ($dateRange as $date)
+        {
+            $flag = true;
+            $iterator = 0;
+            while ($iterator < count($data) and $flag) {
+                if ($data[$iterator]['date_execution'] == $date){
+                    $flag = false;
+                    array_push($dates,$date);
+                    array_push($values,(float)$data[$iterator]['value']);
+                }
+                $iterator ++;
+            }
+
+            if ($flag){
+                array_push($dates,$date);
+                array_push($values,null);
+            }
+        }
+
+        return ['dates' => $dates,'values' => $values];
+    }
+
+    /**
+     * @param string $start
+     * @param string $end
+     * @return array
+     */
+    private function generateDateRange(string $start,string $end) :array
+    {
+        $range = [];
+
+        if (is_string($start) === true) $start = strtotime($start);
+        if (is_string($end) === true ) $end = strtotime($end);
+
+        if ($start > $end) return createDateRangeArray($end, $start);
+
+        do {
+            $range[] = date('Y-m-d H:i:s', $start);
+            $start = strtotime("+ 5 minute", $start);
+        } while($start <= $end);
+
+        return $range;
+    }
+
+    private function createDateFiveMinutal(string $date)
+    {
+        $dateInitial = Carbon::parse($date);
+        $residue = $dateInitial->minute % 5;
+
+        $result = ($residue == 0) ? $dateInitial : $dateInitial->addSeconds( ((5 - $residue) * 60 ));
+        $result->second = 0;
+
+        return $result;
     }
 
 }
