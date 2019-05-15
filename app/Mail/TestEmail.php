@@ -11,17 +11,31 @@ class TestEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-
+    /**
+     * @var string
+     *
+     */
     protected $theme = 'email_style';
 
+    /**
+     * @var string
+     */
     private $title;
 
+    /**
+     * @var array
+     */
     private $data;
 
+    /**
+     * @var string
+     */
     private $messageSubject;
 
+    /**
+     * @var string
+     */
     public $alert;
-
 
     /**
      * Create a new message instance.

@@ -96,10 +96,10 @@
                         }
                     }
                 }else {
-                    this.sendEvenError('Error: No se encontró la alerta [ code: '+value[i].alert+' ]',true);
+                    this.sendEvenError('Error: No se encontró la alerta [ code: '+values[i].alert+' ]',true);
                 }
                 // TODO Cambiar el siguiente succes por notification !! v2
-                EventBus.$emit('show-success', { notification : 'Actualización de datos para la : '+this.$store.getters.getAlertFromCode(value[0].alert).name, collapsible : true });
+                EventBus.$emit('show-success', { notification : 'Actualización de datos para la : '+(this.$store.getters.getAlertFromCode('alert-'+values[0].alert)).name, collapsible : true });
             },
             sendEventChangeAlertStationPage(stationId,value){
                 if (this.stationInStation !== null){

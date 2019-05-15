@@ -43,8 +43,6 @@ class testController extends Controller
 
     public function index()
     {
-
-
         //event(new AlertEchoCalculatedEvent(['alert'=>'a10']));
         //dd('stop');
         //dd( Auth::guard('api')->user());
@@ -70,15 +68,16 @@ class testController extends Controller
 #inicio a las 14:35:21
 
         $data = Carbon::parse('2018-11-04 12:45:00');
+        $data2 = Carbon::parse('2018-11-04 13:00:00');
 
         $configurations1 = [
             'sendEmail'             => false,
-            'sendEmailChanges'      => false,
+            'sendEmailChanges'      => true,
             'insertDatabase'        => false,
             'sendEventData'         => false,
             'sendEventDataChanges'  => false,
             'initialDate'           => clone $data,//2017-11-07 23:55:00
-            'finalDate'             => clone $data,
+            'finalDate'             => clone $data2,
             //'stations'              => [6,105]
         ];
 
@@ -95,7 +94,6 @@ class testController extends Controller
 
         //dd($alertSystem1,'test controller');
 /*
-
         $data = $alertSystem->getAlertsDefences();
 
         if ($data->changes){
@@ -111,12 +109,12 @@ class testController extends Controller
 
         $configurations = [
             'sendEmail'             => false,
-            'sendEmailChanges'      => false,
+            'sendEmailChanges'      => true,
             'insertDatabase'        => false,
             'sendEventData'         => false,
             'sendEventDataChanges'  => false,
             'initialDate'           => clone $data,//2017-11-07 23:55:00
-            'finalDate'             => clone $data,
+            'finalDate'             => clone $data2,
             //'stations'              => [6,105]
         ];
 
