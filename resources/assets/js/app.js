@@ -1,3 +1,4 @@
+import routes from "./routes";
 
 window._ = require('lodash');
 

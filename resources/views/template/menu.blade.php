@@ -17,7 +17,7 @@
                 </ul>
             </li>
             <li>
-                <a href="http://cdiac.manizales.unal.edu.co/"><i class="fa fa-files-o fa-fw"></i>
+                <a href="http://satman.manizales.unal.edu.co/"><i class="fa fa-files-o fa-fw"></i>
                     Página principal
                 </a>
                 </a><span class="caret-right"></span>

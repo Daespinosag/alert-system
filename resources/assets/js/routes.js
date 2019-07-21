@@ -28,29 +28,29 @@ export default new VueRouter({
         {
             path: '/',
             name: 'layout',
-            component: Vue.component( 'Layout', require( './pages/Layout.vue' )),
+            component: Vue.component( 'Layout', require( './pages/Layout.vue' ).default),
             children: [
                 {
                     path: 'stations',
                     name: 'stations',
-                    component: Vue.component( 'Stations', require( './pages/Stations.vue' ) ),
+                    component: Vue.component( 'Stations', require( './pages/Stations.vue' ).default ),
                     children: [
                         {
                             path: ':id',
                             name: 'station',
-                            component: Vue.component( 'Station', require( './pages/Station.vue' ) )
+                            component: Vue.component( 'Station', require( './pages/Station.vue' ).default )
                         },
                     ]
                 },
                 {
                     path: 'Nets',
                     name: 'Nets',
-                    component: Vue.component( 'Nets', require( './pages/Nets.vue' ) )
+                    component: Vue.component( 'Nets', require( './pages/Nets.vue' ).default )
                 },
                 {
                     path: 'ConsultAlert',
                     name: 'ConsultAlert',
-                    component: Vue.component( 'ConsultAlert', require( './pages/ConsultAlert.vue' ) )
+                    component: Vue.component( 'ConsultAlert', require( './pages/ConsultAlert.vue' ).default )
                 },
             ]
         }
