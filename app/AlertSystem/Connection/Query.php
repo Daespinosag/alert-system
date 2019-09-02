@@ -7,9 +7,21 @@ use DB;
 
 class Query
 {
+    /**
+     * @var null
+     */
     public $query = null;
+    /**
+     * @var null
+     */
     public $data = null;
+    /**
+     * @var bool
+     */
     private $init = false;
+    /**
+     * @var bool
+     */
     private $select = false;
     /**
      * @param string $connection

@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
+
 Route::group(['prefix' => 'v1'], function()  //,'middleware' => 'auth:api'
 {
     Route::post('/getAuthUser', [ 'as'=>'v1.getAuthUser','uses'=>'API\AlertSystemController@getAuthUser']);

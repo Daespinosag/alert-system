@@ -15,11 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ 'as'=> '/' , 'uses' => 'AlertSystem\AlertSystemController@loadVueLayout' ])->middleware('auth');
 
-Route::group(['prefix' => 'test','name' => 'test'], function()
-{
-    Route::get('index', [ 'as'=>'test.index','uses'=>'AlertSystem\testController@index']);
-    //Route::get('index', [ 'as'=>'test.index','uses'=>'API\AlertSystemController@getStations']);
-});
+Route::get('hola', [ 'as'=>'hola','uses'=>'AlertSystem\testController@testV2']);
 
 Auth::routes();
 
@@ -30,6 +26,13 @@ Route::post('/reConfirmation/sedEmail', [ 'as'=>'reConfirmation.sedEmail','uses'
 Route::get('/logout', function (){
     Auth::logout();
     return redirect('/login');
+});
+
+Route::group(['prefix' => 'test','name' => 'test'], function()
+{
+    Route::get('index', [ 'as'=>'test.index','uses'=>'AlertSystem\testController@index']);
+    Route::get('v2', [ 'as'=>'test.v2','uses'=>'AlertSystem\testController@testV2']);
+    //Route::get('index', [ 'as'=>'test.index','uses'=>'API\AlertSystemController@getStations']);
 });
 
 #Broadcast::routes();

@@ -9,6 +9,9 @@ use Log;
 
 trait SearchTableInExternalStaticConnection
 {
+    /**
+     * @var string
+     */
     private $baseConnection = 'static-external-connection-';
 
     /**

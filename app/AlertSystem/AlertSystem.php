@@ -10,5 +10,4 @@ use DB;
 abstract class AlertSystem
 {
     use DatabaseConfig,StorageServerTrait,SearchTableInExternalStaticConnection;
-
 }

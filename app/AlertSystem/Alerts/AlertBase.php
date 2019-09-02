@@ -7,7 +7,6 @@ use App\Events\AlertEchoCalculatedEvent;
 use App\Mail\TestEmail;
 use App\Repositories\AlertSystem\UserRepository;
 use Carbon\Carbon;
-use function Couchbase\defaultDecoder;
 use Illuminate\Support\Facades\Mail;
 
 class AlertBase extends AlertSystem
@@ -171,7 +170,7 @@ class AlertBase extends AlertSystem
 
             foreach ($this->datesRangesSearch as $dateSearch)
             {
-                       # se inicializan las columnas del objeto
+                # se inicializan las columnas del objeto
                 $floodTable = $this->initializationObject($station,$alertRepositorySpecifies->createShowcase(),$dateSearch);
 
                 # Se extrae el ultimo valor de la tabla a10 para una estacion especifica

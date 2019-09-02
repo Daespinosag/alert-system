@@ -6,7 +6,6 @@ use DB;
 
 trait StorageServerTrait
 {
-
     /**
      * @param string $externalConnection
      * @param string $tableName
@@ -68,7 +67,58 @@ trait StorageServerTrait
             ->toArray();
     }
 
+    /**
+     * @param string $externalConnection
+     * @param string $tableName
+     * @param string $dataOne
+     * @param string $timeOne
+     * @param string $dataTwo
+     * @param string $timeTwo
+     * @return mixed
+     */
+    public function countDataToExtract(
+        string $externalConnection,
+        string $tableName,
+        string $dataOne,
+        string $timeOne,
+        string $dataTwo,
+        string $timeTwo
+    )
+    {
+        $value = DB::connection($externalConnection)
+            ->table($tableName)
+            ->selectRaw('COUNT(precipitacion_real) as count')
+            ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
+            ->first();
 
+        return is_null($value) ? 0 : $value->count;
+    }
+
+    /**
+     * @param string $externalConnection
+     * @param string $tableName
+     * @param string $dataOne
+     * @param string $timeOne
+     * @param string $dataTwo
+     * @param string $timeTwo
+     * @return mixed
+     */
+    public function gatExternalData(
+        string $externalConnection,
+        string $tableName,
+        string $dataOne,
+        string $timeOne,
+        string $dataTwo,
+        string $timeTwo
+    ){
+        return DB::connection($externalConnection)
+            ->table($tableName)
+            ->select('fecha','hora','precipitacion_real','nivel')
+            ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
+            ->orderByRaw('fecha DESC , hora DESC')
+            ->get()
+            ->toArray();
+    }
 
     /*
      DB::connection($externalConnection)

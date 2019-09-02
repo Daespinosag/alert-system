@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\AlertSystem;
 
 use App\AlertSystem\Connection\SearchTableInExternalStaticConnection;
+use App\AlertSystem\Extract\AcquisitionServerExtract;
 use App\Events\AlertEchoCalculatedEvent;
 use App\Repositories\AlertSystem\UserRepository;
 use Illuminate\Http\Request;
@@ -35,6 +36,24 @@ class testController extends Controller
     public function __construct(StationRepository $stationRepository)
     {
         $this->stationRepository = $stationRepository;
+    }
+
+    /**
+     *
+     */
+    public function testV2()
+    {
+        //$connection = "";
+        //$table      = "est_aranjuez";
+        $dateTime   = Carbon::parse('2019-08-13 09:00:00');
+        $initialDateTime   = Carbon::parse('2019-08-13 08:55:00');
+        $finalDateTime   = Carbon::parse('2019-08-13 09:05:00');
+
+        $extract = new \App\AlertSystem\AlertsV2\FloodAlert(19,$dateTime,$initialDateTime,$finalDateTime);
+
+        $extract->execute();
+
+        dd($extract);
     }
 
     /**
