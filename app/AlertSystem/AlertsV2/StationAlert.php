@@ -69,7 +69,7 @@ class StationAlert
         $this->exactMethod->execute();
 
         if ($this->exactMethod->dataExistence){
-            $this->homogenization->execute($this->exactMethod->data);
+            $this->homogenization->execute($this->exactMethod->data,'precipitacion_real'); # La variable dede entrar por parametro
         }
     }
 }

@@ -21,5 +21,7 @@ class FloodAlert extends AlertBase implements AlertContract
     public function execute()
     {
         $this->primaryStationAlert->execute();
+
+        dd($this);
     }
 }

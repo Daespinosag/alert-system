@@ -3,6 +3,7 @@
 namespace App\AlertSystem\Homogenization;
 
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 
 class Homogenization extends HomogenizationBase implements HomogenizationContract
 {
@@ -30,18 +31,20 @@ class Homogenization extends HomogenizationBase implements HomogenizationContrac
         $this->dateTime = $dateTime;
     }
 
-    public function execute(array $recoveryData = []){
+    public function execute(array $recoveryData = [],string $variable = 'precipitacion_real'){
         # Se calcula el valor de tiempo numerico para la fecha a homogenizar
         $t3 = Carbon::parse($this->dateTime)->getTimestamp();
 
-        # Se preparan los datos con las marcas de tiempo para la formula
-        $preparedData = $this->prepareData($recoveryData);
+        # Se ordenan los valores de menos a mayor en dateTime numerico
+        $preparedData = $this->selectBestOptions($this->prepareData($recoveryData),$t3);
 
-        # Se valida si hay mas de dos registros y si es asi se envia a seleccionar los dos mas cercanos
-        if (count($recoveryData) > 2){ $preparedData = $this->selectBestOptions($preparedData,$t3); }
+        # Validar si los datos preparados corresponden a lo esperado
+        if (count($preparedData) != 0){$this->validateHomogenization = true;}
 
         # Se realiza la Homogenizacion
-        $this->homogenization($preparedData[0],$preparedData[1]);
+        if ($this->validateHomogenization){$this->homogenization($preparedData[0],$preparedData[1],'precipitacion_real',$t3);}
+
+        return $this;
     }
 
     /**
@@ -61,15 +64,59 @@ class Homogenization extends HomogenizationBase implements HomogenizationContrac
      * @return array
      */
     public function selectBestOptions(array $recoveryData = [],int $t3): array {
+        #Se inserta el valor a buscar en el array
+        $recoveryData[] = (object)['timeNumber'=> $t3];
 
+        #Se ordena el array de menor a mayor
+        $sortedRecoveryData = $this->orderRecoveryData($recoveryData,'timeNumber');
+
+        $bestOptions = [];
+        foreach ($sortedRecoveryData as $key => $data){
+            if ($data->timeNumber  == $t3){
+                if (!($key == 0 or $key == count($sortedRecoveryData))){
+                    $bestOptions[] = $sortedRecoveryData[$key - 1];
+                    $bestOptions[] = $sortedRecoveryData[$key + 1];
+                }
+            }
+        }
+
+        return $bestOptions;
     }
 
     /**
-     * @param array $firstValue
-     * @param array $secondValue
+     * @param $firstValue
+     * @param $secondValue
+     * @param string $variable
+     * @param int $t3
+     */
+    public function homogenization($firstValue, $secondValue,string $variable,int $t3){
+        $this->data =  (object)[
+            'fecha'     => $this->dateTime->format('Y-m-d'),
+            'hora'      => $this->dateTime->format('h:i:s'),
+            'dateTime'  => $this->dateTime->format('Y-m-d h:i:s'),
+            $variable   => $this->formula($firstValue->{$variable},$secondValue->{$variable},$firstValue->timeNumber,$secondValue->timeNumber,$t3)
+        ];
+    }
+
+    /**
+     * @param array $recoveryData
+     * @param string $column
      * @return array
      */
-    public function homogenization(array $firstValue, array $secondValue) : array {
+    public function orderRecoveryData(array $recoveryData = [],string $column) : array {
+        return array_values(Arr::sort($recoveryData, function ($value) use($column) { return ((array)$value)[$column]; }));
+    }
 
+    /**
+     * @param float $v1
+     * @param float $v2
+     * @param int $t1
+     * @param int $t2
+     * @param int $t3
+     * @param int $round
+     * @return float
+     */
+    private function formula(float $v1, float $v2, int $t1, int $t2, int $t3, int $round = 2) : float {
+        return round(($v1 + (($v2 - $v1)/($t2 - $t1)) * ($t3 - $t1)),$round);
     }
 }
