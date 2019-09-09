@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\AlertSystem\Control;
+namespace App\AlertSystem\ControlAlert;
 
 
 interface ControlAlertContract

@@ -1,12 +1,13 @@
 <?php
 
+
 namespace App\Repositories\Administrator;
 
+use App\Entities\Administrator\AlertLandslide;
+use App\Repositories\AppBaseRepository;
 use App\Repositories\RepositoriesContract;
-use Rinvex\Repository\Repositories\EloquentRepository;
-use App\Entities\Administrator\Variable;
 
-class VariableRepository extends EloquentRepository implements RepositoriesContract
+class AlertLandslideRepository extends AppBaseRepository implements RepositoriesContract
 {
     /**
      * @var string
@@ -15,5 +16,5 @@ class VariableRepository extends EloquentRepository implements RepositoriesContr
     /**
      * @var string
      */
-    protected $model = Variable::class;
+    protected $model = AlertLandslide::class;
 }

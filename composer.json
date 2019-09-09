@@ -19,7 +19,7 @@
         "mockery/mockery": "~1.0",
         "phpunit/phpunit": "~6.0",
         "symfony/thanks": "^1.0",
-        "rinvex/repository": "dev-develop#29884f8cd9cd212ff30b1d52124fd3d1c040fda1"
+        "rinvex/laravel-repositories": "dev-develop#072c27c08173bca746c23816a09ef1267432767d"
     },
     "autoload": {
         "classmap": [

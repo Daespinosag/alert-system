@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Repositories\AlertSystem;
 
+namespace App\Repositories\Administrator;
+
+use App\Entities\Administrator\AlertFlood;
 use App\Repositories\RepositoriesContract;
 use Rinvex\Repository\Repositories\EloquentRepository;
-use App\Entities\AlertSystem\Role;
 
-class RoleRepository extends EloquentRepository implements RepositoriesContract
+class AlertFloodRepository extends EloquentRepository implements RepositoriesContract
 {
     /**
      * @var string
@@ -15,5 +16,5 @@ class RoleRepository extends EloquentRepository implements RepositoriesContract
     /**
      * @var string
      */
-    protected $model = Role::class;
+    protected $model = AlertFlood::class;
 }

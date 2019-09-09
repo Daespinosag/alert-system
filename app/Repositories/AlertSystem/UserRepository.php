@@ -2,16 +2,25 @@
 
 namespace App\Repositories\AlertSystem;
 
+use App\Repositories\RepositoriesContract;
 use Rinvex\Repository\Repositories\EloquentRepository;
 use App\Entities\AlertSystem\User;
 use DB;
 
-class UserRepository extends EloquentRepository
+class UserRepository extends EloquentRepository implements RepositoriesContract
 {
+    /**
+     * @var string
+     */
     protected $repositoryId = 'rinvex.repository.uniqueid';
+    /**
+     * @var string
+     */
     protected $model = User::class;
 
-
+    /**
+     * @return mixed
+     */
     protected function queryBuilder()
     {
         return DB::connection('alert-system')->table('users');

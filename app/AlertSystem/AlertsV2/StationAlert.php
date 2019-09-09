@@ -2,8 +2,7 @@
 
 namespace App\AlertSystem\AlertsV2;
 
-use App\AlertSystem\Extract\AcquisitionServerExtract;
-use App\AlertSystem\Extract\ExtractContract;
+use App\AlertSystem\Extract\{AcquisitionServerExtract, ExtractContract};
 use App\AlertSystem\Homogenization\Homogenization;
 use App\Entities\Administrator\Station;
 use Carbon\Carbon;
@@ -41,18 +40,19 @@ class StationAlert
 
     /**
      * StationAlert constructor.
-     * @param Station $station
+     * @param $station
      * @param Carbon $dateTime
      * @param Carbon $initDateTime
      * @param Carbon $finalDateTime
      */
-    public function __construct(Station $station,Carbon $dateTime,Carbon $initDateTime, Carbon $finalDateTime){
+    public function __construct($station,Carbon $dateTime,Carbon $initDateTime, Carbon $finalDateTime){
+
         $this->station = $station;
         $this->dateTime = $dateTime;
         $this->initDateTime = $initDateTime;
         $this->finalDateTime = $finalDateTime;
 
-        $this->exactMethod = $this->createAcquisitionServerExtract($station->net->connection->name,$station->table_db_name);
+        $this->exactMethod = $this->createAcquisitionServerExtract($station->connection_name,$station->station_table);
         $this->homogenization = new Homogenization($dateTime);
     }
 
@@ -65,11 +65,11 @@ class StationAlert
          return new AcquisitionServerExtract($connection,$tableName,$this->initDateTime, $this->finalDateTime);
     }
 
-    public function execute(){
+    public function execute(string $variable){
         $this->exactMethod->execute();
 
         if ($this->exactMethod->dataExistence){
-            $this->homogenization->execute($this->exactMethod->data,'precipitacion_real'); # La variable dede entrar por parametro
+            $this->homogenization->execute($this->exactMethod->data,$variable);
         }
     }
 }

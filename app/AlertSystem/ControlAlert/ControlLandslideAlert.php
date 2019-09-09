@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AlertSystem\Control;
+namespace App\AlertSystem\ControlAlert;
 
 use App\AlertSystem\Alerts\AlertContract;
 use Carbon\Carbon;

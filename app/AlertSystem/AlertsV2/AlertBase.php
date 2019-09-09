@@ -3,13 +3,22 @@
 
 namespace App\AlertSystem\AlertsV2;
 
-use App\AlertSystem\AlertSystem;
 use App\Entities\Administrator\Station;
+use App\Entities\AlertSystem\ControlNewData;
 use App\Repositories\Administrator\StationRepository;
+use App\Repositories\RepositoriesContract;
 use Carbon\Carbon;
 
-class AlertBase extends AlertSystem
+class AlertBase
 {
+    /**
+     * @var string
+     */
+    private $alertCode;
+    /**
+     * @var ControlNewData
+     */
+    protected $controlNewData;
     /**
      * @var Station
      */
@@ -26,6 +35,11 @@ class AlertBase extends AlertSystem
     protected $secondaryStationsAlert = [];
 
     /**
+     * @var
+     */
+    protected $variableToValidate;
+
+    /**
      * @var Carbon
      */
     protected $initDateTime;
@@ -39,6 +53,11 @@ class AlertBase extends AlertSystem
      * @var StationRepository
      */
     protected $stationRepository;
+
+    /**
+     * @var
+     */
+    protected $specificAlertRepository;
     /**
      * @var Carbon
      */
@@ -46,27 +65,49 @@ class AlertBase extends AlertSystem
 
     /**
      * FloodAlert constructor.
-     * @param int $primaryStation
+     * @param RepositoriesContract $specificAlertRepository
+     * @param string $alertCode
+     * @param string $variableToValidate
+     * @param ControlNewData $controlNewData
      * @param Carbon $dateTime
      * @param Carbon $initDateTime
      * @param Carbon $finalDateTime
      */
-    public function __construct(int $primaryStation, Carbon $dateTime,Carbon $initDateTime,Carbon $finalDateTime){
-        $this->primaryStation = $primaryStation;
+    public function __construct(
+        RepositoriesContract $specificAlertRepository,
+        string $alertCode,
+        string $variableToValidate,
+        ControlNewData $controlNewData,
+        Carbon $dateTime,
+        Carbon $initDateTime,
+        Carbon $finalDateTime
+    ){
+        $this->specificAlertRepository = $specificAlertRepository;
+        $this->alertCode = $alertCode;
+        $this->variableToValidate = $variableToValidate;
+        $this->controlNewData = $controlNewData;
         $this->dateTime = $dateTime;
         $this->initDateTime = $initDateTime;
         $this->finalDateTime = $finalDateTime;
 
         $this->stationRepository = new StationRepository(); # TODO Esto debe ser dinamico
-
-        $this->primaryStationAlert = $this->createStation($primaryStation);
+        $this->primaryStation = $this->getStationAlert(true)[0];
+        $this->primaryStationAlert = $this->createStation($this->primaryStation);
     }
 
     /**
-     * @param int $stationId
+     * @param $station
      * @return StationAlert
      */
-    public function createStation(int $stationId) : StationAlert{
-        return new StationAlert($this->stationRepository->getStation($stationId), $this->dateTime,$this->initDateTime, $this->finalDateTime);
+    public function createStation($station) : StationAlert {
+        return new StationAlert($station, $this->dateTime,$this->initDateTime, $this->finalDateTime);
+    }
+
+    public function createSecondaryStations(){
+
+    }
+
+    public function getStationAlert(bool $primary = false){
+        return $this->stationRepository->getStationsAlerts('flood',$this->controlNewData->alert_id,$primary);
     }
 }

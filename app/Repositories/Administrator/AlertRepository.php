@@ -2,14 +2,20 @@
 
 namespace App\Repositories\Administrator;
 
+use App\Repositories\RepositoriesContract;
 use DB;
 use Rinvex\Repository\Repositories\EloquentRepository;
 use App\Entities\Administrator\Alert;
 
-class AlertRepository extends EloquentRepository
+class AlertRepository extends EloquentRepository implements RepositoriesContract
 {
+    /**
+     * @var string
+     */
     protected $repositoryId = 'rinvex.repository.uniqueid';
-
+    /**
+     * @var string
+     */
     protected $model = Alert::class;
 
     // The new method from alert-system TODO

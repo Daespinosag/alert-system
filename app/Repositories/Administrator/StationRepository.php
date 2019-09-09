@@ -2,18 +2,26 @@
 
 namespace App\Repositories\Administrator;
 
+use Illuminate\Support\Collection;
 use Rinvex\Repository\Repositories\EloquentRepository;
 use App\Entities\Administrator\Station;
 use DB;
 
 class StationRepository extends EloquentRepository
 {
+    /**
+     * @var string
+     */
     protected $repositoryId = 'rinvex.repository.uniqueid';
-
+    /**
+     * @var string
+     */
     protected $model = Station::class;
 
-    protected function queryBuilder()
-    {
+    /**
+     * @return mixed
+     */
+    protected function queryBuilder(){
         return DB::connection('administrator')->table('station');
     }
 
@@ -277,6 +285,41 @@ class StationRepository extends EloquentRepository
     public function getUltimateDataInAlertTable($table,$stationId)
     {
         return DB::connection('alert-system')->table($table)->select('*')->where('station','=',$stationId)->orderBy('created_at', 'desc')->first();
+    }
+
+    /**
+     * @param string $alertCode
+     * @param int $alertId
+     * @param bool $primary
+     * @return Collection
+     */
+    public function getStationsAlerts(string $alertCode,int $alertId,bool $primary = false) : Collection {
+        return $this->queryBuilder()
+            ->select(
+                'station.id as station_sk',
+                'net.id as net_id',
+                'station.name as station_name',
+                'net.name as net_name',
+                'connection.name as connection_name',
+                'station.table_db_name as station_table',
+                'station_type.code as station_type_code',
+                'station_'.$alertCode.'_alert.primary as station_alert_primary',
+                'station_'.$alertCode.'_alert.active as station_alert_active',
+                'station_'.$alertCode.'_alert.visible as station_alert_visible',
+                'station_'.$alertCode.'_alert.distance as station_alert_distance'
+            )
+            ->join('station_'.$alertCode.'_alert', 'station_'.$alertCode.'_alert.station_id', '=', 'station.id')
+            ->join('net','net.id','=','station.net_id')
+            ->join('connection','connection.id','=','net.connection_id')
+            ->join('station_type','station_type.id','=','station.station_type_id')
+            ->where('station_'.$alertCode.'_alert.primary','=',$primary)
+            ->where('station_'.$alertCode.'_alert.'.$alertCode.'_alert_id','=',$alertId)
+            ->where('station_'.$alertCode.'_alert.active','=',true)
+            ->where('station_'.$alertCode.'_alert.visible','=',true)
+            ->where('station.active','=',true)
+            ->where('station.rt_active','=',true)
+            ->orderBY('station.id')
+            ->get();
     }
 
 }

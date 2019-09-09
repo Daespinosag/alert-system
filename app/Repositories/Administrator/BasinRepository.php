@@ -3,10 +3,10 @@
 namespace App\Repositories\Administrator;
 
 use App\Repositories\RepositoriesContract;
-use Rinvex\Repository\Repositories\EloquentRepository;
-use App\Entities\Administrator\Variable;
+use App\Repositories\AppBaseRepository;
+use App\Entities\Administrator\Basin;
 
-class VariableRepository extends EloquentRepository implements RepositoriesContract
+class BasinRepository extends AppBaseRepository implements RepositoriesContract
 {
     /**
      * @var string
@@ -15,5 +15,5 @@ class VariableRepository extends EloquentRepository implements RepositoriesContr
     /**
      * @var string
      */
-    protected $model = Variable::class;
+    protected $model = Basin::class;
 }

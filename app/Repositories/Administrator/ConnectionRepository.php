@@ -2,20 +2,21 @@
 
 namespace App\Repositories\Administrator;
 
+use App\Repositories\RepositoriesContract;
 use Illuminate\Container\Container;
 use App\Entities\Administrator\Connection;
 use Rinvex\Repository\Repositories\EloquentRepository;
 
-class ConnectionRepository extends EloquentRepository
+class ConnectionRepository extends EloquentRepository implements RepositoriesContract
 {
     /**
-     * RepositoriesContract constructor.
-     * @param Container $container
+     * @var string
      */
-    public function __construct(Container $container)
-    {
-        $this->setContainer($container)->setModel(Connection::class)->setRepositoryId('rinvex.repository.uniqueid');
-    }
+    protected $repositoryId = 'rinvex.repository.uniqueid';
+    /**
+     * @var string
+     */
+    protected $model = Connection::class;
 
     /**
      * @param $variables

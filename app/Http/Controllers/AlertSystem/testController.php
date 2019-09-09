@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AlertSystem;
 use App\AlertSystem\Connection\SearchTableInExternalStaticConnection;
 use App\AlertSystem\Extract\AcquisitionServerExtract;
 use App\Events\AlertEchoCalculatedEvent;
+use App\Repositories\AlertSystem\ControlNewDataRepository;
 use App\Repositories\AlertSystem\UserRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -28,14 +29,20 @@ class testController extends Controller
      * @var StationRepository
      */
     private $stationRepository;
+    /**
+     * @var ControlNewDataRepository
+     */
+    private $controlNewDataRepository;
 
     /**
      * @param StationRepository $stationRepository
+     * @param ControlNewDataRepository $controlNewDataRepository
      */
 
-    public function __construct(StationRepository $stationRepository)
+    public function __construct(StationRepository $stationRepository,ControlNewDataRepository $controlNewDataRepository)
     {
         $this->stationRepository = $stationRepository;
+        $this->controlNewDataRepository = $controlNewDataRepository;
     }
 
     /**
@@ -43,13 +50,15 @@ class testController extends Controller
      */
     public function testV2()
     {
+        //dd($this->stationRepository->getStationsAlerts('landslide',15,true));
+        //dd($this->controlNewDataRepository->getUnsettledAlerts(2));
         //$connection = "";
         //$table      = "est_aranjuez";
         $dateTime   = Carbon::parse('2019-08-13 09:00:00');
-        $initialDateTime   = Carbon::parse('2019-08-13 08:55:00');
-        $finalDateTime   = Carbon::parse('2019-08-13 09:05:00');
+        //$initialDateTime   = Carbon::parse('2019-08-13 08:55:00');
+        //$finalDateTime   = Carbon::parse('2019-08-13 09:05:00');
 
-        $extract = new \App\AlertSystem\AlertsV2\FloodAlert(19,$dateTime,$initialDateTime,$finalDateTime);
+        $extract = new \App\AlertSystem\ControlAlert\ControlFloodAlert($dateTime);
 
         $extract->execute();
 

@@ -3,12 +3,19 @@
 namespace App\Repositories\AlertSystem;
 
 use App\Entities\AlertSystem\Flood;
+use App\Repositories\RepositoriesContract;
 use Carbon\Carbon;
 use Rinvex\Repository\Repositories\EloquentRepository;
 
-class FloodRepository extends EloquentRepository
+class FloodRepository extends EloquentRepository implements RepositoriesContract
 {
+    /**
+     * @var string
+     */
     protected $repositoryId = 'rinvex.repository.uniqueid';
+    /**
+     * @var string
+     */
     protected $model = Flood::class;
 
     /**

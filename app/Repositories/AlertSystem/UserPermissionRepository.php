@@ -2,17 +2,22 @@
 
 namespace App\Repositories\AlertSystem;
 
+use App\Repositories\RepositoriesContract;
 use Rinvex\Repository\Repositories\EloquentRepository;
 use App\Entities\AlertSystem\UserPermission;
 use DB;
 use Carbon\Carbon;
 
-class UserPermissionRepository extends EloquentRepository
+class UserPermissionRepository extends EloquentRepository implements RepositoriesContract
 {
+    /**
+     * @var string
+     */
     protected $repositoryId = 'rinvex.repository.uniqueid';
-
+    /**
+     * @var string
+     */
     protected $model = UserPermission::class;
-
 
     /**
      * @return DB
