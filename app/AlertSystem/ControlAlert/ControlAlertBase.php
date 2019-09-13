@@ -2,6 +2,7 @@
 
 namespace App\AlertSystem\ControlAlert;
 
+use App\AlertSystem\AlertsV2\AlertContract;
 use App\AlertSystem\AlertSystem;
 use App\Repositories\AlertSystem\ControlNewDataRepository;
 use Carbon\Carbon;
@@ -18,7 +19,7 @@ class ControlAlertBase extends AlertSystem
      */
     protected $controlAlerts;
     /**
-     * @var array
+     * @var AlertContract[]
      */
     protected $alerts = [];
     /**

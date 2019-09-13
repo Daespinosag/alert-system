@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\AlertSystem\AlertsV2;
 
 use App\Entities\Administrator\Station;
@@ -8,13 +7,14 @@ use App\Entities\AlertSystem\ControlNewData;
 use App\Repositories\Administrator\StationRepository;
 use App\Repositories\RepositoriesContract;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class AlertBase
 {
     /**
      * @var string
      */
-    private $alertCode;
+    protected $alertCode;
     /**
      * @var ControlNewData
      */
@@ -25,14 +25,14 @@ class AlertBase
     protected $primaryStation;
 
     /**
+     * @var BackupStationsAlert
+     */
+    protected $backupStationsAlert;
+
+    /**
      * @var StationAlert
      */
     protected $primaryStationAlert;
-
-    /**
-     * @var StationAlert[]
-     */
-    protected $secondaryStationsAlert = [];
 
     /**
      * @var
@@ -61,7 +61,12 @@ class AlertBase
     /**
      * @var Carbon
      */
-    private $dateTime;
+    protected $dateTime;
+
+    /**
+     * @var bool
+     */
+    public $complete = false;
 
     /**
      * FloodAlert constructor.
@@ -103,11 +108,23 @@ class AlertBase
         return new StationAlert($station, $this->dateTime,$this->initDateTime, $this->finalDateTime);
     }
 
-    public function createSecondaryStations(){
-
+    /**
+     * @param bool $primary
+     * @return Collection
+     */
+    public function getStationAlert(bool $primary = false) : Collection {
+        return $this->stationRepository->getStationsAlerts($this->alertCode,$this->controlNewData->alert_id,$primary);
     }
 
-    public function getStationAlert(bool $primary = false){
-        return $this->stationRepository->getStationsAlerts('flood',$this->controlNewData->alert_id,$primary);
+    /**
+     *
+     */
+    public function createBackupStationsAlert(){
+        $this->backupStationsAlert = new BackupStationsAlert(
+            $this->stationRepository->getStationsAlerts($this->alertCode, $this->controlNewData->alert_id, false),
+            $this->dateTime,
+            $this->initDateTime,
+            $this->finalDateTime
+        );
     }
 }

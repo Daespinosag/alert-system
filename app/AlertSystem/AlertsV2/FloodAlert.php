@@ -21,8 +21,39 @@ class FloodAlert extends AlertBase implements AlertContract
     }
 
     public function execute(){
+        # Se ejecuta la consulta de la variable para la estacion primaria
         $this->primaryStationAlert->execute($this->variableToValidate);
 
-        dd($this);
+        # Se valida si fue posible realizar el calculo con la estacion primaria
+        if ($this->primaryStationAlert->homogenization->validateHomogenization){
+            # TODO Se calcula el indicador para la estcion primaria
+            $this->calculateIndicator($this->primaryStationAlert->homogenization->data,true);
+
+            # Se completa da por completada la alerta
+            $this->complete = true;
+
+            # TODO Se retora el valor calculado
+            //return;
+        }
+
+        # Se crea el componente mediador para las estaciones de respado
+        $this->createBackupStationsAlert();
+
+        # Se ejecuta la el componente mediador para las estaciones secundarias
+        $this->backupStationsAlert->execute($this->variableToValidate);
+
+        # Se valida la ejecusion del proceso por medio de las estaciones de respaldo
+        if ($this->backupStationsAlert->complete){
+            # Se calcula el  indicador dependi
+            $this->calculateIndicator($this->backupStationsAlert->data,false);
+
+            # TODO Se retorna el valor calculado
+            //return;
+        }
+        dd('si data',$this);
+    }
+
+    public function calculateIndicator($value,bool $primaryProcess = true){
+        dd($value);
     }
 }

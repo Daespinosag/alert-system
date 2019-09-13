@@ -66,10 +66,24 @@ class StationAlert
     }
 
     public function execute(string $variable){
+
+        # Se ejecuta el metodo de extraccion de datos
         $this->exactMethod->execute();
 
-        if ($this->exactMethod->dataExistence){
-            $this->homogenization->execute($this->exactMethod->data,$variable);
-        }
+        # Se valida si existen datos
+        if (!$this->exactMethod->dataExistence){ return;} # TODO definir eventos de fallo aca.
+
+        # Se ejecuta la homogenizacion
+        $this->homogenization->execute($this->exactMethod->data,$variable);
+
+        # Se valida la homogenizacion
+        if (!$this->homogenization->validateHomogenization){return;} # TODO definir eventos de fallo aca.
+
+        # Se calcula el peso de la estacion
+        $weight = (is_null($this->station->station_alert_distance)) ? 1 : $this->station->station_alert_distance;
+
+        $this->homogenization->data->{'weight_'.$variable} = $this->homogenization->data->{$variable} * $weight;
+
+        return; # TODO definir eventos para defirnir que todo salio correcto
     }
 }
