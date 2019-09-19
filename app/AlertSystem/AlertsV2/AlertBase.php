@@ -2,6 +2,7 @@
 
 namespace App\AlertSystem\AlertsV2;
 
+use App\AlertSystem\Indicators\IndicatorContract;
 use App\Entities\Administrator\Station;
 use App\Entities\AlertSystem\ControlNewData;
 use App\Repositories\Administrator\StationRepository;
@@ -15,6 +16,10 @@ class AlertBase
      * @var string
      */
     protected $alertCode;
+    /**
+     * @var
+     */
+    protected $alert;
     /**
      * @var ControlNewData
      */
@@ -69,8 +74,18 @@ class AlertBase
     public $complete = false;
 
     /**
+     * @var IndicatorContract
+     */
+    public $indicator;
+    /**
+     * @var RepositoriesContract
+     */
+    private $alertRepository;
+
+    /**
      * FloodAlert constructor.
      * @param RepositoriesContract $specificAlertRepository
+     * @param RepositoriesContract $alertRepository
      * @param string $alertCode
      * @param string $variableToValidate
      * @param ControlNewData $controlNewData
@@ -80,6 +95,7 @@ class AlertBase
      */
     public function __construct(
         RepositoriesContract $specificAlertRepository,
+        RepositoriesContract $alertRepository,
         string $alertCode,
         string $variableToValidate,
         ControlNewData $controlNewData,
@@ -88,6 +104,7 @@ class AlertBase
         Carbon $finalDateTime
     ){
         $this->specificAlertRepository = $specificAlertRepository;
+        $this->alertRepository = $alertRepository;
         $this->alertCode = $alertCode;
         $this->variableToValidate = $variableToValidate;
         $this->controlNewData = $controlNewData;
@@ -95,6 +112,7 @@ class AlertBase
         $this->initDateTime = $initDateTime;
         $this->finalDateTime = $finalDateTime;
 
+        $this->alert = $this->alertRepository->getAlert($this->controlNewData->alert_id);
         $this->stationRepository = new StationRepository(); # TODO Esto debe ser dinamico
         $this->primaryStation = $this->getStationAlert(true)[0];
         $this->primaryStationAlert = $this->createStation($this->primaryStation);

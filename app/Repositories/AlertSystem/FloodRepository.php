@@ -2,9 +2,8 @@
 
 namespace App\Repositories\AlertSystem;
 
-use App\Entities\AlertSystem\Flood;
+use App\Entities\Administrator\AlertFlood;
 use App\Repositories\RepositoriesContract;
-use Carbon\Carbon;
 use Rinvex\Repository\Repositories\EloquentRepository;
 
 class FloodRepository extends EloquentRepository implements RepositoriesContract
@@ -16,13 +15,12 @@ class FloodRepository extends EloquentRepository implements RepositoriesContract
     /**
      * @var string
      */
-    protected $model = Flood::class;
+    protected $model = AlertFlood::class;
 
     /**
      * @return mixed
      */
-    public  function createShowcase()
-    {
+    public  function createShowcase(){
         return new $this->model;
     }
 
@@ -55,5 +53,13 @@ class FloodRepository extends EloquentRepository implements RepositoriesContract
                 ->orderBy('date_execution')
                 ->get()
                 ->toArray();
+    }
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function getAlert(int $id){
+        return $this->select('*')->where('id','=',$id)->first();
     }
 }

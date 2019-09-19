@@ -3,11 +3,10 @@
 namespace App\Repositories\AlertSystem;
 
 use App\Entities\AlertSystem\TrackingLandslideAlert;
-use App\Repositories\AppBaseRepository;
 use App\Repositories\RepositoriesContract;
-use Illuminate\Container\Container;
+use Rinvex\Repository\Repositories\EloquentRepository;
 
-class TrackingLandslideAlertRepository extends AppBaseRepository implements RepositoriesContract
+class TrackingLandslideAlertRepository extends EloquentRepository implements RepositoriesContract
 {
     /**
      * @var string

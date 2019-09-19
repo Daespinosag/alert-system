@@ -17,21 +17,25 @@ class CreateTrackingLandslideAlert extends Migration
 
             $table->bigIncrements('id');
 
-            $table->bigInteger('zone_id');
-            $table->bigInteger('alert_flood_id');
-            $table->bigInteger('station_id');
+            $table->bigInteger('sup_id');
+            $table->bigInteger('alert_id');
+            $table->bigInteger('primary_station_id');
+            $table->boolean('secondary_calculate')->default(false);
 
             $table->float('rainfall')->nullable();
             $table->float('rainfall_recovered')->nullable();
 
-            $table->float('alert_value')->nullable();
-            $table->float('alert_previous_difference')->nullable();
+            $table->float('indicator_value')->nullable();
+            $table->float('indicator_previous_difference')->nullable();
+
+            $table->integer('alert_level')->default(0);
             $table->enum('alert_tag',['green','yellow','orange','red'])->nullable();
             $table->enum('alert_status',['equal','increase','decrease'])->nullable();
 
-            $table->dateTime('date_execution')->nullable();
-            $table->dateTime('date_initial')->nullable();
-            $table->dateTime('date_final')->nullable();
+            $table->dateTime('date_time_homogenization')->nullable();
+            $table->dateTime('date_time_execution')->nullable();
+            $table->dateTime('date_time_initial')->nullable();
+            $table->dateTime('date_time_final')->nullable();
 
             $table->enum('error',['communication','no_data','calculation'])->nullable();
             $table->string('comment')->nullable();
