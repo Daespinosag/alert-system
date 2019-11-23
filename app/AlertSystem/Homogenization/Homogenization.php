@@ -4,6 +4,7 @@ namespace App\AlertSystem\Homogenization;
 
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use phpDocumentor\Reflection\DocBlock\Description;
 
 class Homogenization extends HomogenizationBase implements HomogenizationContract
 {
@@ -35,14 +36,38 @@ class Homogenization extends HomogenizationBase implements HomogenizationContrac
         # Se calcula el valor de tiempo numerico para la fecha a homogenizar
         $t3 = Carbon::parse($this->dateTime)->getTimestamp();
 
+        # Se prepran los datos con las marcas de tiempo
+        $preProcessData = $this->prepareData($recoveryData);
+
+        # Se valida si la estacion reporto los datos en la fecha de homogenizacion
+        $validation = array_search($t3, array_column($preProcessData, 'timeNumber'));
+
+        # Se valida si se encontro el valor en el array entrante
+        if (!is_bool($validation)){
+
+            # Si se encontro se asigna al dato de respuesta
+            $this->data = (object)$preProcessData[$validation];
+
+            # Se calcula la marcha de fecha y tiempo
+            $this->data->dateTime = $this->dateTime->format('Y-m-d h:i:s');
+
+            # La validacion de los datos es aceptada
+            $this->validateHomogenization = true;
+
+            return $this;
+        }
+
         # Se ordenan los valores de menos a mayor en dateTime numerico
-        $preparedData = $this->selectBestOptions($this->prepareData($recoveryData),$t3);
+        $preparedData = $this->selectBestOptions($preProcessData,$t3);
 
         # Validar si los datos preparados corresponden a lo esperado
-        if (count($preparedData) != 0){$this->validateHomogenization = true;}
+        if (count($preparedData) == 0){return $this;}
+
+
+        $this->validateHomogenization = true;
 
         # Se realiza la Homogenizacion
-        if ($this->validateHomogenization){$this->homogenization($preparedData[0],$preparedData[1],'precipitacion_real',$t3);}
+        $this->homogenization($preparedData[0],$preparedData[1],$variable,$t3);
 
         return $this;
     }
@@ -70,17 +95,20 @@ class Homogenization extends HomogenizationBase implements HomogenizationContrac
         #Se ordena el array de menor a mayor
         $sortedRecoveryData = $this->orderRecoveryData($recoveryData,'timeNumber');
 
-        $bestOptions = [];
-        foreach ($sortedRecoveryData as $key => $data){
-            if ($data->timeNumber  == $t3){
-                if (!($key == 0 or $key == count($sortedRecoveryData))){
-                    $bestOptions[] = $sortedRecoveryData[$key - 1];
-                    $bestOptions[] = $sortedRecoveryData[$key + 1];
-                }
-            }
-        }
+        # Se extrae la posición del valor a homogenizar en el array
+        $val = array_search($t3, array_column($sortedRecoveryData, 'timeNumber'));
 
-        return $bestOptions;
+        # Cundo el valor a homogenizar no se encuenta, no es posible homogenizar
+        if (is_bool($val)){ return [];}
+
+        # En caso de que no se encuentre el valor siguiente no se puede realizar la homogenizacion
+        if ($val >= count($sortedRecoveryData) -1 ){return [];} # TODO Definir estado para fallo superiror (No hay dato siguiente)
+
+        # En caso de que no se encuentre el valor anterior no se puede realizar la homogenizacion
+        if ($val <= 0){return [];} # TODO definir estado para fallo inferior (No hay dato anterior)
+
+        # Se retorna en la posicion uno el valor anterior y en la posicion dos el valor siguiente
+        return [$sortedRecoveryData[$val - 1],$sortedRecoveryData[$val + 1]];
     }
 
     /**

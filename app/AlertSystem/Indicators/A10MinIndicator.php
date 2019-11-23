@@ -11,8 +11,8 @@ class A10MinIndicator extends IndicatorsBase implements IndicatorContract
      * @param $value
      */
     public function __construct($value){
-        parent::__construct(new TrackingFloodAlertRepository(),10,$value,'rainfall');
-        # TODO 10 y rainfall deben ingresar por medio de un archivo de configuracion
+        parent::__construct(new TrackingFloodAlertRepository(),5,2,$value,'rainfall');
+        # TODO 5 y rainfall deben ingresar por medio de un archivo de configuracion
     }
 
     /**
@@ -46,6 +46,9 @@ class A10MinIndicator extends IndicatorsBase implements IndicatorContract
 
         # Se valida la diferencia con el valor de tacking anterior
         $this->validatePreviousDeference();
+
+        # Se guarda el valor calculado para el indicador
+        $this->insertInTrackingTable =  $this->actualTracking->save();
     }
 
     /**

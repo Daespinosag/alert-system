@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\AlertSystem;
 
+use App\AlertSystem\Connection\DatabaseConfig;
 use App\AlertSystem\Connection\SearchTableInExternalStaticConnection;
 use App\AlertSystem\Extract\AcquisitionServerExtract;
 use App\Events\AlertEchoCalculatedEvent;
@@ -18,6 +19,7 @@ use App\AlertSystem\Alerts\LandslideAlert;
 use App\AlertSystem\Alerts\FloodAlert;
 use Event;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Mail;
 use Carbon\Carbon;
 use App\Events\AlertFiveMinutesCalculated;
@@ -54,15 +56,63 @@ class testController extends Controller
         //dd($this->controlNewDataRepository->getUnsettledAlerts(2));
         //$connection = "";
         //$table      = "est_aranjuez";
-        $dateTime   = Carbon::parse('2019-08-13 09:00:00');
-        //$initialDateTime   = Carbon::parse('2019-08-13 08:55:00');
+
+        # 20/02/2017
+        #  $dateTime   = Carbon::parse('2017-02-20 00:05:00');
+        $dateTime   = Carbon::parse('2017-02-20 00:00:00');
+        //$initialDateTime   = Carbon::p rarse('2019-08-13 08:55:00');
         //$finalDateTime   = Carbon::parse('2019-08-13 09:05:00');
 
-        $extract = new \App\AlertSystem\ControlAlert\ControlFloodAlert($dateTime);
+        # Consultar aca todas las estaciones con su respectiva tabla para el sistema de alertas.
 
-        $extract->execute();
+        for ($i = 0; $i <= 288;$i ++){
 
-        dd($extract);
+            $extract = new \App\AlertSystem\ControlAlert\ControlFloodAlert($dateTime);
+            $extract->execute();
+
+            $dateTime = $this->generateDateTime($dateTime,'+5 minutes');
+        }
+
+        dd('termine',$dateTime);
+    }
+
+
+    public function testConnectionsAndTablesServerAcquisition(){
+        $tem = $this->stationRepository->getAllStationFlood();
+        #$tem = $this->stationRepository->getAllStationLandslide();
+
+        $arr = [];
+
+        foreach ($tem as $station){
+            $connection = $this->searchStaticConnection($station->connection_name,$station->station_table);
+
+            $value = null;
+
+            if ($connection){
+                $value = DB::connection($connection)
+                    ->table($station->station_table)
+                    ->selectRaw("COUNT(fecha) as count")
+                    ->where('fecha','=','2019-11-21')
+                    ->first()->count;
+            }
+
+            $arr[] = [
+                'station_id' => $station->station_sk,
+                'connection'=>$station->connection_name,
+                'table'=>$station->station_table,
+                'data' => $value,
+            ];
+        }
+
+        dd($arr);
+    }
+    /**
+     * @param Carbon $dateTime
+     * @param string $time
+     * @return Carbon
+     */
+    public function generateDateTime(Carbon $dateTime,string $time) : Carbon {
+        return date_add(clone ($dateTime), date_interval_create_from_date_string($time));
     }
 
     /**

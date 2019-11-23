@@ -32,16 +32,16 @@ class FloodAlert extends AlertBase implements AlertContract
         # Se valida si fue posible realizar el calculo con la estacion primaria
         if ($this->primaryStationAlert->homogenization->validateHomogenization){
 
+            # Se crea el objeto para el calculo del indicador
             $this->setIndicator($this->primaryStationAlert->homogenization->data);
 
             # Se calcula el  indicador dependi
-            $this->calculateIndicator(false);
+            $this->calculateIndicator(true);
 
             # Se completa da por completada la alerta
             $this->complete = true;
 
-            # TODO Se retora el valor calculado
-            //return;
+            return;
         }
 
         # Se crea el componente mediador para las estaciones de respado
@@ -53,15 +53,16 @@ class FloodAlert extends AlertBase implements AlertContract
         # Se valida la ejecusion del proceso por medio de las estaciones de respaldo
         if ($this->backupStationsAlert->complete){
 
+            # Se crea el objeto para el calculo del indicador
             $this->setIndicator($this->backupStationsAlert->data);
 
             # Se calcula el  indicador dependi
             $this->calculateIndicator(false);
 
-            # TODO Se retorna el valor calculado
-            //return;
+            $this->complete = true;
+
+            return;
         }
-        dd('si data',$this);
     }
 
     /**

@@ -47,19 +47,28 @@ class IndicatorsBase
      * @var array
      */
     private $alertLevels = ['green','yellow','orange','red'];
+    /**
+     * @var bool
+     */
+    public $insertInTrackingTable = false;
+    /**
+     * @var integer
+     */
+    private $expectedAmount;
 
     /**
      * IndicatorsBase constructor.
      * @param RepositoriesContract $trackingTableRepository
      * @param int $range
+     * @param int $expectedAmount
      * @param $value : value in minutes
      * @param string $localVariable
      */
-    public function __construct(RepositoriesContract $trackingTableRepository,int $range,$value,string $localVariable){
+    public function __construct(RepositoriesContract $trackingTableRepository,int $range,int $expectedAmount,$value,string $localVariable){
         $this->trackingTableRepository = $trackingTableRepository;
         $this->value = $value;
         $this->range = $range;
-
+        $this->expectedAmount = $expectedAmount;
         $this->localVariable = $localVariable;
 
         # Se crea el objeto Tracking especifico con el que se va a seguir interactuando
@@ -125,7 +134,7 @@ class IndicatorsBase
         $this->actualTracking->indicator_value = $this->actualTracking->{$this->localVariable} + $this->infoIndicator->indicator;
 
         # Se calcula el porcentaje de recuperados
-        $this->actualTracking->rainfall_recovered = ($this->infoIndicator->recovered + 1 ) / ($this->range / $this->period);
+        $this->actualTracking->rainfall_recovered = ($this->infoIndicator->recovered + 1 ) / $this->expectedAmount;
     }
 
     /**

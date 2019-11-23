@@ -17,12 +17,15 @@ class AcquisitionServerExtract extends ExtractBase implements ExtractContract
         parent::__construct($connection,$stationTable,$initDateTime,$finalDateTime);
     }
 
-    public function execute(){
-        $this->validateTheLastData();
+    public function execute(string $variable){
+        # Se realiza la validacion de la existencia de los datos en la central de acopio
+        $this->validateTheLastData($variable);
 
+        # Si no existe datos en la central de acopio se termina el proceso
         if (!$this->dataExistence){ return $this;}
 
-        $this->extractData();
+        # Se extren los datos de la central de acopio
+        $this->extractData($variable);
 
         return $this;
     }

@@ -293,7 +293,7 @@ class StationRepository extends EloquentRepository
      * @param bool $primary
      * @return Collection
      */
-    public function getStationsAlerts(string $alertCode,int $alertId,bool $primary = false) : Collection {
+    public function  getStationsAlerts(string $alertCode,int $alertId,bool $primary = false) : Collection {
         return $this->queryBuilder()
             ->select(
                 'station.id as station_sk',
@@ -316,6 +316,56 @@ class StationRepository extends EloquentRepository
             ->where('station_'.$alertCode.'_alert.'.$alertCode.'_alert_id','=',$alertId)
             ->where('station_'.$alertCode.'_alert.active','=',true)
             ->where('station_'.$alertCode.'_alert.visible','=',true)
+            ->where('station.active','=',true)
+            ->where('station.rt_active','=',true)
+            ->orderBY('station.id')
+            ->get();
+    }
+
+    public function getAllStationLandslide(){
+        return $this->queryBuilder()
+            ->select(
+                'station.id as station_sk',
+                'net.id as net_id',
+                'station.name as station_name',
+                'net.name as net_name',
+                'connection.name as connection_name',
+                'station.table_db_name as station_table',
+                'station_type.code as station_type_code',
+                'station_landslide_alert.primary as station_alert_primary'
+            )
+            ->join('station_landslide_alert', 'station_landslide_alert.station_id', '=', 'station.id')
+            ->join('net','net.id','=','station.net_id')
+            ->join('connection','connection.id','=','net.connection_id')
+            ->join('station_type','station_type.id','=','station.station_type_id')
+            //->where('station_landslide_alert.landslide_alert_id','=',1)
+            ->where('station_landslide_alert.active','=',true)
+            ->where('station_landslide_alert.visible','=',true)
+            ->where('station.active','=',true)
+            ->where('station.rt_active','=',true)
+            ->orderBY('station.id')
+            ->get();
+    }
+
+    public function getAllStationFlood(){
+        return $this->queryBuilder()
+            ->select(
+                'station.id as station_sk',
+                'net.id as net_id',
+                'station.name as station_name',
+                'net.name as net_name',
+                'connection.name as connection_name',
+                'station.table_db_name as station_table',
+                'station_type.code as station_type_code',
+                'station_flood_alert.primary as station_alert_primary'
+            )
+            ->join('station_flood_alert', 'station_flood_alert.station_id', '=', 'station.id')
+            ->join('net','net.id','=','station.net_id')
+            ->join('connection','connection.id','=','net.connection_id')
+            ->join('station_type','station_type.id','=','station.station_type_id')
+            //->where('station_landslide_alert.landslide_alert_id','=',1)
+            ->where('station_flood_alert.active','=',true)
+            ->where('station_flood_alert.visible','=',true)
             ->where('station.active','=',true)
             ->where('station.rt_active','=',true)
             ->orderBY('station.id')

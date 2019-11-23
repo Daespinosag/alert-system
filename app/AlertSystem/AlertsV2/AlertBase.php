@@ -114,7 +114,7 @@ class AlertBase
 
         $this->alert = $this->alertRepository->getAlert($this->controlNewData->alert_id);
         $this->stationRepository = new StationRepository(); # TODO Esto debe ser dinamico
-        $this->primaryStation = $this->getStationAlert(true)[0];
+        $this->primaryStation = $this->getStationAlert(true)[0]; # TODO Validar que hacer cuando no se encuentra estacion primaria
         $this->primaryStationAlert = $this->createStation($this->primaryStation);
     }
 

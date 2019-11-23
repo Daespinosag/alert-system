@@ -70,6 +70,7 @@ trait StorageServerTrait
     /**
      * @param string $externalConnection
      * @param string $tableName
+     * @param string $variable
      * @param string $dataOne
      * @param string $timeOne
      * @param string $dataTwo
@@ -79,6 +80,7 @@ trait StorageServerTrait
     public function countDataToExtract(
         string $externalConnection,
         string $tableName,
+        string $variable,
         string $dataOne,
         string $timeOne,
         string $dataTwo,
@@ -87,7 +89,8 @@ trait StorageServerTrait
     {
         $value = DB::connection($externalConnection)
             ->table($tableName)
-            ->selectRaw('COUNT(precipitacion_real) as count')
+            ->selectRaw("COUNT($variable) as count")
+            ->where($variable,'!=','-')
             ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
             ->first();
 
@@ -97,15 +100,17 @@ trait StorageServerTrait
     /**
      * @param string $externalConnection
      * @param string $tableName
+     * @param string $variable
      * @param string $dataOne
      * @param string $timeOne
      * @param string $dataTwo
      * @param string $timeTwo
      * @return mixed
      */
-    public function gatExternalData(
+    public function getExternalData(
         string $externalConnection,
         string $tableName,
+        string $variable,
         string $dataOne,
         string $timeOne,
         string $dataTwo,
@@ -113,7 +118,8 @@ trait StorageServerTrait
     ){
         return DB::connection($externalConnection)
             ->table($tableName)
-            ->select('fecha','hora','precipitacion_real','nivel')
+            ->select('fecha','hora',$variable) #  TODO incluir nivel para las de inundacion nivel
+            ->where($variable,'!=','-')
             ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
             ->orderByRaw('fecha DESC , hora DESC')
             ->get()

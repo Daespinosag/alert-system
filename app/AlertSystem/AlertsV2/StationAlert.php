@@ -68,7 +68,7 @@ class StationAlert
     public function execute(string $variable){
 
         # Se ejecuta el metodo de extraccion de datos
-        $this->exactMethod->execute();
+        $this->exactMethod->execute($variable);
 
         # Se valida si existen datos
         if (!$this->exactMethod->dataExistence){ return;} # TODO definir eventos de fallo aca.
