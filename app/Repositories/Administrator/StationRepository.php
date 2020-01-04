@@ -282,6 +282,42 @@ class StationRepository extends EloquentRepository
                 ->get();
     }
 
+    public function getStationsAlertFloodToMap(){
+        return $this->queryBuilder()
+            ->select(
+                'station_flood_alert.id as id',
+                'station.id as station_id',
+                'station.station_type_id as station_type_id',
+                'station.net_id as net_id',
+                'station_flood_alert.flood_alert_id as alert_id',
+                'station.name as name',
+                'station.city as city',
+                'station_flood_alert.active as active',
+                'station_flood_alert.primary as primary',
+                'station_flood_alert.visible as visible',
+                'station_flood_alert.distance as distance',
+                'station.latitude_degrees',
+                'station.latitude_minutes',
+                'station.latitude_seconds',
+                'station.latitude_direction',
+                'station.longitude_degrees',
+                'station.longitude_minutes',
+                'station.longitude_seconds',
+                'station.longitude_direction'
+            )
+            ->join('station_flood_alert', 'station_flood_alert.station_id', '=', 'station.id')
+            ->where('station_flood_alert.active','=',true)
+            ->where('station_flood_alert.visible','=',true)
+            ->where('station.active','=',true)
+            ->where('station.rt_active','=',true)
+            ->orderBY('station_flood_alert.id')
+            ->get();
+    }
+
+    public function getStationsAlertLandslideToMap(){
+        # TODO
+    }
+
     public function getUltimateDataInAlertTable($table,$stationId)
     {
         return DB::connection('alert-system')->table($table)->select('*')->where('station','=',$stationId)->orderBy('created_at', 'desc')->first();
@@ -350,26 +386,26 @@ class StationRepository extends EloquentRepository
     public function getAllStationFlood(){
         return $this->queryBuilder()
             ->select(
-                'station.id as station_sk',
-                'net.id as net_id',
-                'station.name as station_name',
-                'net.name as net_name',
-                'connection.name as connection_name',
-                'station.table_db_name as station_table',
-                'station_type.code as station_type_code',
-                'station_flood_alert.primary as station_alert_primary'
-            )
-            ->join('station_flood_alert', 'station_flood_alert.station_id', '=', 'station.id')
-            ->join('net','net.id','=','station.net_id')
-            ->join('connection','connection.id','=','net.connection_id')
-            ->join('station_type','station_type.id','=','station.station_type_id')
-            //->where('station_landslide_alert.landslide_alert_id','=',1)
-            ->where('station_flood_alert.active','=',true)
-            ->where('station_flood_alert.visible','=',true)
-            ->where('station.active','=',true)
-            ->where('station.rt_active','=',true)
-            ->orderBY('station.id')
-            ->get();
+                    'station.id as station_sk',
+                    'net.id as net_id',
+                    'station.name as station_name',
+                    'net.name as net_name',
+                    'connection.name as connection_name',
+                    'station.table_db_name as station_table',
+                    'station_type.code as station_type_code',
+                    'station_flood_alert.primary as station_alert_primary'
+                )
+                ->join('station_flood_alert', 'station_flood_alert.station_id', '=', 'station.id')
+                ->join('net','net.id','=','station.net_id')
+                ->join('connection','connection.id','=','net.connection_id')
+                ->join('station_type','station_type.id','=','station.station_type_id')
+                //->where('station_landslide_alert.landslide_alert_id','=',1)
+                ->where('station_flood_alert.active','=',true)
+                ->where('station_flood_alert.visible','=',true)
+                ->where('station.active','=',true)
+                ->where('station.rt_active','=',true)
+                ->orderBY('station.id')
+                ->get();
     }
 
 }

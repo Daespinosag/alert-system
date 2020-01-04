@@ -15,11 +15,7 @@ class Permission extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name', 'code', 'description','type'
-    ];
-
-    protected $hidden = [
-        'id'
+        'id','name', 'code', 'description','type'
     ];
 
     protected $dates = [

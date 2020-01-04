@@ -3,6 +3,7 @@
 namespace App\Repositories\AlertSystem;
 
 use App\Repositories\RepositoriesContract;
+use Illuminate\Database\Eloquent\Collection;
 use Rinvex\Repository\Repositories\EloquentRepository;
 use App\Entities\AlertSystem\Permission;
 
@@ -24,5 +25,9 @@ class PermissionRepository extends EloquentRepository implements RepositoriesCon
     public function getPermissionFromCode(string $code)
     {
         return $this->select('*')->where('code',$code)->first();
+    }
+
+    public function getPermissions() : Collection {
+        return $this->select('*')->get();
     }
 }

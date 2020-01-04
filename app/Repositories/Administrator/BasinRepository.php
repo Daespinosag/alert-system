@@ -3,10 +3,10 @@
 namespace App\Repositories\Administrator;
 
 use App\Repositories\RepositoriesContract;
-use App\Repositories\AppBaseRepository;
+use Rinvex\Repository\Repositories\EloquentRepository;
 use App\Entities\Administrator\Basin;
 
-class BasinRepository extends AppBaseRepository implements RepositoriesContract
+class BasinRepository extends EloquentRepository implements RepositoriesContract
 {
     /**
      * @var string

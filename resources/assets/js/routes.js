@@ -29,7 +29,7 @@ export default new VueRouter({
             path: '/',
             name: 'layout',
             component: Vue.component( 'Layout', require( './pages/Layout.vue' ).default),
-            children: [
+            /* children: [
                 {
                     path: 'stations',
                     name: 'stations',
@@ -52,7 +52,8 @@ export default new VueRouter({
                     name: 'ConsultAlert',
                     component: Vue.component( 'ConsultAlert', require( './pages/ConsultAlert.vue' ).default )
                 },
-            ]
+            ] */
+            /** TODO -> Descomentar aca para poder ver las demas paginas **/
         }
     ]
 });

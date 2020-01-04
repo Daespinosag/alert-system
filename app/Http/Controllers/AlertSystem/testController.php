@@ -35,16 +35,26 @@ class testController extends Controller
      * @var ControlNewDataRepository
      */
     private $controlNewDataRepository;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     /**
      * @param StationRepository $stationRepository
      * @param ControlNewDataRepository $controlNewDataRepository
+     * @param UserRepository $userRepository
      */
 
-    public function __construct(StationRepository $stationRepository,ControlNewDataRepository $controlNewDataRepository)
+    public function __construct(
+        StationRepository $stationRepository,
+        ControlNewDataRepository $controlNewDataRepository,
+        UserRepository $userRepository
+    )
     {
         $this->stationRepository = $stationRepository;
         $this->controlNewDataRepository = $controlNewDataRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -52,6 +62,13 @@ class testController extends Controller
      */
     public function testV2()
     {
+        #$user = $this->userRepository->getCompleteUser(1)->toArray();
+        $user = $this->userRepository->getCompleteUser(1)->toArray();
+        dd($user);
+
+        $user = $this->recursive_change_key($user, ['pivot' => 'user_permissions']);
+        dd($user);
+
         //dd($this->stationRepository->getStationsAlerts('landslide',15,true));
         //dd($this->controlNewDataRepository->getUnsettledAlerts(2));
         //$connection = "";
@@ -281,5 +298,17 @@ class testController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function recursive_change_key($arr, $set) {
+        if (is_array($arr) && is_array($set)) {
+            $newArr = array();
+            foreach ($arr as $k => $v) {
+                $key = array_key_exists( $k, $set) ? $set[$k] : $k;
+                $newArr[$key] = is_array($v) ? $this->recursive_change_key($v, $set) : $v;
+            }
+            return $newArr;
+        }
+        return $arr;
     }
 }

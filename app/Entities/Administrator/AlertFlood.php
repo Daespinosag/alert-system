@@ -70,7 +70,7 @@ class AlertFlood extends Model
     /**
      * @return BelongsTo
      */
-    public function basins() : BelongsTo
+    public function basin() : BelongsTo
     {
         return $this->belongsTo(Basin::class,$this->relationBasins['foreignKey']);
     }
