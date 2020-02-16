@@ -285,8 +285,8 @@ class StationRepository extends EloquentRepository
     public function getStationsAlertFloodToMap(){
         return $this->queryBuilder()
             ->select(
-                'station_flood_alert.id as id',
-                'station.id as station_id',
+                'station.id as id',
+                'station_flood_alert.id as station_alert_id',
                 'station.station_type_id as station_type_id',
                 'station.net_id as net_id',
                 'station_flood_alert.flood_alert_id as alert_id',
@@ -315,7 +315,35 @@ class StationRepository extends EloquentRepository
     }
 
     public function getStationsAlertLandslideToMap(){
-        # TODO
+        return $this->queryBuilder()
+            ->select(
+                'station.id as id',
+                'station_landslide_alert.id as station_alert_id',
+                'station.station_type_id as station_type_id',
+                'station.net_id as net_id',
+                'station_landslide_alert.landslide_alert_id as alert_id',
+                'station.name as name',
+                'station.city as city',
+                'station_landslide_alert.active as active',
+                'station_landslide_alert.primary as primary',
+                'station_landslide_alert.visible as visible',
+                'station_landslide_alert.distance as distance',
+                'station.latitude_degrees',
+                'station.latitude_minutes',
+                'station.latitude_seconds',
+                'station.latitude_direction',
+                'station.longitude_degrees',
+                'station.longitude_minutes',
+                'station.longitude_seconds',
+                'station.longitude_direction'
+            )
+            ->join('station_landslide_alert', 'station_landslide_alert.station_id', '=', 'station.id')
+            ->where('station_landslide_alert.active','=',true)
+            ->where('station_landslide_alert.visible','=',true)
+            ->where('station.active','=',true)
+            ->where('station.rt_active','=',true)
+            ->orderBY('station_landslide_alert.id')
+            ->get();
     }
 
     public function getUltimateDataInAlertTable($table,$stationId)

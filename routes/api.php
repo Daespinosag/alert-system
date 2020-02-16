@@ -34,6 +34,13 @@ Route::group(['prefix' => 'v1'], function()  //,'middleware' => 'auth:api'
 
 Route::group(['prefix' => 'v2'], function()  //,'middleware' => 'auth:api'
 {
+    # New Version
+    Route::post('/landslideInformation', [ 'as'=>'v2.landslideInformation','uses'=>'API\AccessAlertSystemController@landslideInformation']);
+    Route::post('/floodInformation', [ 'as'=>'v2.floodInformation','uses'=>'API\AccessAlertSystemController@floodInformation']);
+    Route::post('/userInformation', [ 'as'=>'v2.userInformation','uses'=>'API\AccessAlertSystemController@userInformation']);
+
+    # Old Version
+
     Route::post('/getStationsAlertLandslide', [ 'as'=>'v2.getStationsAlertLandslide','uses'=>'API\AccessAlertSystemController@getStationsAlertLandslide']);
     Route::post('/getStationsAlertFlood', [ 'as'=>'v2.getStationsAlertFlood','uses'=>'API\AccessAlertSystemController@getStationsAlertFlood']);
 

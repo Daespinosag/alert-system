@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Repositories\Administrator\AlertFloodRepository;
+use App\Repositories\Administrator\AlertLandslideRepository;
+use App\Repositories\Administrator\BasinRepository;
 use App\Repositories\Administrator\NetRepository;
 use App\Repositories\Administrator\StationRepository;
+use App\Repositories\Administrator\StationTypeRepository;
+use App\Repositories\Administrator\ZoneRepository;
+use App\Repositories\AlertSystem\LandslideRepository;
 use App\Repositories\AlertSystem\PermissionRepository;
 use App\Repositories\AlertSystem\RoleRepository;
 use App\Repositories\AlertSystem\UserPermissionRepository;
@@ -43,6 +48,26 @@ class AccessAlertSystemController extends Controller
      * @var NetRepository
      */
     private $netRepository;
+    /**
+     * @var StationTypeRepository
+     */
+    private $stationTypeRepository;
+    /**
+     * @var BasinRepository
+     */
+    private $basinRepository;
+    /**
+     * @var LandslideRepository
+     */
+    private $landslideRepository;
+    /**
+     * @var ZoneRepository
+     */
+    private $zoneRepository;
+    /**
+     * @var AlertLandslideRepository
+     */
+    private $alertLandslideRepository;
 
     /**
      * @param UserRepository $userRepository
@@ -52,6 +77,10 @@ class AccessAlertSystemController extends Controller
      * @param AlertFloodRepository $alertFloodRepository
      * @param StationRepository $stationRepository
      * @param NetRepository $netRepository
+     * @param StationTypeRepository $stationTypeRepository
+     * @param BasinRepository $basinRepository
+     * @param AlertLandslideRepository $alertLandslideRepository
+     * @param ZoneRepository $zoneRepository
      */
     public function __construct(
         UserRepository $userRepository,
@@ -60,7 +89,11 @@ class AccessAlertSystemController extends Controller
         UserPermissionRepository $userPermissionRepository,
         AlertFloodRepository $alertFloodRepository,
         StationRepository $stationRepository,
-        NetRepository $netRepository
+        NetRepository $netRepository,
+        StationTypeRepository $stationTypeRepository,
+        BasinRepository $basinRepository,
+        AlertLandslideRepository $alertLandslideRepository,
+        ZoneRepository $zoneRepository
     ){
         $this->userRepository = $userRepository;
         $this->roleRepository = $roleRepository;
@@ -69,90 +102,62 @@ class AccessAlertSystemController extends Controller
         $this->alertFloodRepository = $alertFloodRepository;
         $this->stationRepository = $stationRepository;
         $this->netRepository = $netRepository;
+        $this->stationTypeRepository = $stationTypeRepository;
+        $this->basinRepository = $basinRepository;
+        $this->zoneRepository = $zoneRepository;
+        $this->alertLandslideRepository = $alertLandslideRepository;
     }
 
-    /**
-     * @param Request $request
-     * @return mixed
-     */
-    public function getStations(Request $request)
-    {
+    public function landslideInformation(){
+        $landslideAlerts =  $this->alertLandslideRepository->getAlerts();
+        $landslideStations = $this->includeDecimalCoordinates($this->stationRepository->getStationsAlertLandslideToMap());
+        $nets = $this->netRepository->getNetsById($this->extractDistinctValuesToKey('net_id',$landslideStations));
+        $stationType = $this->stationTypeRepository->getStationTypeById($this->extractDistinctValuesToKey('station_type_id',$landslideStations));
+        $zones = $this->zoneRepository->getZonesById($this->extractDistinctValuesToKey('zone_id',$landslideAlerts));
 
+        return ['alerts'=> $landslideAlerts, 'stations' => $landslideStations,'nets'=>$nets,'stationType' => $stationType, 'zones' => $zones];
     }
 
-    public function getStationColor(int $temporalAlert)
-    {
+    public function floodInformation(){
+        $floodAlerts =  $this->alertFloodRepository->getAlerts();
+        $floodStations = $this->includeDecimalCoordinates($this->stationRepository->getStationsAlertFloodToMap());
+        $nets = $this->netRepository->getNetsById($this->extractDistinctValuesToKey('net_id',$floodStations));
+        $stationType = $this->stationTypeRepository->getStationTypeById($this->extractDistinctValuesToKey('station_type_id',$floodStations));
+        $basins = $this->basinRepository->getBasinsById($this->extractDistinctValuesToKey('basin_id',$floodAlerts));
 
+        return ['alerts'=> $floodAlerts, 'stations' => $floodStations,'nets'=>$nets,'stationType' => $stationType, 'basins' => $basins];
     }
 
-    /**
-     * @param Request $request
-     * @return mixed
-     */
-    public function getStation(Request $request)
-    {
+    public function userInformation(Request $request){
 
-    }
+        $user = $this->userRepository->getUser($request->get('id'))->toArray();
+        $permissions = $this->permissionRepository->getPermissions()->toArray();
+        $role = $this->roleRepository->getRole($request->get('id'))->toArray();
+        $userPermissions = $this->userPermissionRepository->getPermissionUser($request->get('id'))->toArray();
 
-    /**
-     * @return mixed
-     */
-    public function getNets()
-    {
-
-    }
-
-
-    public function getAlerts(Request $request)
-    {
-
-    }
-
-    public function getTypeStation()
-    {
-
-    }
-
-    public function consultAlert(Request $request)
-    {
-
-    }
-
-    public function getStationsAlertLandslide(){
-        # TODO
-    }
-
-    public function getStationsAlertFlood(){
         return [
-            'floodAlerts' => $this->alertFloodRepository->getAlerts()->toArray(),
-            'floodStations' => $this->includeDecimalCoordinates($this->stationRepository->getStationsAlertFloodToMap()),
+            'user' => $user,
+            'permissions' => $permissions,
+            'role' => $role,
+            'userPermissions' => $userPermissions
         ];
-    }
-
-    public function getTrackingLandslide(){
-        # TODO
-    }
-
-    public function getTrackingFlood(){
-        # TODO
     }
 
     public function getAuthUser(){
         return $this->userRepository->getUser(1)->toArray();
     }
 
-    public function getRoleAuthUser(Request $request){
-        return $this->roleRepository->getRole($request->get('id'))->toArray();
-    }
-
     public function getPermissions(){
         return $this->permissionRepository->getPermissions()->toArray();
+    }
+
+    public function getRoleAuthUser(Request $request){
+        return $this->roleRepository->getRole($request->get('id'))->toArray();
     }
 
     public function getUserPermissions(Request $request){
         return $this->userPermissionRepository->getPermissionUser($request->get('userId'))->toArray();
     }
-
 
     /**
      * @param $degrees
@@ -161,8 +166,7 @@ class AccessAlertSystemController extends Controller
      * @param $direction
      * @return float
      */
-    private function calculateDecimalCoordinates($degrees, $minutes, $seconds, $direction)
-    {
+    private function calculateDecimalCoordinates($degrees, $minutes, $seconds, $direction) : float {
         $val = ($direction == 'W' or $direction == 'S') ? -1 : 1;
 
         return round(( ( $degrees + ( $minutes / 60 ) + ( $seconds / 3600 )) * $val ) , 6);
@@ -191,5 +195,16 @@ class AccessAlertSystemController extends Controller
         }
 
         return $stations;
+    }
+
+    /**
+     * @param string $key
+     * @param $stations
+     * @return array
+     */
+    private function extractDistinctValuesToKey(string $key,$stations) :array {
+        $elements = [];
+        foreach ($stations as $station){ if (!in_array($station->{$key},$elements)){ $elements[] = $station->{$key};} }
+        return $elements;
     }
 }

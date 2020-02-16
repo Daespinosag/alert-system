@@ -56,8 +56,7 @@ class LandslideRepository extends EloquentRepository implements RepositoriesCont
      */
     public function getBetweenData(int $stationId,string $dateOne,string $dateTwo)
     {
-        return $this
-                    ->selectRaw('date_execution, a25_value as value')
+        return $this->selectRaw('date_execution, a25_value as value')
                     //->selectRaw('station , a25_value as value, alert , avg_recovered , dif_previous_a25 as dif_previous, num_not_change_alert, change_alert, alert_decrease, alert_increase, alert_increase, error, date_execution, date_initial, date_final, comment')
                     ->where('station','=',$stationId)
                     ->whereBetween('date_execution',[$dateOne,$dateTwo])

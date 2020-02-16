@@ -3,6 +3,8 @@
 namespace App\Repositories\Administrator;
 
 use App\Repositories\RepositoriesContract;
+use Illuminate\Support\Collection;
+use DB;
 use Rinvex\Repository\Repositories\EloquentRepository;
 use App\Entities\Administrator\Net;
 
@@ -20,6 +22,13 @@ class NetRepository extends EloquentRepository implements RepositoriesContract
     /**
      * @return mixed
      */
+    protected function queryBuilder(){
+        return DB::connection('administrator')->table('net');
+    }
+
+    /**
+     * @return mixed
+     */
     public function getNetName()
     {
         return $this->select('id','name')->where('etl_active',true)->pluck('name','id');
@@ -33,6 +42,14 @@ class NetRepository extends EloquentRepository implements RepositoriesContract
     public function getNets()
     {
         return $this->select('*')->get();
+    }
+
+    /**
+     * @param array $nets
+     * @return Collection
+     */
+    public function getNetsById(array $nets) : Collection {
+        return $this->queryBuilder()->select('id','name','description','administrator_name','rt_active')->whereIn('id',$nets)->get();
     }
 
 }

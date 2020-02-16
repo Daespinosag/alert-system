@@ -17,10 +17,6 @@ class UserPermission extends Model
       'id','user_id','permission_id','active','active_email',
     ];
 
-    protected $hidden = [
-        'id'
-    ];
-
     protected $dates = [
         'created_at', 'updated_at'
     ];

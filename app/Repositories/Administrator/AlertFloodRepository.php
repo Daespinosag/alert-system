@@ -27,6 +27,6 @@ class AlertFloodRepository extends EloquentRepository implements RepositoriesCon
     }
 
     public function getAlerts(){
-        return $this->select('*')->with(['basin'])->get();
+        return $this->select('id','basin_id','name','code','active','limit_red as limitRed','icon')->get();
     }
 }
