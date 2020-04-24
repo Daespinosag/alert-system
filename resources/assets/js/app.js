@@ -94,9 +94,9 @@ import { Icon }  from 'leaflet';
 delete Icon.Default.prototype._getIconUrl;
 
 Icon.Default.mergeOptions({
-    iconRetinaUrl: 'leaflet/dist/images/marker-icon-2x.png',
-    iconUrl: 'leaflet/dist/images/marker-icon.png',
-    shadowUrl: 'leaflet/dist/images/marker-shadow.png'
+    iconRetinaUrl: 'images/vendor/leaflet/dist/marker-icon-2x.png',
+    iconUrl: 'images/vendor/leaflet/dist/marker-icon.png',
+    shadowUrl: 'images/vendor/leaflet/dist/marker-shadow.png'
 });
 
 new Vue({router, store}).$mount('#app');

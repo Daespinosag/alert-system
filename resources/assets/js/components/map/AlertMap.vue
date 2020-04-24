@@ -1,6 +1,6 @@
 <template>
     <div id="alert-map" class="alert-map">
-        <l-map v-if="showMap" :zoom="zoom" :center="center" :options="mapOptions" style="height: 500px; width: 500px">
+        <l-map v-if="showMap" :zoom="zoom" :center="center" :options="mapOptions">
             <!--<l-control-layers :collapsed="false" :sort-layers="true"/>-->
             <l-tile-layer :url="url" :attribution="attribution"/>
 

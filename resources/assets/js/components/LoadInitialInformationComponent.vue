@@ -10,13 +10,12 @@
         props: { msg: String, user_id: Number},
         data() {
             return {
-                redirectRouteName: 'printAlerts',
+                redirectRouteName: 'PrintAlerts',
             };
         },
         created() {
             if (User.getters('getLoadStatus') !== 2) {
                 this.initLoadInformation();
-                //this.$router.push({ name: 'printAlerts'});
             }
         },
         computed: {
@@ -48,8 +47,7 @@
             initLoadAlertsInformation(){
                 return Promise.all([ this.initLoadFloodInformation(), this.initLoadLandslideInformation() ])
                     .then(()=>{
-                        console.log(this.$router);
-                        this.$router.push({ name: 'printalerts'});
+                        this.$router.push({ name: /*this.redirectRouteName*/ 'PrintAlerts' });
                         console.log('termine de terminar terminar')
                     })
                     .catch(()=>{ console.log('no te lo creo, no termine por un error')})

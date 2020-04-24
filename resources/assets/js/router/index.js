@@ -1,9 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Home from '@alert-system-vue/views/Home';
-import About from '@alert-system-vue/views/About';
-import PrintAlerts from '@alert-system-vue/views/printAlerts';
+import Layout from '@alert-system-vue/views/Layout';
+import PrintAlerts from '@alert-system-vue/views/PrintAlerts';
 
 Vue.use(VueRouter);
 
@@ -11,19 +10,22 @@ export default new VueRouter({
     routes : [
         {
             path: '/',
-            name: 'home',
-            component: Home
-        },
-        {
-            path: '/printalerts',
-            name: 'printalerts',
-            //component: () => import(/* webpackPrefetch: true */ '../views/printAlerts')
-            component: PrintAlerts
-        },
-        {
-            path: '/about',
-            name: 'about',
-            component: About
+            name: 'Layout',
+            component: Layout,
+            children: [
+                {
+                    path: '/PrintAlerts',
+                    name: 'PrintAlerts',
+                    component: PrintAlerts,
+                    /*children: [
+                        {
+                            path: ':id',
+                            name: 'station',
+                            component: Vue.component( 'Station', require( './pages/Station.vue' ).default )
+                        },
+                    ]*/
+                }
+            ]
         }
     ]
 });
