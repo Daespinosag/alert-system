@@ -1,15 +1,28 @@
 <template>
     <div id="print-alerts-component" class="print-alerts-component">
-        <alert-map id="alert-map-container" class="alert-map-container"> </alert-map>
+
+        <alert-map id="alert-map-container" class="alert-map-container" v-show="alertsView === 'map'"> </alert-map>
+
+        <toggle-alerts-view> </toggle-alerts-view>
+
+        <div class="large-3 medium-3 small-12 cell">
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 
 <script>
     import AlertMap from "@alert-system-vue/components/map/AlertMap"
+    import ToggleAlertsView from "./alerts/ToggleAlertsView";
 
     export default {
         name: "print-alerts-component",
-        components: { AlertMap },
+        components: {ToggleAlertsView, AlertMap },
+        computed: {
+            alertsView(){
+                return this.$store.getters.getAlertsView;
+            }
+        }
     }
 </script>
 
