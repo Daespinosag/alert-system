@@ -33,6 +33,9 @@ Route::group(['prefix' => 'test','name' => 'test'], function()
     Route::get('index', [ 'as'=>'test.index','uses'=>'AlertSystem\testController@index']);
     Route::get('v2', [ 'as'=>'test.v2','uses'=>'AlertSystem\testController@testV2']);
     //Route::get('index', [ 'as'=>'test.index','uses'=>'API\AlertSystemController@getStations']);
+
+
+    Route::get('floodInformation', [ 'as'=>'test.floodInformation','uses'=>'API\AccessAlertSystemController@floodInformation']);
 });
 
 #Broadcast::routes();

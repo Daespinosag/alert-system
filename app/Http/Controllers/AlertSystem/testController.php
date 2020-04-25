@@ -63,11 +63,11 @@ class testController extends Controller
     public function testV2()
     {
         #$user = $this->userRepository->getCompleteUser(1)->toArray();
-        $user = $this->userRepository->getCompleteUser(1)->toArray();
-        dd($user);
+        #$user = $this->userRepository->getCompleteUser(1)->toArray();
+        #dd($user);
 
-        $user = $this->recursive_change_key($user, ['pivot' => 'user_permissions']);
-        dd($user);
+        #$user = $this->recursive_change_key($user, ['pivot' => 'user_permissions']);
+        #dd($user);
 
         //dd($this->stationRepository->getStationsAlerts('landslide',15,true));
         //dd($this->controlNewDataRepository->getUnsettledAlerts(2));
@@ -75,14 +75,17 @@ class testController extends Controller
         //$table      = "est_aranjuez";
 
         # 20/02/2017
-        #  $dateTime   = Carbon::parse('2017-02-20 00:05:00');
-        $dateTime   = Carbon::parse('2017-02-20 00:00:00');
+        #  $dateTime   = Carbon::parse('2017-02-20 00:00:00');
+        $dateTime   = Carbon::parse('2020-04-01 00:00:00');
         //$initialDateTime   = Carbon::p rarse('2019-08-13 08:55:00');
         //$finalDateTime   = Carbon::parse('2019-08-13 09:05:00');
 
+        //$extract = new \App\AlertSystem\ControlAlert\ControlFloodAlert($dateTime);
+        //$extract->execute();
+
         # Consultar aca todas las estaciones con su respectiva tabla para el sistema de alertas.
 
-        for ($i = 0; $i <= 288;$i ++){
+        for ($i = 0; $i <= 10;$i ++){
 
             $extract = new \App\AlertSystem\ControlAlert\ControlFloodAlert($dateTime);
             $extract->execute();

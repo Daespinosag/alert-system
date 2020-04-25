@@ -66,7 +66,6 @@ class StationAlert
     }
 
     public function execute(string $variable){
-
         # Se ejecuta el metodo de extraccion de datos
         $this->exactMethod->execute($variable);
 

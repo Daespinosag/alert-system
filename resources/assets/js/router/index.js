@@ -20,8 +20,8 @@ export default new VueRouter({
                     /*children: [
                         {
                             path: ':id',
-                            name: 'station',
-                            component: Vue.component( 'Station', require( './pages/Station.vue' ).default )
+                            name: 'Alert',
+                            component: Vue.component( 'Alert', require( './pages/Alert.vue' ).default )
                         },
                     ]*/
                 }

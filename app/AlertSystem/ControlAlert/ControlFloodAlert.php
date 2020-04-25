@@ -4,6 +4,7 @@ namespace App\AlertSystem\ControlAlert;
 
 use App\AlertSystem\AlertsV2\FloodAlert;
 use Carbon\Carbon;
+use function Couchbase\defaultDecoder;
 
 class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
 {

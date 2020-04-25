@@ -16,4 +16,13 @@ class TrackingLandslideAlertRepository extends EloquentRepository implements Rep
      * @var string
      */
     protected $model = TrackingLandslideAlert::class;
+
+    public function getLastInformation(int $typeAlertId, int $alertId,int $stationId){
+        return $this->select('*')
+            ->where('sup_id','=',$typeAlertId)
+            ->where('alert_id','=',$alertId)
+            ->where('primary_station_id','=',$stationId)
+            ->get()
+            ->last();
+    }
 }

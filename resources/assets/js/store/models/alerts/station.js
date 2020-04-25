@@ -27,6 +27,20 @@ export default class Station extends baseModel {
             visible: this.boolean(true),
             distance: this.attr(null),
 
+            tracking_values: this.boolean(false),
+            secondary_calculate: this.attr(null),
+            rainfall: this.attr(null),
+            water_level: this.attr(null),
+            rainfall_recovered: this.attr(null),
+            indicator_value: this.attr(null),
+            indicator_previous_difference: this.attr(null),
+            alert_level: this.attr(null),
+            alert_tag: this.attr(null),
+            alert_status: this.attr(null),
+            date_time_homogenization: this.attr(null),
+            error: this.attr(null),
+            comment: this.attr(null),
+
             net: this.hasManyBy(Net,'net_id','id'),
             stationType: this.hasManyBy(StationType,'station_type_id','id')
         }

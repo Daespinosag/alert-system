@@ -53,4 +53,13 @@ class TrackingFloodAlertRepository extends EloquentRepository implements Reposit
                             ->whereBetween('date_time_homogenization',[$initialDateTime,$finalDateTime])
                             ->get()->toArray()[0];
     }
+
+    public function getLastInformation(int $typeAlertId, int $alertId,int $stationId){
+        return $this->select('*')
+            ->where('sup_id','=',$typeAlertId)
+            ->where('alert_id','=',$alertId)
+            ->where('primary_station_id','=',$stationId)
+            ->get()
+            ->last();
+    }
 }

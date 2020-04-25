@@ -25,7 +25,7 @@
             return {
                 zoom: 13,
                 center: latLng(5.0670, -75.5046),
-                // url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+                //url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
                 //url: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png",
                 url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 attribution: '&copy; Sistema De Alerta Temprana - Manizales',

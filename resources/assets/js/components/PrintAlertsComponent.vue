@@ -2,6 +2,8 @@
     <div id="print-alerts-component" class="print-alerts-component">
 
         <alert-map id="alert-map-container" class="alert-map-container" v-show="alertsView === 'map'"> </alert-map>
+        <alert-list v-show="alertsView === 'list'"> </alert-list>
+
 
         <toggle-alerts-view> </toggle-alerts-view>
 
@@ -12,12 +14,13 @@
 </template>
 
 <script>
-    import AlertMap from "@alert-system-vue/components/map/AlertMap"
     import ToggleAlertsView from "./alerts/ToggleAlertsView";
+    import AlertMap from "@alert-system-vue/components/map/AlertMap"
+    import AlertList from './list/AlertList';
 
     export default {
         name: "print-alerts-component",
-        components: {ToggleAlertsView, AlertMap },
+        components: {ToggleAlertsView, AlertMap, AlertList },
         computed: {
             alertsView(){
                 return this.$store.getters.getAlertsView;

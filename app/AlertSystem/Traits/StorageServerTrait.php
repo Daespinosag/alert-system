@@ -2,6 +2,7 @@
 
 namespace App\AlertSystem\Traits;
 
+use function Couchbase\defaultDecoder;
 use DB;
 
 trait StorageServerTrait
@@ -87,6 +88,8 @@ trait StorageServerTrait
         string $timeTwo
     )
     {
+        /** TODO Notificar al sistema de errores cuando no se encuentren datos -> no tener datos hace que todo el proceso no se ejecute**/
+
         $value = DB::connection($externalConnection)
             ->table($tableName)
             ->selectRaw("COUNT($variable) as count")
