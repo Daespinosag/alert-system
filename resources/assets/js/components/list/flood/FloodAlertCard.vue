@@ -4,14 +4,20 @@
             <div class="alert-card">
                 <span class="title">{{ alert.name }}</span>
                 <span class="address">
-                    <span class="street"> Alert City </span>
-                    <span class="city">  More information </span> <span class="state"> more information</span>
+                    <span class="street">{{ floodPrimaryStation.city }}</span>
+                    <span class="city"> {{ floodPrimaryStation.city }} </span>
+                    <span class="state"> {{ floodPrimaryStation.city }}</span>
                 </span>
 
-                <!--<span v-for="alert in station.alerts" :key="alert.id" class="address">
-                   <span>{{ alert.name }}</span> : <span>{{ (alert.value !== null) ? alert.value[alert.code.replace('alert-','')+'_value'] : '-' }}</span> <span class="pull-right alert-state" v-bind:style="{'background-color': getColorAlert((alert.value !== null) ? alert.value.alert : -1)}"></span>
+                <span class="address" v-show="floodPrimaryStation.tracking_values">
+                   <span>{{ floodPrimaryStation.date_time_homogenization }}</span> :
+                    <span>{{ floodPrimaryStation.alert_status }}</span> |
+                    <span>{{ floodPrimaryStation.indicator_value }}</span>
+                    <span class="pull-right">
+                        <img v-bind:class="[ this.showFilters ? 'icon-alert-with-filters' : 'icon-alert-without-filters']" :src="`images/assets/alerts/flood_alert_${this.iconColor}.png`" >
+                    </span>
                    <br>
-                </span>-->
+                </span>
             </div>
         </router-link>
     </div>
@@ -27,7 +33,9 @@
         props: ['alert'],
         data(){
             return {
-                show: true
+                show: true,
+                iconColor: 'black',
+                iconsOptions: ['black','red'],
             }
         },
         mounted(){
@@ -35,10 +43,16 @@
                 //this.processFilters( filters );
             }.bind(this));
         },
+        created(){
+
+        },
         computed: {
-            floodStations(){
-                return FloodStation.query().where('primary',true).where('alert_id', this.alert.id).get()
+            floodPrimaryStation(){
+                return FloodStation.query().where('primary',true).where('alert_id', this.alert.id).get()[0]
             },
+            showFilters(){
+                return this.$store.getters.getShowFilters;
+            }
         },
         methods: {
             /*processFilters: function (filters) {
@@ -51,32 +65,11 @@
             panToLocation( station ){
 
             },
-            /*getColorAlert(value){
-                let val = 'gray';
-                switch(value) {
-                    case 0:
-                        val = 'green';
-                        break;
-                    case 1:
-                        val = 'yellow';
-                        break;
-                    case 2:
-                        val = 'orange';
-                        break;
-                    case 3:
-                        val = 'red';
-                        break;
-                    default:
-                        val = 'gray';
-                }
-                return val;
-            }*/
         }
     }
 </script>
 
 <style lang="scss">
-
     div.alert-card{
         border-radius: 5px;
         box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
@@ -128,6 +121,16 @@
             width: 20px;
             height: 20px;
 
+        }
+
+        .icon-alert-with-filters{
+            height: 2em;
+            width: 2em;
+        }
+
+        .icon-alert-without-filters{
+            height: 3em;
+            width: 3em;
         }
 
         &:hover{

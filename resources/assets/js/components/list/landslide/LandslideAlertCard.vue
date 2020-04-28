@@ -33,6 +33,9 @@
             landslidePrimaryStations(){
                 return LandslideStation.query().where('primary',true).where('alert_id', this.alert.id).get()
             },
+            showFilters(){
+                return this.$store.getters.getShowFilters;
+            }
         },
         mounted(){
             EventBus.$on('filters-updated', function( filters ){
@@ -50,26 +53,6 @@
             panToLocation( station ){
 
             },
-            /*getColorAlert(value){
-                let val = 'gray';
-                switch(value) {
-                    case 0:
-                        val = 'green';
-                        break;
-                    case 1:
-                        val = 'yellow';
-                        break;
-                    case 2:
-                        val = 'orange';
-                        break;
-                    case 3:
-                        val = 'red';
-                        break;
-                    default:
-                        val = 'gray';
-                }
-                return val;
-            }*/
         }
     }
 </script>
@@ -127,6 +110,16 @@
             width: 20px;
             height: 20px;
 
+        }
+
+        .icon-alert-with-filters{
+            height: 2em;
+            width: 2em;
+        }
+
+        .icon-alert-without-filters{
+            height: 3em;
+            width: 3em;
         }
 
         &:hover{

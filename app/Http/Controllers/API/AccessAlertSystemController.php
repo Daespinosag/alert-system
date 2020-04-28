@@ -151,10 +151,10 @@ class AccessAlertSystemController extends Controller
     public function includeTrackingInformation($stations, $typeAlertId,$repository){
 
         foreach ($stations as $station){
-            $trackingValues = $repository->getLastInformation($typeAlertId,$station->station_alert_id,$station->id); # TODO Esto hay que cambiarlo para que extraiga el ultimo dato pero teniendo en cuenta la ultima medicion
+            $trackingValues = $repository->getLastInformation($typeAlertId,$station->alert_id,$station->id); # TODO Esto hay que cambiarlo para que extraiga el ultimo dato pero teniendo en cuenta la ultima medicion
 
             if (is_null($trackingValues)){
-                $station->ttracking_values = false;
+                $station->tracking_values = false;
             }else{
                 $station->tracking_values = true;
                 $station->secondary_calculate = $trackingValues->secondary_calculate;

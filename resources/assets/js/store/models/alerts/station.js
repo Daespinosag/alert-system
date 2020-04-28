@@ -35,7 +35,7 @@ export default class Station extends baseModel {
             indicator_value: this.attr(null),
             indicator_previous_difference: this.attr(null),
             alert_level: this.attr(null),
-            alert_tag: this.attr(null),
+            alert_tag: this.string('grey'),
             alert_status: this.attr(null),
             date_time_homogenization: this.attr(null),
             error: this.attr(null),
