@@ -26,7 +26,9 @@
         props: ['alert'],
         data(){
             return {
-                show: true
+                show: true,
+                iconColor: 'black',
+                iconsOptions: ['black','yellow','orange','red'],
             }
         },
         computed: {
