@@ -25,6 +25,7 @@ class ControlLandslideAlert extends ControlAlertBase implements ControlAlertCont
         foreach ($this->alerts as $alert){
             $alert->execute();
         }
+
     }
 
     public function config()

@@ -63,7 +63,7 @@ class FloodAlert extends AlertBase implements AlertContract
             return;
         }
 
-        #dd('No fue posible calcular el indicador de inundacion');
+        //dd('No fue posible calcular el indicador de inundacion');
     }
 
     /**
@@ -76,6 +76,7 @@ class FloodAlert extends AlertBase implements AlertContract
      * @param bool $primaryProcess
      */
     public function calculateIndicator(bool $primaryProcess = true){
+
         $this->indicator->execute(
             $this->controlNewData->alert_id,
             $this->primaryStation->station_sk,

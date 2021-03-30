@@ -76,24 +76,23 @@ class testController extends Controller
 
         # 20/02/2017
         #  $dateTime   = Carbon::parse('2017-02-20 00:00:00');
-        $dateTime   = Carbon::parse('2020-04-01 00:00:00');
+        $dateTime   = Carbon::parse('2019-08-13 00:00:00');
         //$initialDateTime   = Carbon::p rarse('2019-08-13 08:55:00');
         //$finalDateTime   = Carbon::parse('2019-08-13 09:05:00');
 
-        //$extract = new \App\AlertSystem\ControlAlert\ControlFloodAlert($dateTime);
+        //$extract = new \App\AlertSystem\ControlAlert\ControlFloodA prolert($dateTime);
         //$extract->execute();
 
         # Consultar aca todas las estaciones con su respectiva tabla para el sistema de alertas.
+        //dd('inicíe');
+        for ($i = 0; $i < 2;$i++){
 
-        for ($i = 0; $i <= 10;$i ++){
-
-            $extract = new \App\AlertSystem\ControlAlert\ControlFloodAlert($dateTime);
+            $extract = new \App\AlertSystem\ControlAlert\ControlLandslideAlert($dateTime);
             $extract->execute();
-
             $dateTime = $this->generateDateTime($dateTime,'+5 minutes');
         }
-
         dd('termine',$dateTime);
+
     }
 
 
@@ -314,4 +313,5 @@ class testController extends Controller
         }
         return $arr;
     }
+
 }

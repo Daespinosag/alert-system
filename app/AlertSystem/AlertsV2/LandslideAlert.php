@@ -2,7 +2,7 @@
 
 namespace App\AlertSystem\AlertsV2;
 
-use App\AlertSystem\Indicators\A10MinIndicator;
+use App\AlertSystem\Indicators\A25Indicator;
 use App\Entities\AlertSystem\ControlNewData;
 use App\Repositories\Administrator\AlertLandslideRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
@@ -17,7 +17,7 @@ class LandslideAlert extends AlertBase implements AlertContract
      * @param ControlNewData $controlNewData
      * @param Carbon $dateTime
      * @param Carbon $initDateTime
-     * @param Carbon $finalDateTime
+     * @param Carbon $finalDateTime LandslideRepository
      */
     public function __construct(string $alertCode,ControlNewData $controlNewData, Carbon $dateTime,Carbon $initDateTime,Carbon $finalDateTime){
         parent::__construct(new AlertLandslideRepository(),new LandslideRepository(),$alertCode,'precipitacion_real',$controlNewData,$dateTime,$initDateTime,$finalDateTime);
@@ -58,7 +58,6 @@ class LandslideAlert extends AlertBase implements AlertContract
 
             # Se calcula el  indicador dependi
             $this->calculateIndicator(false);
-
             $this->complete = true;
 
             return;
@@ -71,7 +70,7 @@ class LandslideAlert extends AlertBase implements AlertContract
      * @param $value
      */
     public function setIndicator($value){
-        $this->indicator = new A10MinIndicator($value);
+        $this->indicator = new A25Indicator($value);
     }
     /**
      * @param bool $primaryProcess
@@ -81,7 +80,11 @@ class LandslideAlert extends AlertBase implements AlertContract
             $this->controlNewData->alert_id,
             $this->primaryStation->station_sk,
             'weight_'.$this->variableToValidate,$primaryProcess,
-            ['red'=> (float)$this->alert->limit_red]
+            [
+                'red'=> (float)$this->alert->limit_red,
+                'yellow'=> (float)$this->alert->limit_yellow,
+                'orange'=> (float)$this->alert->limit_orange
+            ]
         );
     }
 }

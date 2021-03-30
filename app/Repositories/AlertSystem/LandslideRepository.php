@@ -2,12 +2,9 @@
 
 namespace App\Repositories\AlertSystem;
 
-use App\Repositories\RepositoriesContract;
-use Rinvex\Repository\Repositories\EloquentRepository;
-use App\Entities\AlertSystem\Landslide;
-use DB;
+use App\Entities\Administrator\AlertLandslide;
 
-class LandslideRepository extends EloquentRepository implements RepositoriesContract
+class LandslideRepository extends AlertBaseRepository implements AlertContractRepository
 {
     /**
      * @var string
@@ -16,20 +13,12 @@ class LandslideRepository extends EloquentRepository implements RepositoriesCont
     /**
      * @var string
      */
-    protected $model = Landslide::class;
+    protected $model = AlertLandslide::class;
 
     /**
      * @return mixed
      */
-    public function queryBuilder()
-    {
-        return DB::connection('alert-system')->table('landslide');
-    }
-
-    /**
-     * @return mixed
-     */
-    public  function createShowcase()
+    public function createShowcase()
     {
         return new $this->model;
     }
@@ -42,8 +31,8 @@ class LandslideRepository extends EloquentRepository implements RepositoriesCont
     public function getUltimateDate(int $stationId, string $date)
     {
         return $this->select('*')
-            ->where('station','=',$stationId)
-            ->where('date_execution','<', $date)
+            ->where('station', '=', $stationId)
+            ->where('date_execution', '<', $date)
             ->orderBy('date_execution', 'desc')
             ->first();
     }
@@ -54,14 +43,14 @@ class LandslideRepository extends EloquentRepository implements RepositoriesCont
      * @param string $dateTwo
      * @return mixed
      */
-    public function getBetweenData(int $stationId,string $dateOne,string $dateTwo)
+    public function getBetweenData(int $stationId, string $dateOne, string $dateTwo)
     {
         return $this->selectRaw('date_execution, a25_value as value')
-                    //->selectRaw('station , a25_value as value, alert , avg_recovered , dif_previous_a25 as dif_previous, num_not_change_alert, change_alert, alert_decrease, alert_increase, alert_increase, error, date_execution, date_initial, date_final, comment')
-                    ->where('station','=',$stationId)
-                    ->whereBetween('date_execution',[$dateOne,$dateTwo])
-                    ->orderBy('date_execution')
-                    ->get()
-                    ->toArray();
+            //->selectRaw('station , a25_value as value, alert , avg_recovered , dif_previous_a25 as dif_previous, num_not_change_alert, change_alert, alert_decrease, alert_increase, alert_increase, error, date_execution, date_initial, date_final, comment')
+            ->where('station', '=', $stationId)
+            ->whereBetween('date_execution', [$dateOne, $dateTwo])
+            ->orderBy('date_execution')
+            ->get()
+            ->toArray();
     }
 }

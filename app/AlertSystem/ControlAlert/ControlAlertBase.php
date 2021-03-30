@@ -82,5 +82,6 @@ class ControlAlertBase extends AlertSystem
      */
     public function getControlAlerts(){
         $this->controlAlerts = $this->controlNewDataRepository->getUnsettledAlerts($this->alertCode);
+
     }
 }
