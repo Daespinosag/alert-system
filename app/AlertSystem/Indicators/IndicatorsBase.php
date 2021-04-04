@@ -125,7 +125,8 @@ class IndicatorsBase
             $this->actualTracking->date_time_final,
             $this->actualTracking->sup_id,
             $this->actualTracking->alert_id,
-            $this->actualTracking->primary_station_id
+            $this->actualTracking->primary_station_id,
+            $this->localVariable
         );
     }
 

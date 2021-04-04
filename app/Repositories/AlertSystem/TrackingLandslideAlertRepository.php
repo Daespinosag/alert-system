@@ -42,15 +42,16 @@ class TrackingLandslideAlertRepository extends EloquentRepository implements Rep
      * @param int $supId
      * @param int $alertId
      * @param int $stationSk
+     * @param string $localVariable espera  rainfall
      * @return object
      */
-    public function calculateIndicator(string $initialDateTime,string $finalDateTime,int $supId,int $alertId,int $stationSk){
-        return (Object)$this->selectRaw('SUM(rainfall) AS indicator, COUNT(rainfall) AS recovered')
+    public function calculateIndicator(string $initialDateTime,string $finalDateTime,int $supId,int $alertId,int $stationSk,string $localVariable){
+        return (Object)$this->selectRaw('SUM('.$localVariable.') AS indicator, COUNT('.$localVariable.') AS recovered')
             ->where('sup_id','=',$supId)
             ->where('alert_id','=',$alertId)
             ->where('primary_station_id','=',$stationSk)
             ->whereBetween('date_time_homogenization',[$initialDateTime,$finalDateTime])
-            ->get()->toArray()[0];
+            ->first();
     }
     public function getLastInformation(int $typeAlertId, int $alertId,int $stationId){
         return $this->select('*')

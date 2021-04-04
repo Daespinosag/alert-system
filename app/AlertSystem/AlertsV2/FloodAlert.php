@@ -4,6 +4,7 @@ namespace App\AlertSystem\AlertsV2;
 
 use App\AlertSystem\Indicators\A10MinIndicator;
 use App\Entities\AlertSystem\ControlNewData;
+use App\Events\AlertFloodEvent;
 use App\Repositories\Administrator\AlertFloodRepository;
 use App\Repositories\AlertSystem\FloodRepository;
 use Carbon\Carbon;
@@ -83,5 +84,28 @@ class FloodAlert extends AlertBase implements AlertContract
             'weight_'.$this->variableToValidate,$primaryProcess,
             ['red'=> (float)$this->alert->limit_red]
         );
+    }
+
+    public function formatDataToEvent() : array
+    {
+        $arr = [];
+
+        foreach ($this->values as $value) {
+            $temporalArr = [];
+            $temporalArr['alert'] = $this->code;
+            $temporalArr['station'] = $value['station'];
+            $temporalArr['change_alert'] = $value['change_alert'];
+            $temporalArr['values'][$this->code . '_value'] = $value[$this->code . '_value'];
+            $temporalArr['values']['alert'] = $value['alert'];
+            $temporalArr['values']['date_execution'] = $value['date_execution'];
+            $temporalArr['values']['error'] = $value['error'];
+            $temporalArr['values']['comment'] = $value['comment'];
+
+            array_push($arr, $temporalArr);
+        }
+    }
+        public function sendDataToEvent(){
+        $data = $this->formatDataToEvent();
+        event(new AlertFloodEvent($data));
     }
 }

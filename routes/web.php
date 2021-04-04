@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [ 'as'=> '/' , 'uses' => 'AlertSystem\AlertSystemController@loadVueLayout' ])->middleware('auth');
-
 Route::get('hola', [ 'as'=>'hola','uses'=>'AlertSystem\testController@testV2']);
-
+Route::get('/echo', function (){
+    event(new \App\Events\AlertEchoCalculatedEvent(new stdClass()));
+    return 'eso';
+});
 Auth::routes();
 
 Route::get('/register/verify/{code}', 'Auth\GuestController@verify');

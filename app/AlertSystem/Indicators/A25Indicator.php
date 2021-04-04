@@ -11,7 +11,7 @@ class A25Indicator extends IndicatorsBase implements IndicatorContract
      * @param $value
      */
     public function __construct($value){
-        parent::__construct(new TrackingLandslideAlertRepository(),5,2,$value,'rainfall');
+        parent::__construct(new TrackingLandslideAlertRepository(),36000,25,$value,'rainfall');
         # TODO 5 y rainfall deben ingresar por medio de un archivo de configuracion
     }
 
@@ -24,7 +24,7 @@ class A25Indicator extends IndicatorsBase implements IndicatorContract
      */
     public function execute(int $alertId,int $stationSk,string $variable,bool $primary,array $validation){
 
-        $supId = 1; # TODO Esto debe ser dinamico Basin o Zone
+        $supId = 1; # TODO Esto debe ser dinamico 1- Basin o 2- Zone
 
         # Se gerenran las fechas espeficias para trabajar
         $this->generateRageDateTime();

@@ -87,7 +87,7 @@ class testController extends Controller
         //dd('inicíe');
         for ($i = 0; $i < 2;$i++){
 
-            $extract = new \App\AlertSystem\ControlAlert\ControlLandslideAlert($dateTime);
+            $extract = new \App\AlertSystem\ControlAlert\ControlFloodAlert($dateTime);
             $extract->execute();
             $dateTime = $this->generateDateTime($dateTime,'+5 minutes');
         }

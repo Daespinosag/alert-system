@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
@@ -10,7 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class AlertEchoCalculatedEvent implements ShouldBroadcast
+class AlertLandslideEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -33,6 +34,6 @@ class AlertEchoCalculatedEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('alert-system');
+        return new Channel('alert-landslide');
     }
 }

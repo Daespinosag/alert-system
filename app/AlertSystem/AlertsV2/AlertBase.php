@@ -145,4 +145,5 @@ class AlertBase
             $this->finalDateTime
         );
     }
+
 }
