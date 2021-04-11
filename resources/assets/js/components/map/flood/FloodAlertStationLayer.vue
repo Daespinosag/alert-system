@@ -38,8 +38,14 @@
                 polygonAlertType: 'overlay',
 
                 polygonColor: '#000',
-                polygonOptionsColor: [], // TODO
+                polygonOptionsColor: {grey: '#000', 'green': '#339900','yellow': '#ffcc00','orange': '#e2580b','red': '#cc3300'}, // TODO
             }
+        },
+        created() {
+
+        },
+        mounted() {
+            this.polygonColor = this.polygonOptionsColor[this.FloodStations[0].alert_tag];
         },
         computed: {
             FloodStations(){
@@ -47,7 +53,7 @@
             },
             basin(){
                 return Basin.query().where('id',this.specificAlert.basin_id).first()
-            }
+            },
         }
     }
 </script>

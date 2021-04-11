@@ -1,21 +1,24 @@
 <template>
-    <div class="col-md-5 alert-card-container" v-show="show && alert.active"><!-- v-show="show" -->
+    <div class="col-md-5 alert-card-container" v-show="show && alert.active">
         <router-link :to="{ name: 'Alert', params: { id: alert.id } }" v-on:click.native="panToLocation( alert )">
-            <div class="alert-card">
+            <div v-bind:class="[floodPrimaryStation.alert_tag !== 'green' ? 'alert-card bg-danger' : 'alert-card bg-success']">
                 <span class="title">{{ alert.name }}</span>
                 <span class="address">
                     <span class="street">{{ floodPrimaryStation.city }}</span>
                     <span class="city"> {{ floodPrimaryStation.city }} </span>
                     <span class="state"> {{ floodPrimaryStation.city }}</span>
+                    <span><img v-bind:src="`images/assets/alerts/flood_alert_${this.iconColor}.png` " ></span>
+
+
                 </span>
 
                 <span class="address" v-show="floodPrimaryStation.tracking_values">
                    <span>{{ floodPrimaryStation.date_time_homogenization }}</span> :
                     <span>{{ floodPrimaryStation.alert_status }}</span> |
                     <span>{{ floodPrimaryStation.indicator_value }}</span>
-                    <span class="pull-right">
-                        <img v-bind:class="[ this.showFilters ? 'icon-alert-with-filters' : 'icon-alert-without-filters']" :src="`images/assets/alerts/flood_alert_${this.iconColor}.png`" >
-                    </span>
+<!--                    <span class="pull-right">-->
+<!--                        <img v-bind:class="[ this.showFilters ? 'icon-alert-with-filters' : 'icon-alert-without-filters']" :src="`images/assets/alerts/flood_alert_${this.iconColor}.png`" >-->
+<!--                    </span>-->
                    <br>
                 </span>
             </div>
@@ -25,43 +28,48 @@
 
 <script>
     import { EventBus } from '../../../event-bus.js';
-
+    import { StationTextFilter } from "../../../mixins/filters/StationTextFilter";
     import FloodStation from '../../../store/models/alerts/flood/floodStation';
+    import Net from  "../../../store/models/alerts/net";
+
 
     export default {
         name: "flood-alert-card",
         props: ['alert'],
+        mixins: [ StationTextFilter ],
         data(){
             return {
                 show: true,
                 iconColor: 'black',
-                iconsOptions: ['black','red'],
+                iconsOptions: {green: 'black', grey: 'black', red: 'red'},
+                searchArray: [],
             }
         },
         mounted(){
+            this.searchArray = [this.floodPrimaryStation.name, this.net.name, this.floodPrimaryStation.city];
             EventBus.$on('filters-updated', function( filters ){
-                //this.processFilters( filters );
+                this.processFilters( filters );
             }.bind(this));
+            this.iconColor = this.iconsOptions[this.floodPrimaryStation.alert_tag];
         },
         created(){
 
         },
         computed: {
             floodPrimaryStation(){
-                return FloodStation.query().where('primary',true).where('alert_id', this.alert.id).get()[0]
+                return FloodStation.query().where('primary',true).where('alert_id', this.alert.id).with('').first();
+            },
+            net(){
+                return Net.query().find(this.floodPrimaryStation.net_id);
             },
             showFilters(){
                 return this.$store.getters.getShowFilters;
-            }
+            },
         },
         methods: {
-            /*processFilters: function (filters) {
-                if (filters.text === null && filters.alert === 'all' && filters.typeStation.length === 0) {
-                    this.show = true;
-                } else {
-                    this.show = (this.processStationTextFilter(this.station, filters.text ) && this.processStationAlertFilter(this.station, filters.alert) && this.processStationTypeFilter(this.station, filters.typeStation));
-                }
-            },*/
+            processFilters: function (filters) {
+                this.show = this.processStationTextFilter(this.searchArray, filters.text);
+            },
             panToLocation( station ){
 
             },

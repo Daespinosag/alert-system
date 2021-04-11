@@ -12,9 +12,9 @@
         name: "flood-alert-list",
         components: { FloodAlertCard },
         computed: {
-            floodAlerts(){
+            floodAlerts: function () {
                 return FloodAlert.all()
-            }
+            },
         },
     }
 </script>

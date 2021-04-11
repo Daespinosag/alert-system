@@ -1,11 +1,12 @@
 <template>
     <div class="col-md-5 alert-card-container" v-show="show && alert.active"><!-- v-show="show" -->
         <router-link :to="{ name: 'Alert', params: { id: alert.id } }" v-on:click.native="panToLocation( alert )">
-            <div class="alert-card">
+            <div v-bind:class="[this.cardOptions[landslidePrimaryStation.alert_tag]]">
                 <span class="title">{{ alert.name }}</span>
                 <span class="address">
                     <span class="street"> Alert City </span>
                     <span class="city">  More information </span> <span class="state"> more information</span>
+                    <span><img v-bind:src="`images/assets/alerts/landslide_alert_${this.iconColor}.png` " ></span>
                 </span>
 
                 <!--<span v-for="alert in station.alerts" :key="alert.id" class="address">
@@ -20,38 +21,56 @@
 <script>
     import { EventBus } from '../../../event-bus.js';
     import LandslideStation from "../../../store/models/alerts/landslide/landslideStation";
+    import { StationTextFilter } from "../../../mixins/filters/StationTextFilter.js";
+    import Net from "../../../store/models/alerts/net";
 
     export default {
         name: "landslide-alert-card",
         props: ['alert'],
+        mixins: [ StationTextFilter ],
         data(){
             return {
                 show: true,
                 iconColor: 'black',
-                iconsOptions: ['black','yellow','orange','red'],
+                iconsOptions:{
+                    grey:'black',
+                    green: 'black',
+                    yellow: 'yellow',
+                    orange: 'orange',
+                    red: 'red'
+                },
+                cardOptions: {
+                    grey: 'alert-card bg-success',
+                    green: 'alert-card bg-success',
+                    yellow: 'alert-card bg-warning',
+                    red:' alert-card bg-danger',
+                    orange:'alert-card bg-orange',
+                },
+                searchArray: [],
             }
         },
         computed: {
-            landslidePrimaryStations(){
-                return LandslideStation.query().where('primary',true).where('alert_id', this.alert.id).get()
+            landslidePrimaryStation(){
+                return LandslideStation.query().where('primary',true).where('alert_id', this.alert.id).get()[0]
+            },
+            net(){
+                return Net.query().find(this.landslidePrimaryStation.net_id);
             },
             showFilters(){
                 return this.$store.getters.getShowFilters;
             }
         },
         mounted(){
+            this.searchArray = [this.landslidePrimaryStation.name, this.net.name, this.landslidePrimaryStation.city];
             EventBus.$on('filters-updated', function( filters ){
-                //this.processFilters( filters );
+                this.processFilters( filters );
             }.bind(this));
+            this.iconColor = this.iconsOptions[this.landslidePrimaryStation.alert_tag];
         },
         methods: {
-            /*processFilters: function (filters) {
-                if (filters.text === null && filters.alert === 'all' && filters.typeStation.length === 0) {
-                    this.show = true;
-                } else {
-                    this.show = (this.processStationTextFilter(this.station, filters.text ) && this.processStationAlertFilter(this.station, filters.alert) && this.processStationTypeFilter(this.station, filters.typeStation));
-                }
-            },*/
+            processFilters: function (filters) {
+                this.show = this.processStationTextFilter(this.searchArray, filters.text);
+            },
             panToLocation( station ){
 
             },
@@ -71,6 +90,10 @@
         -webkit-transform: scaleX(1) scaleY(1);
         transform: scaleX(1) scaleY(1);
         transition: .2s;
+
+        &.bg-orange{
+            background-color: #ffc4a3;
+        }
 
         span.title{
             display: block;
