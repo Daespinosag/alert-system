@@ -45,39 +45,28 @@ class AlertExecuteCommand extends Command
         $date = Carbon::now();
 
         # Ejecutar alerta por inundacion
-        $this->executeFloodAlert($date,2);
+        $this->executeFloodAlert($date);
 
         # Ejecutar alerta por deslizamientos
-        $this->executeLandslideAlert($date,2);
+        $this->executeLandslideAlert($date);
     }
 
     /**
-     * @param array $configurations
-     * @param Carbon $initialDate
-     * @param Carbon $finalDate
+     * @param Carbon $dateTime Esperan la fecha actual para consultar
      */
-    public function executeLandslideAlert(Carbon $date,int $iter)
+    public function executeLandslideAlert(Carbon $dateTime)
     {
-        $dateTime = $date;
-        for($i=0;$i<$iter;$i++) {
-            $extract = ControlLandslideAlert($dateTime);
+            $extract = new ControlLandslideAlert($dateTime);
             $extract->execute();
-            $dateTime = $this->generateDateTime($dateTime, '+5 minutes');
-        }
     }
 
     /**
-     * @param array $configurations
-     * @param Carbon $initialDate
-     * @param Carbon $finalDate
+     * @param Carbon $dateTime Espera la fecha actual para consultar
      */
-    public function executeFloodAlert(Carbon $date,int $iter)
+    public function executeFloodAlert(Carbon $dateTime)
     {
-        $dateTime = $date;
-        for($i=0;$i<$iter;$i++) {
-            $extract = ControlFloodAlert($dateTime);
+            $extract = new ControlFloodAlert($dateTime);
             $extract->execute();
-            $dateTime = $this->generateDateTime($dateTime, '+5 minutes');
-        }
+
     }
 }
