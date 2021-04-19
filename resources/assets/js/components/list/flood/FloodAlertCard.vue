@@ -7,10 +7,9 @@
                     <span class="street">{{ floodPrimaryStation.city }}</span>
                     <span class="city"> {{ floodPrimaryStation.city }} </span>
                     <span class="state"> {{ floodPrimaryStation.city }}</span>
-                    <span><img v-bind:src="`images/assets/alerts/flood_alert_${this.iconColor}.png` " ></span>
-
 
                 </span>
+                <span class="pull-right"><img v-bind:src="`images/assets/alerts/flood_alert_${this.iconColor}.png` " ></span>
 
                 <span class="address" v-show="floodPrimaryStation.tracking_values">
                    <span>{{ floodPrimaryStation.date_time_homogenization }}</span> :

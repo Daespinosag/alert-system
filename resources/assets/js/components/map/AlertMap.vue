@@ -36,7 +36,6 @@
             };
         },
         computed: {
-
         },
         created() {
 

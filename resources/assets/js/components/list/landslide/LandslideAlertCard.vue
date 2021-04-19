@@ -6,9 +6,9 @@
                 <span class="address">
                     <span class="street"> Alert City </span>
                     <span class="city">  More information </span> <span class="state"> more information</span>
-                    <span><img v-bind:src="`images/assets/alerts/landslide_alert_${this.iconColor}.png` " ></span>
-                </span>
 
+                </span>
+                <span class="pull-right"><img v-bind:src="`images/assets/alerts/landslide_alert_${this.iconColor}.png` " ></span>
                 <!--<span v-for="alert in station.alerts" :key="alert.id" class="address">
                    <span>{{ alert.name }}</span> : <span>{{ (alert.value !== null) ? alert.value[alert.code.replace('alert-','')+'_value'] : '-' }}</span> <span class="pull-right alert-state" v-bind:style="{'background-color': getColorAlert((alert.value !== null) ? alert.value.alert : -1)}"></span>
                    <br>

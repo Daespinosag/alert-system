@@ -10,7 +10,11 @@
             <div class="col-md-12" id="text-container">
                 <input type="text" class="search-filters form-control" v-model="textSearch" placeholder="Buscar Estaciones"/>
             </div>
-
+            <br><br>
+            <div class="m-4 col-md-12" id="toggle-container">
+                <label class="btn btn-success" @click="toggleFloodLayer"><p v-if="floodLayerVisible">Ocultar indundación</p> <p v-else>Mostrar inundación</p></label>
+                <label class="btn btn-success" @click="toggleLandslideLayer"><p v-if="floodLayerVisible">Ocultar deslizamiento</p> <p v-else>Mostrar deslizamiento</p></label>
+            </div>
             <!--<div id="col-md-12 location-type-container " v-if="alerts.length > 1">
                 <div class="">
                     <label class="filter-label">Tipos de alertas</label>
@@ -87,7 +91,13 @@
             },
             existenceFiltersActive(){
                 return this.$store.getters.getExistenceFiltersActive;
-            }
+            },
+            floodLayerVisible(){
+                return this.$store.getters.getFloodLayerVisible;
+            },
+            landslideLayerVisible(){
+                return this.$store.getters.getLandslideLayerVisible;
+            },
         },
 
         methods: {
@@ -96,7 +106,6 @@
             },
 
             updateFilterDisplay(){
-
                 this.$store.commit('setExistenceFiltersActive',!(this.textSearch === '' && this.activeAlertFilter === 'all' && this.activeTypeStationFilter.length === 0));
 
                 EventBus.$emit('filters-updated', {
@@ -108,6 +117,12 @@
 
             toggleShowFilters(){
                 this.$store.dispatch( 'toggleShowFilters', { showFilters : !this.showFilters } );
+            },
+            toggleFloodLayer(){
+                this.$store.dispatch('toggleFloodLayerVisible', {floodLayerVisible: !this.floodLayerVisible});
+            },
+            toggleLandslideLayer(){
+                this.$store.dispatch('toggleLandslideLayerVisible', {landslideLayerVisible: !this.landslideLayerVisible});
             },
 
             clearFilters(){
@@ -135,7 +150,7 @@
 </script>
 
 <style lang="scss">
-    @import '~@/abstracts/_variables.scss';
+    @import '~@/abstracts/variables.scss';
 
     div.filters-container{
         background-color: white;

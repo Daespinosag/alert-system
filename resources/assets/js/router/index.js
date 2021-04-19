@@ -17,13 +17,14 @@ export default new VueRouter({
                     path: '/PrintAlerts',
                     name: 'PrintAlerts',
                     component: PrintAlerts,
-                    /*children: [
+                    children: [
                         {
                             path: ':id',
                             name: 'Alert',
-                            component: Vue.component( 'Alert', require( './pages/Alert.vue' ).default )
+                            component: Vue.component( 'Alert', require( '../pages/Alert' ).default ),
+                            props: true,
                         },
-                    ]*/
+                    ]
                 }
             ]
         }
