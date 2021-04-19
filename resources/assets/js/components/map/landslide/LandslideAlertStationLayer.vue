@@ -1,6 +1,6 @@
 <template>
     <div id="landslide-alert-station-layer" class="landslide-alert-station-layer">
-        <l-layer-group :layer-type="stationAlertType" :name="stationAlertName" :visible="stationAlertVisible">
+        <l-layer-group :layer-type="stationAlertType" :name="stationAlertName" :visible="this.landslideIconsVisible">
             <landslide-alert-marker
                     v-for="landslideStation in landslideStations"
                     :key="landslideStation.id"
@@ -10,7 +10,7 @@
             </landslide-alert-marker>
         </l-layer-group>
 
-        <l-layer-group v-if="false" :layer-type="polygonAlertType" :name="polygonAlertName" :visible="polygonAlertVisible">
+        <l-layer-group v-if="false" :layer-type="polygonAlertType" :name="polygonAlertName" :visible="this.landslidePolygonsVisible">
             <div v-if="zone.kml !== null">
                 <l-geo-json :geojson="require(`@alert-system-vue/assets/geojson/zone/${ this.zone.code }.json`)" :options="{ color : polygonColor}"> </l-geo-json>
             </div>
@@ -32,11 +32,9 @@
         data(){
             return {
                 stationAlertName: 'marker_', //+ this.stationAlertName.name,
-                stationAlertVisible: true,
                 stationAlertType: 'overlay',
 
                 polygonAlertName : 'kml_', // + this.specificAlert.name,
-                polygonAlertVisible: true,
                 polygonAlertType: 'overlay',
 
                 polygonExist: false,
@@ -50,6 +48,12 @@
             },
             zone(){
                 return Zone.query().where('id',this.specificAlert.zone_id).first()
+            },
+            landslideIconsVisible(){
+                return this.$store.getters.getLandslideIconsVisible;
+            },
+            landslidePolygonsVisible(){
+                return this.$store.getters.getLandslidePolygonsVisible;
             },
         },
         methods: {

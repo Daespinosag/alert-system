@@ -6,6 +6,10 @@ export const displayModule = {
         alertsView: 'map',
         floodLayerVisible: true,
         landslideLayerVisible: true,
+        floodIconsVisible: true,
+        floodPolygonsVisible: true,
+        landslideIconsVisible: true,
+        landslidePolygonsVisible: true,
     },
 
     actions: {
@@ -26,6 +30,18 @@ export const displayModule = {
         },
         toggleLandslideLayerVisible({ commit }, data){
             commit ('setLandslideLayerVisible', data.landslideLayerVisible );
+        },
+        toggleFloodIconsVisible({ commit }, data){
+            commit ('setFloodIconsVisible', data.floodIconsVisible );
+        },
+        toggleFloodPolygonsVisible({ commit }, data){
+            commit ('setFloodPolygonsVisible', data.floodPolygonsVisible );
+        },
+        toggleLandslideIconsVisible({ commit }, data){
+            commit ('setLandslideIconsVisible', data.landslideIconsVisible );
+        },
+        toggleLandslidePolygonsVisible({ commit }, data){
+            commit ('setLandslidePolygonsVisible', data.landslidePolygonsVisible );
         },
     },
 
@@ -48,6 +64,18 @@ export const displayModule = {
         setLandslideLayerVisible(state, show){
             state.landslideLayerVisible = show;
         },
+        setFloodIconsVisible(state, show){
+            state.floodIconsVisible = show;
+        },
+        setFloodPolygonsVisible(state, show){
+            state.floodPolygonsVisible = show;
+        },
+        setLandslideIconsVisible(state, show){
+            state.landslideIconsVisible = show;
+        },
+        setLandslidePolygonsVisible(state, show){
+            state.landslidePolygonsVisible = show;
+        },
     },
 
     getters: {
@@ -68,6 +96,18 @@ export const displayModule = {
         },
         getLandslideLayerVisible(state){
             return state.landslideLayerVisible;
-        }
+        },
+        getFloodIconsVisible(state){
+            return state.floodIconsVisible;
+        },
+        getFloodPolygonsVisible(state){
+            return state.floodPolygonsVisible;
+        },
+        getLandslideIconsVisible(state){
+            return state.landslideIconsVisible;
+        },
+        getLandslidePolygonsVisible(state){
+            return state.landslidePolygonsVisible;
+        },
     }
 }

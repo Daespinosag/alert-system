@@ -1,6 +1,6 @@
 <template>
     <div class="col-md-5 alert-card-container" v-show="show && alert.active">
-        <router-link :to="{ name: 'Alert', params: { id: alert.id } }" v-on:click.native="panToLocation( alert )">
+        <router-link :to="{ name: 'Alert', params: { id: floodPrimaryStation.id } }" v-on:click.native="panToLocation( alert )">
             <div v-bind:class="[floodPrimaryStation.alert_tag !== 'green' ? 'alert-card bg-danger' : 'alert-card bg-success']">
                 <span class="title">{{ alert.name }}</span>
                 <span class="address">
