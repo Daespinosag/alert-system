@@ -1,5 +1,5 @@
 <template>
-    <div id="landslide-alert-list" class="landslide-alert-list">
+    <div id="landslide-alert-list" class="landslide-alert-list" v-show="landslideListVisible">
         <landslide-alert-card v-for="landslideAlert in landslideAlerts" :key="landslideAlert.code" :alert="landslideAlert"></landslide-alert-card>
     </div>
 </template>
@@ -14,6 +14,9 @@
         computed: {
             landslideAlerts(){
                 return landslideAlert.all()
+            },
+            landslideListVisible(){
+                return this.$store.getters.getLandslideLayerVisible;
             }
         },
     }

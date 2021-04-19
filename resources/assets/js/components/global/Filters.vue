@@ -13,7 +13,7 @@
             <br><br>
             <div class="m-4 col-md-12" id="toggle-container">
                 <label class="btn btn-success" @click="toggleFloodLayer"><p v-if="floodLayerVisible">Ocultar indundación</p> <p v-else>Mostrar inundación</p></label>
-                <label class="btn btn-success" @click="toggleLandslideLayer"><p v-if="floodLayerVisible">Ocultar deslizamiento</p> <p v-else>Mostrar deslizamiento</p></label>
+                <label class="btn btn-success" @click="toggleLandslideLayer"><p v-if="landslideLayerVisible">Ocultar deslizamiento</p> <p v-else>Mostrar deslizamiento</p></label>
             </div>
             <!--<div id="col-md-12 location-type-container " v-if="alerts.length > 1">
                 <div class="">
