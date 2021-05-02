@@ -1,6 +1,6 @@
 <template>
     <div id="flood-alert-station-layer" class="flood-alert-station-layer">
-        <l-layer-group :layer-type="stationAlertType" :name="stationAlertName" :visible="stationAlertVisible">
+        <l-layer-group :layer-type="stationAlertType" :name="stationAlertName" :visible="this.floodIconsVisible">
             <flood-alert-marker
                     v-for="floodStation in FloodStations"
                     :key="floodStation.id"
@@ -10,7 +10,7 @@
             </flood-alert-marker>
         </l-layer-group>
 
-        <l-layer-group  :layer-type="polygonAlertType" :name="polygonAlertName" :visible="polygonAlertVisible">
+        <l-layer-group  :layer-type="polygonAlertType" :name="polygonAlertName" :visible="this.floodPolygonsVisible">
             <l-geo-json :geojson="require(`@alert-system-vue/assets/geojson/basin/${ basin.code }`)" :options="{ color : polygonColor}"> </l-geo-json>
         </l-layer-group>
     </div>
@@ -30,16 +30,20 @@
         data(){
             return {
                 stationAlertName: 'marker_', //+ this.stationAlertName.name,
-                stationAlertVisible: true,
                 stationAlertType: 'overlay',
 
                 polygonAlertName : 'kml_', // + this.specificAlert.name,
-                polygonAlertVisible: true,
                 polygonAlertType: 'overlay',
 
                 polygonColor: '#000',
-                polygonOptionsColor: [], // TODO
+                polygonOptionsColor: {grey: '#000', 'green': '#339900','yellow': '#ffcc00','orange': '#e2580b','red': '#cc3300'}, // TODO
             }
+        },
+        created() {
+
+        },
+        mounted() {
+            this.polygonColor = this.polygonOptionsColor[this.FloodStations[0].alert_tag];
         },
         computed: {
             FloodStations(){
@@ -47,7 +51,13 @@
             },
             basin(){
                 return Basin.query().where('id',this.specificAlert.basin_id).first()
-            }
+            },
+            floodIconsVisible(){
+                return this.$store.getters.getFloodIconsVisible;
+            },
+            floodPolygonsVisible(){
+                return this.$store.getters.getFloodPolygonsVisible;
+            },
         }
     }
 </script>

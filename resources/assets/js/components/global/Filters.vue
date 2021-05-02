@@ -10,7 +10,38 @@
             <div class="col-md-12" id="text-container">
                 <input type="text" class="search-filters form-control" v-model="textSearch" placeholder="Buscar Estaciones"/>
             </div>
+            <br><br>
+            <div class="m-4 col-md-12 text-center" id="toggle-container">
+                <label class="btn btn-success" @click="toggleFloodLayer"><p v-if="floodLayerVisible">Ocultar indundación</p> <p v-else>Mostrar inundación</p></label>
+                <label class="btn btn-success" @click="toggleLandslideLayer"><p v-if="landslideLayerVisible">Ocultar deslizamiento</p> <p v-else>Mostrar deslizamiento</p></label>
+            </div>
 
+            <div class="m-4 col-md-12" id="flood-layer-toggle">
+                <b>Alerta inundación</b>
+                <div class="form-check pull-right">
+                    <input class="form-check-input" type="checkbox" value="" id="flood-icon-check" checked @click="toggleFloodIcons">
+                    <label class="form-check-label" for="flood-icon-check">
+                        Iconos
+                    </label>
+                    <input class="form-check-input" type="checkbox" value="" id="flood-overlay-check" checked @click="toggleFloodPolygons">
+                    <label class="form-check-label" for="flood-overlay-check">
+                        Polígonos
+                    </label>
+                </div>
+            </div>
+            <div class="m-4 col-md-12" id="landslide-layer-toggle">
+                <b>Alerta deslizamiento</b>
+                <div class="form-check pull-right">
+                    <input class="form-check-input" type="checkbox" value="" id="landslide-icon-check" checked @click="toggleLandslideIcons">
+                    <label class="form-check-label" for="landslide-icon-check">
+                        Iconos
+                    </label>
+                    <input class="form-check-input" type="checkbox" value="" id="landslide-overlay-check" checked @click="toggleLandslidePolygons">
+                    <label class="form-check-label" for="landslide-overlay-check">
+                        Polígonos
+                    </label>
+                </div>
+            </div>
             <!--<div id="col-md-12 location-type-container " v-if="alerts.length > 1">
                 <div class="">
                     <label class="filter-label">Tipos de alertas</label>
@@ -87,16 +118,33 @@
             },
             existenceFiltersActive(){
                 return this.$store.getters.getExistenceFiltersActive;
-            }
+            },
+            floodLayerVisible(){
+                return this.$store.getters.getFloodLayerVisible;
+            },
+            landslideLayerVisible(){
+                return this.$store.getters.getLandslideLayerVisible;
+            },
+            floodIconsVisible(){
+                return this.$store.getters.getFloodIconsVisible;
+            },
+            floodPolygonsVisible(){
+                return this.$store.getters.getFloodPolygonsVisible;
+            },
+            landslideIconsVisible(){
+                return this.$store.getters.getLandslideIconsVisible;
+            },
+            landslidePolygonsVisible(){
+                return this.$store.getters.getLandslidePolygonsVisible;
+            },
+
         },
 
         methods: {
             setActiveAlertFilter( filter ){
                 this.activeAlertFilter = filter;
             },
-
             updateFilterDisplay(){
-
                 this.$store.commit('setExistenceFiltersActive',!(this.textSearch === '' && this.activeAlertFilter === 'all' && this.activeTypeStationFilter.length === 0));
 
                 EventBus.$emit('filters-updated', {
@@ -105,9 +153,26 @@
                     typeStation: this.activeTypeStationFilter
                 });
             },
-
             toggleShowFilters(){
                 this.$store.dispatch( 'toggleShowFilters', { showFilters : !this.showFilters } );
+            },
+            toggleFloodLayer(){
+                this.$store.dispatch('toggleFloodLayerVisible', {floodLayerVisible: !this.floodLayerVisible});
+            },
+            toggleLandslideLayer(){
+                this.$store.dispatch('toggleLandslideLayerVisible', {landslideLayerVisible: !this.landslideLayerVisible});
+            },
+            toggleFloodIcons(){
+                this.$store.dispatch('toggleFloodIconsVisible', {floodIconsVisible: !this.floodIconsVisible});
+            },
+            toggleFloodPolygons(){
+                this.$store.dispatch('toggleFloodPolygonsVisible', {floodPolygonsVisible: !this.floodPolygonsVisible});
+            },
+            toggleLandslideIcons(){
+                this.$store.dispatch('toggleLandslideIconsVisible', {landslideIconsVisible: !this.landslideIconsVisible});
+            },
+            toggleLandslidePolygons(){
+                this.$store.dispatch('toggleLandslidePolygonsVisible', {landslidePolygonsVisible: !this.landslidePolygonsVisible});
             },
 
             clearFilters(){
@@ -135,7 +200,7 @@
 </script>
 
 <style lang="scss">
-    @import '~@/abstracts/_variables.scss';
+    @import '~@/abstracts/variables.scss';
 
     div.filters-container{
         background-color: white;

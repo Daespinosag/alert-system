@@ -1,4 +1,4 @@
-<style lang="scss">
+ <style lang="scss">
     .menu-button{
         width: 235px;
         height: 25px;
@@ -56,6 +56,7 @@
             <i class="fa fa-close" aria-hidden="true"> limpiar Filtros</i>
         </div>
     </div>
+
 </template>
 
 <script>
