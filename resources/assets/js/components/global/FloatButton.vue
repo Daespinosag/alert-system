@@ -1,4 +1,4 @@
-<style lang="scss">
+ <style lang="scss">
     .menu-button{
         width: 235px;
         height: 25px;
@@ -45,7 +45,7 @@
 
 <template>
 
-    <div v-bind:class="[ this.showFilters ? 'active-position': 'initial-position' , 'menu-button']"  v-show="$route.name  === 'stations'">
+    <div v-bind:class="[ this.showFilters ? 'active-position': 'initial-position' , 'menu-button']"  v-show="$route.name  === 'PrintAlerts'">
         <div class="filters-button" v-on:click="toggleShowFilters()" >
             <i  v-bind:class="{'fa fa-angle-double-right': !this.showFilters, 'fa fa-angle-double-left': this.showFilters } " aria-hidden="true">
                 Filtros
@@ -56,6 +56,7 @@
             <i class="fa fa-close" aria-hidden="true"> limpiar Filtros</i>
         </div>
     </div>
+
 </template>
 
 <script>

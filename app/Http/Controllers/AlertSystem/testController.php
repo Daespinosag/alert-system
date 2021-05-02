@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\AlertSystem;
 
 use App\AlertSystem\Connection\SearchTableInExternalStaticConnection;
-use App\AlertSystem\Extract\AcquisitionServerExtract;
+use App\Console\Commands\AlertExecuteCommand;
 use App\Events\AlertEchoCalculatedEvent;
 use App\Repositories\AlertSystem\ControlNewDataRepository;
 use App\Repositories\AlertSystem\UserRepository;
@@ -18,9 +18,9 @@ use App\AlertSystem\Alerts\LandslideAlert;
 use App\AlertSystem\Alerts\FloodAlert;
 use Event;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Mail;
 use Carbon\Carbon;
-use App\Events\AlertFiveMinutesCalculated;
 
 class testController extends Controller
 {
@@ -33,16 +33,26 @@ class testController extends Controller
      * @var ControlNewDataRepository
      */
     private $controlNewDataRepository;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     /**
      * @param StationRepository $stationRepository
      * @param ControlNewDataRepository $controlNewDataRepository
+     * @param UserRepository $userRepository
      */
 
-    public function __construct(StationRepository $stationRepository,ControlNewDataRepository $controlNewDataRepository)
+    public function __construct(
+        StationRepository $stationRepository,
+        ControlNewDataRepository $controlNewDataRepository,
+        UserRepository $userRepository
+    )
     {
         $this->stationRepository = $stationRepository;
         $this->controlNewDataRepository = $controlNewDataRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -50,19 +60,49 @@ class testController extends Controller
      */
     public function testV2()
     {
-        //dd($this->stationRepository->getStationsAlerts('landslide',15,true));
-        //dd($this->controlNewDataRepository->getUnsettledAlerts(2));
-        //$connection = "";
-        //$table      = "est_aranjuez";
-        $dateTime   = Carbon::parse('2019-08-13 09:00:00');
-        //$initialDateTime   = Carbon::parse('2019-08-13 08:55:00');
-        //$finalDateTime   = Carbon::parse('2019-08-13 09:05:00');
+        $ali = new AlertExecuteCommand();
+        $ali->handle();
+        dd('terminé');
 
-        $extract = new \App\AlertSystem\ControlAlert\ControlFloodAlert($dateTime);
+    }
 
-        $extract->execute();
 
-        dd($extract);
+    public function testConnectionsAndTablesServerAcquisition(){
+        $tem = $this->stationRepository->getAllStationFlood();
+        #$tem = $this->stationRepository->getAllStationLandslide();
+
+        $arr = [];
+
+        foreach ($tem as $station){
+            $connection = $this->searchStaticConnection($station->connection_name,$station->station_table);
+
+            $value = null;
+
+            if ($connection){
+                $value = DB::connection($connection)
+                    ->table($station->station_table)
+                    ->selectRaw("COUNT(fecha) as count")
+                    ->where('fecha','=','2019-11-21')
+                    ->first()->count;
+            }
+
+            $arr[] = [
+                'station_id' => $station->station_sk,
+                'connection'=>$station->connection_name,
+                'table'=>$station->station_table,
+                'data' => $value,
+            ];
+        }
+
+        dd($arr);
+    }
+    /**
+     * @param Carbon $dateTime
+     * @param string $time
+     * @return Carbon
+     */
+    public function generateDateTime(Carbon $dateTime,string $time) : Carbon {
+        return date_add(clone ($dateTime), date_interval_create_from_date_string($time));
     }
 
     /**
@@ -232,4 +272,17 @@ class testController extends Controller
     {
         //
     }
+
+    private function recursive_change_key($arr, $set) {
+        if (is_array($arr) && is_array($set)) {
+            $newArr = array();
+            foreach ($arr as $k => $v) {
+                $key = array_key_exists( $k, $set) ? $set[$k] : $k;
+                $newArr[$key] = is_array($v) ? $this->recursive_change_key($v, $set) : $v;
+            }
+            return $newArr;
+        }
+        return $arr;
+    }
+
 }

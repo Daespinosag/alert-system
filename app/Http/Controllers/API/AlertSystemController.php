@@ -385,5 +385,12 @@ class AlertSystemController extends Controller
 
         return $result;
     }
+    public function test(){
 
+        //dd('hola jorge');
+        return json_encode(array(
+            'status'=>'true',
+            'data'=>'datos'
+        ));
+    }
 }

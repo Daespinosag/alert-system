@@ -27,14 +27,7 @@ class AlertLandslide extends Model
      * @var array
      */
     protected $fillable = [
-        'name','code','active','limit_red','icon'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $hidden = [
-        'id'
+        'id','zone_id','name','code','active','limit_yellow','limit_orange','limit_red','icon'
     ];
 
     /**
@@ -47,7 +40,7 @@ class AlertLandslide extends Model
     /**
      * @return BelongsTo
      */
-    public function basins() : BelongsTo
+    public function zones() : BelongsTo
     {
         return $this->belongsTo(Zone::class,'zone_id');
     }

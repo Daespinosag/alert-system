@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [ 'as'=> '/' , 'uses' => 'AlertSystem\AlertSystemController@loadVueLayout' ])->middleware('auth');
-
 Route::get('hola', [ 'as'=>'hola','uses'=>'AlertSystem\testController@testV2']);
-
+Route::get('/echo', function (){
+    event(new \App\Events\AlertEchoCalculatedEvent(new stdClass()));
+    return 'eso';
+});
 Auth::routes();
 
 Route::get('/register/verify/{code}', 'Auth\GuestController@verify');
@@ -33,6 +35,9 @@ Route::group(['prefix' => 'test','name' => 'test'], function()
     Route::get('index', [ 'as'=>'test.index','uses'=>'AlertSystem\testController@index']);
     Route::get('v2', [ 'as'=>'test.v2','uses'=>'AlertSystem\testController@testV2']);
     //Route::get('index', [ 'as'=>'test.index','uses'=>'API\AlertSystemController@getStations']);
+
+
+    Route::get('floodInformation', [ 'as'=>'test.floodInformation','uses'=>'API\AccessAlertSystemController@floodInformation']);
 });
 
 #Broadcast::routes();

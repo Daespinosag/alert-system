@@ -16,6 +16,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\AlertFiveMinutesCalculated' => [
             'App\Listeners\SendEmailsAlertFiveMinutes',
         ],
+        'App\Events\AlertFloodEvent'=>[
+            'App\Listeners\AlertFloodListener',
+        ],
+        'App\Events\AlertLandslideEvent'=>[
+            'App\Listeners\AlertLandslideListener',
+        ],
     ];
 
     /**

@@ -1,5 +1,206 @@
+<template>
+    <transition name="slide-in-left">
+        <div class="filters-container" id="filters-container" v-show="showFilters">
+            <div class="close-filters" v-on:click="toggleShowFilters()">
+                <img src="images/grey-left.svg"/>
+            </div>
+            <div class="col-md-4 col-md-offset-8">
+                <br><br><br><!-- TODO espacio para el menu de cambio -->
+            </div>
+            <div class="col-md-12" id="text-container">
+                <input type="text" class="search-filters form-control" v-model="textSearch" placeholder="Buscar Estaciones"/>
+            </div>
+            <br><br>
+            <div class="m-4 col-md-12 text-center" id="toggle-container">
+                <label class="btn btn-success" @click="toggleFloodLayer"><p v-if="floodLayerVisible">Ocultar indundación</p> <p v-else>Mostrar inundación</p></label>
+                <label class="btn btn-success" @click="toggleLandslideLayer"><p v-if="landslideLayerVisible">Ocultar deslizamiento</p> <p v-else>Mostrar deslizamiento</p></label>
+            </div>
+
+            <div class="m-4 col-md-12" id="flood-layer-toggle">
+                <b>Alerta inundación</b>
+                <div class="form-check pull-right">
+                    <input class="form-check-input" type="checkbox" value="" id="flood-icon-check" checked @click="toggleFloodIcons">
+                    <label class="form-check-label" for="flood-icon-check">
+                        Iconos
+                    </label>
+                    <input class="form-check-input" type="checkbox" value="" id="flood-overlay-check" checked @click="toggleFloodPolygons">
+                    <label class="form-check-label" for="flood-overlay-check">
+                        Polígonos
+                    </label>
+                </div>
+            </div>
+            <div class="m-4 col-md-12" id="landslide-layer-toggle">
+                <b>Alerta deslizamiento</b>
+                <div class="form-check pull-right">
+                    <input class="form-check-input" type="checkbox" value="" id="landslide-icon-check" checked @click="toggleLandslideIcons">
+                    <label class="form-check-label" for="landslide-icon-check">
+                        Iconos
+                    </label>
+                    <input class="form-check-input" type="checkbox" value="" id="landslide-overlay-check" checked @click="toggleLandslidePolygons">
+                    <label class="form-check-label" for="landslide-overlay-check">
+                        Polígonos
+                    </label>
+                </div>
+            </div>
+            <!--<div id="col-md-12 location-type-container " v-if="alerts.length > 1">
+                <div class="">
+                    <label class="filter-label">Tipos de alertas</label>
+                </div>
+
+                <div class="">
+                    <div class="location-filter all-locations" v-bind:class="{ 'active': activeAlertFilter === 'all' }" v-on:click="setActiveAlertFilter('all')" >
+                        Todas
+                    </div>
+                    <div class="location-filter" v-on:click="toggleAlertFilter( alert.code )" v-bind:class="{'active' : activeAlertFilter === alert.code}" v-for="alert in alerts">
+                        {{ alert.table }}
+                    </div>
+                </div>
+            </div>-->
+
+            <!-- <div id="brew-methods-container">
+                <div class="grid-x grid-padding-x">
+                    <div class="large-12 medium-12 small-12 cell">
+                        <label class="filter-label">Tipos de Estaciones</label>
+                    </div>
+                </div>
+                <div class="col-md-offset-1 col-md-10">
+                    <div class="brew-method" v-on:click="toggleTypeStationFilter( type.code )" v-bind:class="{'active' : activeTypeStationFilter.indexOf(type.code) >= 0 }" v-for="type in typeStation">
+                        <div class="brew-method-container">
+                            <img v-bind:src="'images/alert-icons/type-station-icon.svg'" class="brew-method-icon"/>
+                            <span class="brew-method-name">{{ type.name }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </transition>
+</template>
+
+<script>
+    import { EventBus } from '../../event-bus.js';
+
+    export default {
+        name: 'filters',
+        data(){
+            return {
+                textSearch: '',
+                activeAlertFilter: 'all',
+                activeTypeStationFilter: [],
+            }
+        },
+
+        watch: {
+            textSearch(){
+                this.updateFilterDisplay();
+            },
+            activeAlertFilter(){
+                this.updateFilterDisplay();
+            },
+            activeTypeStationFilter(){
+                this.updateFilterDisplay();
+            },
+        },
+
+        mounted(){
+            EventBus.$on('show-filters', function(){
+                this.show = true;
+            }.bind(this));
+
+            EventBus.$on('clear-filters', function(){
+                this.clearFilters();
+            }.bind(this));
+        },
+
+        computed: {
+            showFilters(){
+                return this.$store.getters.getShowFilters;
+            },
+            existenceFiltersActive(){
+                return this.$store.getters.getExistenceFiltersActive;
+            },
+            floodLayerVisible(){
+                return this.$store.getters.getFloodLayerVisible;
+            },
+            landslideLayerVisible(){
+                return this.$store.getters.getLandslideLayerVisible;
+            },
+            floodIconsVisible(){
+                return this.$store.getters.getFloodIconsVisible;
+            },
+            floodPolygonsVisible(){
+                return this.$store.getters.getFloodPolygonsVisible;
+            },
+            landslideIconsVisible(){
+                return this.$store.getters.getLandslideIconsVisible;
+            },
+            landslidePolygonsVisible(){
+                return this.$store.getters.getLandslidePolygonsVisible;
+            },
+
+        },
+
+        methods: {
+            setActiveAlertFilter( filter ){
+                this.activeAlertFilter = filter;
+            },
+            updateFilterDisplay(){
+                this.$store.commit('setExistenceFiltersActive',!(this.textSearch === '' && this.activeAlertFilter === 'all' && this.activeTypeStationFilter.length === 0));
+
+                EventBus.$emit('filters-updated', {
+                    text: this.textSearch,
+                    alert: this.activeAlertFilter,
+                    typeStation: this.activeTypeStationFilter
+                });
+            },
+            toggleShowFilters(){
+                this.$store.dispatch( 'toggleShowFilters', { showFilters : !this.showFilters } );
+            },
+            toggleFloodLayer(){
+                this.$store.dispatch('toggleFloodLayerVisible', {floodLayerVisible: !this.floodLayerVisible});
+            },
+            toggleLandslideLayer(){
+                this.$store.dispatch('toggleLandslideLayerVisible', {landslideLayerVisible: !this.landslideLayerVisible});
+            },
+            toggleFloodIcons(){
+                this.$store.dispatch('toggleFloodIconsVisible', {floodIconsVisible: !this.floodIconsVisible});
+            },
+            toggleFloodPolygons(){
+                this.$store.dispatch('toggleFloodPolygonsVisible', {floodPolygonsVisible: !this.floodPolygonsVisible});
+            },
+            toggleLandslideIcons(){
+                this.$store.dispatch('toggleLandslideIconsVisible', {landslideIconsVisible: !this.landslideIconsVisible});
+            },
+            toggleLandslidePolygons(){
+                this.$store.dispatch('toggleLandslidePolygonsVisible', {landslidePolygonsVisible: !this.landslidePolygonsVisible});
+            },
+
+            clearFilters(){
+                this.textSearch = '';
+                this.activeAlertFilter = 'all';
+                this.activeTypeStationFilter = [];
+            },
+
+            toggleAlertFilter( alert ){
+                this.setActiveAlertFilter(alert);
+            },
+
+            toggleTypeStationFilter(code){
+
+                var i = this.activeTypeStationFilter.indexOf(code);
+
+                if ( i >= 0 ){
+                    this.activeTypeStationFilter.splice(i,1);
+                }else {
+                    this.activeTypeStationFilter.push(code);
+                }
+            }
+        }
+    }
+</script>
+
 <style lang="scss">
-    @import '~@/abstracts/_variables.scss';
+    @import '~@/abstracts/variables.scss';
 
     div.filters-container{
         background-color: white;
@@ -193,148 +394,3 @@
 
     }
 </style>
-
-<template>
-    <transition name="slide-in-left">
-        <div class="filters-container" id="filters-container" v-show="showFilters">
-            <div class="close-filters" v-on:click="toggleShowFilters()">
-                <img src="images/grey-left.svg"/>
-            </div>
-            <div class="col-md-4 col-md-offset-8">
-                <br><br><br><!-- TODO espacio para el menu de cambio -->
-            </div>
-            <div class="col-md-12" id="text-container">
-               <input type="text" class="search-filters form-control" v-model="textSearch" placeholder="Buscar Estaciones"/>
-            </div>
-
-            <div id="col-md-12 location-type-container " v-if="alerts.length > 1">
-                <div class="">
-                    <label class="filter-label">Tipos de alertas</label>
-                </div>
-
-                <div class="">
-                    <div class="location-filter all-locations" v-bind:class="{ 'active': activeAlertFilter === 'all' }" v-on:click="setActiveAlertFilter('all')" >
-                        Todas
-                    </div>
-                    <div class="location-filter" v-on:click="toggleAlertFilter( alert.code )" v-bind:class="{'active' : activeAlertFilter === alert.code}" v-for="alert in alerts">
-                        {{ alert.table }}
-                    </div>
-                </div>
-            </div>
-
-            <div id="brew-methods-container">
-                <div class="grid-x grid-padding-x">
-                    <div class="large-12 medium-12 small-12 cell">
-                        <label class="filter-label">Tipos de Estaciones</label>
-                    </div>
-                </div>
-                <div class="col-md-offset-1 col-md-10">
-                    <div class="brew-method" v-on:click="toggleTypeStationFilter( type.code )" v-bind:class="{'active' : activeTypeStationFilter.indexOf(type.code) >= 0 }" v-for="type in typeStation">
-                        <div class="brew-method-container">
-                            <img v-bind:src="'images/alert-icons/type-station-icon.svg'" class="brew-method-icon"/>
-                            <span class="brew-method-name">{{ type.name }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </transition>
-</template>
-
-<script>
-    import { EventBus } from '../../event-bus.js';
-
-    export default {
-        components: {},
-        data(){
-            return {
-                textSearch: '',
-                activeAlertFilter: 'all',
-                activeTypeStationFilter: [],
-            }
-        },
-
-        watch: {
-            textSearch(){
-                this.updateFilterDisplay();
-            },
-            activeAlertFilter(){
-                this.updateFilterDisplay();
-            },
-            activeTypeStationFilter(){
-                this.updateFilterDisplay();
-            },
-        },
-
-        mounted(){
-            EventBus.$on('show-filters', function(){
-                this.show = true;
-            }.bind(this));
-
-            EventBus.$on('clear-filters', function(){
-                this.clearFilters();
-            }.bind(this));
-        },
-
-        computed: {
-            showFilters(){
-                return this.$store.getters.getShowFilters;
-            },
-            stations(){
-                return this.$store.getters.getStations;
-            },
-            alerts(){
-                return this.$store.getters.getAlerts;
-            },
-            typeStation(){
-                return this.$store.getters.getTypeStation;
-            },
-            existenceFiltersActive(){
-                return this.$store.getters.getExistenceFiltersActive;
-            }
-        },
-
-        methods: {
-            setActiveAlertFilter( filter ){
-                this.activeAlertFilter = filter;
-            },
-
-            updateFilterDisplay(){
-
-                this.$store.commit('setExistenceFiltersActive',!(this.textSearch === '' && this.activeAlertFilter === 'all' && this.activeTypeStationFilter.length === 0));
-
-                EventBus.$emit('filters-updated', {
-                    text: this.textSearch,
-                    alert: this.activeAlertFilter,
-                    typeStation: this.activeTypeStationFilter
-                });
-            },
-
-            toggleShowFilters(){
-                this.$store.dispatch( 'toggleShowFilters', { showFilters : !this.showFilters } );
-            },
-
-            clearFilters(){
-                this.textSearch = '';
-                this.activeAlertFilter = 'all';
-                this.activeTypeStationFilter = [];
-            },
-
-            toggleAlertFilter( alert ){
-                this.setActiveAlertFilter(alert);
-            },
-
-            toggleTypeStationFilter(code){
-
-                var i = this.activeTypeStationFilter.indexOf(code);
-
-                if ( i >= 0 ){
-                    this.activeTypeStationFilter.splice(i,1);
-                }else {
-                    this.activeTypeStationFilter.push(code);
-                }
-            }
-        }
-    }
-</script>

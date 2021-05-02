@@ -3,6 +3,7 @@
 namespace App\Repositories\AlertSystem;
 
 use App\Repositories\RepositoriesContract;
+use Illuminate\Database\Eloquent\Collection;
 use Rinvex\Repository\Repositories\EloquentRepository;
 use App\Entities\AlertSystem\UserPermission;
 use DB;
@@ -35,8 +36,7 @@ class UserPermissionRepository extends EloquentRepository implements Repositorie
      * @param bool $activeEmail
      * @return mixed
      */
-    public function assignPermissionUser(int $permissionId, int $userId, bool $active, bool $activeEmail)
-    {
+    public function assignPermissionUser(int $permissionId, int $userId, bool $active, bool $activeEmail){
         return $this->queryBuilder()
             ->insert([
                 'permission_id' => $permissionId,
@@ -46,5 +46,9 @@ class UserPermissionRepository extends EloquentRepository implements Repositorie
                 'created_at'    => Carbon::now(),
                 'updated_at'    => Carbon::now(),
             ]);
+    }
+
+    public function getPermissionUser(int $userId) : Collection {
+        return $this->select('*')->where('user_id','=',$userId)->get();
     }
 }

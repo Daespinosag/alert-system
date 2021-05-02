@@ -14,11 +14,7 @@ class Role extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name', 'code', 'description',
-    ];
-
-    protected $hidden = [
-        'id'
+        'id','name', 'code', 'description',
     ];
 
     protected $dates = [

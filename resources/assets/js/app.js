@@ -1,5 +1,3 @@
-import routes from "./routes";
-
 window._ = require('lodash');
 
 window.Popper = require('popper.js').default;
@@ -46,6 +44,7 @@ if (token) {
  * allows your team to easily build robust real-time web applications.
  */
 
+/*
 import Echo from 'laravel-echo'
 
 window.Pusher = require('pusher-js');
@@ -56,13 +55,14 @@ window.Echo = new Echo({
     cluster: 'eu',
     encrypted: true
 });
+*/
 
 import Vue from 'vue';
 
-Vue.config.devtools = true;
+import router from './router'
+import store from './store'
 
-import router from './routes.js';
-import store from './store.js';
+Vue.config.devtools = true;
 
 import BootstrapVue from 'bootstrap-vue';
 Vue.use(BootstrapVue);
@@ -80,5 +80,23 @@ Vue.use(VueDataTables);
 
 import HighchartsVue from 'highcharts-vue';
 Vue.use(HighchartsVue);
+
+
+/**
+ * New
+ */
+Vue.config.productionTip = false;
+Vue.config.devtools = true;
+
+
+import 'leaflet/dist/leaflet.css';
+import { Icon }  from 'leaflet';
+delete Icon.Default.prototype._getIconUrl;
+
+Icon.Default.mergeOptions({
+    iconRetinaUrl: 'images/vendor/leaflet/dist/marker-icon-2x.png',
+    iconUrl: 'images/vendor/leaflet/dist/marker-icon.png',
+    shadowUrl: 'images/vendor/leaflet/dist/marker-shadow.png'
+});
 
 new Vue({router, store}).$mount('#app');

@@ -51,10 +51,11 @@ class ExtractBase
         $this->connection =  $this->searchStaticConnection($connection,$stationTable);
     }
 
-    public function validateTheLastData(){
+    public function validateTheLastData(string $variable){
         $value = $this->countDataToExtract(
             $this->connection,
             $this->stationTable,
+            $variable,
             $this->initDateTime->format('Y-m-d'),
             $this->initDateTime->format('h:i:s'),
             $this->finalDateTime->format('Y-m-d'),
@@ -64,10 +65,11 @@ class ExtractBase
         if ($value >= 2){ $this->dataExistence = true; }
     }
 
-    public function extractData(){
-        $this->data = $this->gatExternalData(
+    public function extractData(string $variable){
+        $this->data = $this->getExternalData(
             $this->connection,
             $this->stationTable,
+            $variable,
             $this->initDateTime->format('Y-m-d'),
             $this->initDateTime->format('h:i:s'),
             $this->finalDateTime->format('Y-m-d'),

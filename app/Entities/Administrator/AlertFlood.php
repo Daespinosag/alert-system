@@ -32,14 +32,7 @@ class AlertFlood extends Model
      * @var array
      */
     protected $fillable = [
-        'name','code','active','limit_red','icon'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $hidden = [
-        'id'
+        'id','basin_id','name','code','active','limit_red','icon'
     ];
 
     /**
@@ -70,7 +63,7 @@ class AlertFlood extends Model
     /**
      * @return BelongsTo
      */
-    public function basins() : BelongsTo
+    public function basin() : BelongsTo
     {
         return $this->belongsTo(Basin::class,$this->relationBasins['foreignKey']);
     }

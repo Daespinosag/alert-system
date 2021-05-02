@@ -13,11 +13,7 @@ class Alert extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name','code','icon','table','description','active'
-    ];
-
-    protected $hidden = [
-        'id'
+        'id','name','code','icon','table','description','active'
     ];
 
     protected $dates = [

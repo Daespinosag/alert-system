@@ -27,14 +27,7 @@ class Basin extends Model
      * @var array
      */
     protected $fillable = [
-        'name','code','description','kml'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $hidden = [
-        'id'
+        'id','name','code','description','kml'
     ];
 
     /**

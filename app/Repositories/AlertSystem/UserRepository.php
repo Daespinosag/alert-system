@@ -82,7 +82,7 @@ class UserRepository extends EloquentRepository implements RepositoriesContract
      */
     public function getCompleteUser(int $id) : User
     {
-        return $this->select('*')->where('id',$id)->with('permissions')->first();
+        return $this->select('*')->where('id',$id)->with('permissions','role')->first();
     }
 
     /**

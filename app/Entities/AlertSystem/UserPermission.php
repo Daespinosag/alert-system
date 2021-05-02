@@ -14,11 +14,7 @@ class UserPermission extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-      'user_id','permission_id','active','active_email',
-    ];
-
-    protected $hidden = [
-        'id'
+      'id','user_id','permission_id','active','active_email',
     ];
 
     protected $dates = [
