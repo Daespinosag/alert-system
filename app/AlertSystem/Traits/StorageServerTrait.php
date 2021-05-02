@@ -93,7 +93,7 @@ trait StorageServerTrait
         $value = DB::connection($externalConnection)
             ->table($tableName)
             ->selectRaw("COUNT($variable) as count")
-            ->where($variable,'!=','-')
+            ->where($variable,'!=','-')->whereNotNull($variable)
             ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
             ->first();
 

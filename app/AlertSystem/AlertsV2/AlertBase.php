@@ -111,8 +111,8 @@ class AlertBase
         $this->dateTime = $dateTime;
         $this->initDateTime = $initDateTime;
         $this->finalDateTime = $finalDateTime;
-
         $this->alert = $this->alertRepository->getAlert($this->controlNewData->alert_id);
+
         $this->stationRepository = new StationRepository(); # TODO Esto debe ser dinamico
         $this->primaryStation = $this->getStationAlert(true)[0]; # TODO Validar que hacer cuando no se encuentra estacion primaria
         $this->primaryStationAlert = $this->createStation($this->primaryStation);
@@ -145,4 +145,5 @@ class AlertBase
             $this->finalDateTime
         );
     }
+
 }

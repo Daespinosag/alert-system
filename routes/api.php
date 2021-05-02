@@ -15,7 +15,11 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'v1'], function()  //,'middleware' => 'auth:api'
 {
-    Route::post('/getAuthUser', [ 'as'=>'v1.getAuthUser','uses'=>'API\AlertSystemController@getAuthUser']);
+    Route::post('/getAuthUser',
+        [
+            'as'=>'v1.getAuthUser',
+            'uses'=>'API\AlertSystemController@getAuthUser'
+        ]);
 
     Route::post('/stations', [ 'as'=>'v1.stations','uses'=>'API\AlertSystemController@getStations']);
 
@@ -34,13 +38,14 @@ Route::group(['prefix' => 'v1'], function()  //,'middleware' => 'auth:api'
 
 Route::group(['prefix' => 'v2'], function()  //,'middleware' => 'auth:api'
 {
+
     # New Version
     Route::post('/landslideInformation', [ 'as'=>'v2.landslideInformation','uses'=>'API\AccessAlertSystemController@landslideInformation']);
     Route::post('/floodInformation', [ 'as'=>'v2.floodInformation','uses'=>'API\AccessAlertSystemController@floodInformation']);
     Route::post('/userInformation', [ 'as'=>'v2.userInformation','uses'=>'API\AccessAlertSystemController@userInformation']);
 
     # Old Version
-
+/*
     Route::post('/getStationsAlertLandslide', [ 'as'=>'v2.getStationsAlertLandslide','uses'=>'API\AccessAlertSystemController@getStationsAlertLandslide']);
     Route::post('/getStationsAlertFlood', [ 'as'=>'v2.getStationsAlertFlood','uses'=>'API\AccessAlertSystemController@getStationsAlertFlood']);
 
@@ -66,5 +71,5 @@ Route::group(['prefix' => 'v2'], function()  //,'middleware' => 'auth:api'
     Route::get('/typeStation', [ 'as'=>'v2.typeStation','uses'=>'API\AccessAlertSystemController@getTypeStation']);
 
     Route::post('/consultAlert', [ 'as'=>'v2.consultAlert','uses'=>'API\AccessAlertSystemController@consultAlert']);
-
+*/
 });

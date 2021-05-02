@@ -3,10 +3,8 @@
 namespace App\Repositories\AlertSystem;
 
 use App\Entities\Administrator\AlertFlood;
-use App\Repositories\RepositoriesContract;
-use Rinvex\Repository\Repositories\EloquentRepository;
 
-class FloodRepository extends EloquentRepository implements RepositoriesContract
+class FloodRepository extends AlertBaseRepository implements AlertContractRepository
 {
     /**
      * @var string
@@ -55,11 +53,5 @@ class FloodRepository extends EloquentRepository implements RepositoriesContract
                 ->toArray();
     }
 
-    /**
-     * @param int $id
-     * @return mixed
-     */
-    public function getAlert(int $id){
-        return $this->select('*')->where('id','=',$id)->first();
-    }
+
 }

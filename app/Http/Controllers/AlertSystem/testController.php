@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\AlertSystem;
 
-use App\AlertSystem\Connection\DatabaseConfig;
 use App\AlertSystem\Connection\SearchTableInExternalStaticConnection;
-use App\AlertSystem\Extract\AcquisitionServerExtract;
+use App\Console\Commands\AlertExecuteCommand;
 use App\Events\AlertEchoCalculatedEvent;
 use App\Repositories\AlertSystem\ControlNewDataRepository;
 use App\Repositories\AlertSystem\UserRepository;
@@ -22,7 +21,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Mail;
 use Carbon\Carbon;
-use App\Events\AlertFiveMinutesCalculated;
 
 class testController extends Controller
 {
@@ -62,38 +60,10 @@ class testController extends Controller
      */
     public function testV2()
     {
-        #$user = $this->userRepository->getCompleteUser(1)->toArray();
-        #$user = $this->userRepository->getCompleteUser(1)->toArray();
-        #dd($user);
+        $ali = new AlertExecuteCommand();
+        $ali->handle();
+        dd('terminé');
 
-        #$user = $this->recursive_change_key($user, ['pivot' => 'user_permissions']);
-        #dd($user);
-
-        //dd($this->stationRepository->getStationsAlerts('landslide',15,true));
-        //dd($this->controlNewDataRepository->getUnsettledAlerts(2));
-        //$connection = "";
-        //$table      = "est_aranjuez";
-
-        # 20/02/2017
-        #  $dateTime   = Carbon::parse('2017-02-20 00:00:00');
-        $dateTime   = Carbon::parse('2020-04-01 00:00:00');
-        //$initialDateTime   = Carbon::p rarse('2019-08-13 08:55:00');
-        //$finalDateTime   = Carbon::parse('2019-08-13 09:05:00');
-
-        //$extract = new \App\AlertSystem\ControlAlert\ControlFloodAlert($dateTime);
-        //$extract->execute();
-
-        # Consultar aca todas las estaciones con su respectiva tabla para el sistema de alertas.
-
-        for ($i = 0; $i <= 10;$i ++){
-
-            $extract = new \App\AlertSystem\ControlAlert\ControlFloodAlert($dateTime);
-            $extract->execute();
-
-            $dateTime = $this->generateDateTime($dateTime,'+5 minutes');
-        }
-
-        dd('termine',$dateTime);
     }
 
 
@@ -314,4 +284,5 @@ class testController extends Controller
         }
         return $arr;
     }
+
 }
