@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class TestEmail extends Mailable
+class AlertMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -62,7 +62,7 @@ class TestEmail extends Mailable
     {
         return $this
             ->subject($this->messageSubject)
-            ->markdown('emails.testEmail')
+            ->markdown('emails.alertEmail')
             ->with(['title' => $this->title, 'data' => (object)$this->data]);
     }
 }

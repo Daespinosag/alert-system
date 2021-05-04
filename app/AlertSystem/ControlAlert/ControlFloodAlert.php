@@ -5,9 +5,12 @@ namespace App\AlertSystem\ControlAlert;
 use App\AlertSystem\AlertsV2\FloodAlert;
 use App\Entities\AlertSystem\TrackingFloodAlert;
 use App\Events\AlertFloodEvent;
+use App\Mail\AlertMail;
+use App\Repositories\Administrator\StationRepository;
 use Carbon\Carbon;
 use mysql_xdevapi\Table;
 use function Couchbase\defaultDecoder;
+use App\Repositories\AlertSystem\UserRepository;
 use DB;
 
 class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
@@ -42,13 +45,38 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
      * Recupera los últimos datos de las estaciones y las alertas con sus estados
      * @return array Retorna todos los registros
      */
-    public function formatDataToEvent(): array
+    public function formatDataToEvent()
     {
         $data = DB::table('tracking_flood_alert')
             ->select(DB::raw('distinct on(alert_id, primary_station_id) *'))
             ->orderByRaw('alert_id DESC,primary_station_id DESC, id DESC limit 100')
             ->get();
+        $station = new StationRepository();
+        for ($i = 0; $i < count($data); $i++) {
+            $data[$i]->station = $station->getAllDataStation($data[$i]->primary_station_id);
+        }
         return $data;
+    }
+
+    /**
+     * Ordena las alertas por prioridad de impresion.
+     * @return array Retorna todos los registros ordenados
+     */
+    public function sortData($data)
+    {
+        $red = [];
+        $green = [];
+        foreach ($data as $item) {
+            switch ($item->alert_tag) {
+                case 'red':
+                    array_push($red, $item);
+                    break;
+                case 'green':
+                    array_push($green, $item);
+                    break;
+            }
+        }
+        return array_merge($red, $green);
     }
 
     /**
@@ -67,10 +95,21 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
      */
     public function sendEmailAndMsm($data)
     {
+        $arrEmail = [];
+        $name = 'Alerta por Inundación';
+        $message = 'Cambio Indicadores Inundación (' . (clone($this->initDateTime))->format('Y-m-d H:i:s') . ') - (' . Carbon::now()->format('Y-m-d H:i:s') . ')';
+        $code = 'a10';
+        $users = new UserRepository();
+        $emails = $users->getEmailUserFromAlert($code);
+        foreach ($emails as $email) {
+            array_push($arrEmail, $email->email);
+        }
         foreach ($data as $item) {
-            if ($item->alert_tag != 'green') {
+            if ($item->alert_status == 'increase') {
 //                envia EMAIL
-//                Mail::send();
+                $dataReal = $this->sortData($data);
+                \Mail::to('ideaalertas@gmail.com')->bcc($arrEmail)->send(new AlertMail($name, $dataReal, $message, $code));
+                break;
             }
         }
     }

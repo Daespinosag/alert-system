@@ -24,7 +24,7 @@ class A25Indicator extends IndicatorsBase implements IndicatorContract
      */
     public function execute(int $alertId,int $stationSk,string $variable,bool $primary,array $validation){
 
-        $supId = 1; # TODO Esto debe ser dinamico 1- Basin o 2- Zone
+        $supId = 2; # TODO Esto debe ser dinamico 1- Basin o 2- Zone
 
         # Se gerenran las fechas espeficias para trabajar
         $this->generateRageDateTime();

@@ -10,6 +10,6 @@ interface ControlAlertContract
     public function config();
     public function execute();
     public function sendDataToEvent();
-    public function formatDataToEvent() : array;
+    public function formatDataToEvent();
     public function sendEmailAndMsm($data);
 }

@@ -43,6 +43,7 @@ Route::group(['prefix' => 'v2'], function()  //,'middleware' => 'auth:api'
     Route::post('/landslideInformation', [ 'as'=>'v2.landslideInformation','uses'=>'API\AccessAlertSystemController@landslideInformation']);
     Route::post('/floodInformation', [ 'as'=>'v2.floodInformation','uses'=>'API\AccessAlertSystemController@floodInformation']);
     Route::post('/userInformation', [ 'as'=>'v2.userInformation','uses'=>'API\AccessAlertSystemController@userInformation']);
+    Route::post('/getAllDataStationById', [ 'as'=>'v2.getAllDataStationById','uses'=>'API\AccessAlertSystemController@getAllDataStationById']);
 
     # Old Version
 /*
