@@ -3,7 +3,7 @@
         <l-map v-if="showMap" :zoom="zoom" :center="center" :options="mapOptions">
             <!--<l-control-layers :collapsed="false" :sort-layers="true"/>-->
             <l-tile-layer :url="url" :attribution="attribution"/>
-
+            <l-control-zoom position="bottomleft"  ></l-control-zoom>
             <flood-alert-layer> </flood-alert-layer>
             <landslide-alert-layer> </landslide-alert-layer>
         </l-map>
@@ -12,14 +12,14 @@
 
 <script>
     import { latLng } from "leaflet"
-    import { LMap, LTileLayer, LMarker, LPopup, LTooltip, LGeoJson ,LControlLayers } from "vue2-leaflet"
+    import { LMap, LTileLayer, LMarker, LPopup, LTooltip, LGeoJson , LControlZoom, LControlLayers } from "vue2-leaflet"
     import LandslideAlertLayer from "./landslide/LandslideAlertLayer"
     import FloodAlertLayer from "./flood/FloodAlertLayer";
 
     export default {
         name: "alert-map",
         components: {
-            LMap, LTileLayer, LMarker, LPopup, LTooltip, LandslideAlertLayer, FloodAlertLayer, LGeoJson ,/** LControlLayers **/
+            LMap, LTileLayer, LMarker, LPopup, LTooltip, LandslideAlertLayer, FloodAlertLayer, LGeoJson , LControlZoom/** LControlLayers **/
         },
         data() {
             return {
@@ -30,7 +30,8 @@
                 url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                 attribution: '&copy; Sistema De Alerta Temprana - Manizales',
                 mapOptions: {
-                    zoomSnap: 0.5
+                    zoomSnap: 0.5,
+                    zoomControl: false,
                 },
                 showMap: true,
             };
