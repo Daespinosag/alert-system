@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 interface ControlAlertContract
 {
-    public function __construct(Carbon $dateTime);
+    public function __construct(Carbon $dateTime, $config = null);
     public function config();
     public function execute();
     public function sendDataToEvent();

@@ -19,9 +19,9 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
      * ControlFloodAlert constructor.
      * @param Carbon $dateTime
      */
-    public function __construct(Carbon $dateTime)
+    public function __construct(Carbon $dateTime, $config = null)
     {
-        parent::__construct('flood', $dateTime);
+        parent::__construct('flood', $dateTime, $config);
 
         $this->config();
     }
@@ -29,7 +29,8 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
     public function config()
     {
         foreach ($this->controlAlerts as $controlAlert) {
-            $this->alerts[] = new FloodAlert($this->alertCode, $controlAlert, $this->dateTime, $this->initDateTime, $this->finalDateTime);
+            //dd($this);
+            $this->alerts[] = new FloodAlert($this->alertCode, $controlAlert, $this->dateTime, $this->initDateTime, $this->finalDateTime, $this->config);
         }
     }
 
@@ -84,9 +85,13 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
      */
     public function sendDataToEvent()
     {
-        $data = $this->formatDataToEvent();
-        event(new AlertFloodEvent($data));
-        $this->sendEmailAndMsm($data);
+        if ($this->config['sendEventData']) {
+            $data = $this->formatDataToEvent();
+            event(new AlertFloodEvent($data));
+        }
+        if ($this->config['sendEmail']) {
+            $this->sendEmailAndMsm($data);
+        }
     }
 
     /**

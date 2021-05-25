@@ -82,6 +82,7 @@ class AlertBase
      */
     private $alertRepository;
 
+    public $config;
     /**
      * FloodAlert constructor.
      * @param RepositoriesContract $specificAlertRepository
@@ -101,8 +102,10 @@ class AlertBase
         ControlNewData $controlNewData,
         Carbon $dateTime,
         Carbon $initDateTime,
-        Carbon $finalDateTime
-    ){
+        Carbon $finalDateTime,
+        $config = null
+    )
+    {
         $this->specificAlertRepository = $specificAlertRepository;
         $this->alertRepository = $alertRepository;
         $this->alertCode = $alertCode;
@@ -111,6 +114,7 @@ class AlertBase
         $this->dateTime = $dateTime;
         $this->initDateTime = $initDateTime;
         $this->finalDateTime = $finalDateTime;
+        $this->config = $config;
         $this->alert = $this->alertRepository->getAlert($this->controlNewData->alert_id);
 
         $this->stationRepository = new StationRepository(); # TODO Esto debe ser dinamico
@@ -122,22 +126,28 @@ class AlertBase
      * @param $station
      * @return StationAlert
      */
-    public function createStation($station) : StationAlert {
-        return new StationAlert($station, $this->dateTime,$this->initDateTime, $this->finalDateTime);
+    public
+    function createStation($station): StationAlert
+    {
+        return new StationAlert($station, $this->dateTime, $this->initDateTime, $this->finalDateTime);
     }
 
     /**
      * @param bool $primary
      * @return Collection
      */
-    public function getStationAlert(bool $primary = false) : Collection {
-        return $this->stationRepository->getStationsAlerts($this->alertCode,$this->controlNewData->alert_id,$primary);
+    public
+    function getStationAlert(bool $primary = false): Collection
+    {
+        return $this->stationRepository->getStationsAlerts($this->alertCode, $this->controlNewData->alert_id, $primary);
     }
 
     /**
      *
      */
-    public function createBackupStationsAlert(){
+    public
+    function createBackupStationsAlert()
+    {
         $this->backupStationsAlert = new BackupStationsAlert(
             $this->stationRepository->getStationsAlerts($this->alertCode, $this->controlNewData->alert_id, false),
             $this->dateTime,

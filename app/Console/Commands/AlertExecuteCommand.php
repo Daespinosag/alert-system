@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use  App\AlertSystem\ControlAlert\ControlFloodAlert;
 use  App\AlertSystem\ControlAlert\ControlLandslideAlert;
 
+
 class AlertExecuteCommand extends Command
 {
     /**
@@ -52,12 +53,45 @@ class AlertExecuteCommand extends Command
     }
 
     /**
+     *
+     */
+    public function testMode($config)
+    {
+        if ($config['floodAlert']) {
+            # Ejecutar alerta por inundacion
+            $this->executeTestModeFloodAlert($config);
+
+        }
+        if ($config['landslideAlert']) {
+            # Ejecutar alerta por deslizamientos
+            $this->executeTestModeLandslideAlert($config);
+        }
+    }
+
+    /**
      * @param Carbon $dateTime Esperan la fecha actual para consultar
      */
     public function executeLandslideAlert(Carbon $dateTime)
     {
-            $extract = new ControlLandslideAlert($dateTime);
+        $extract = new ControlLandslideAlert($dateTime);
+        $extract->execute();
+    }
+
+    /**
+     * @param Carbon $dateTime
+     */
+    public function executeTestModeLandslideAlert($config)
+    {
+        //echo 'LandslideAlert';
+        $datesTotal = [];
+        $dateInit = $config['initialDate'];
+        for ($i = 0; $i < $config['windowTemp']; $i++) {
+            array_push($datesTotal,$dateInit);
+            $extract = new ControlLandslideAlert($dateInit,$config);
             $extract->execute();
+            $dateInit = $this->generateDateTime($dateInit,'+5 minutes');
+        }
+        //print_r($datesTotal);
     }
 
     /**
@@ -65,8 +99,29 @@ class AlertExecuteCommand extends Command
      */
     public function executeFloodAlert(Carbon $dateTime)
     {
-            $extract = new ControlFloodAlert($dateTime);
-            $extract->execute();
+        $extract = new ControlFloodAlert($dateTime);
+        $extract->execute();
 
+    }
+
+    /**
+     * @param Carbon $dateTime
+     */
+    public function executeTestModeFloodAlert($config)
+    {
+        //echo 'LandslideAlert';
+        $datesTotal = [];
+        $dateInit = $config['initialDate'];
+        for ($i = 0; $i < $config['windowTemp']; $i++) {
+            array_push($datesTotal,$dateInit);
+            $extract = new ControlFloodAlert($dateInit,$config);
+            $extract->execute();
+            $dateInit = $this->generateDateTime($dateInit,'+5 minutes');
+        }
+        //print_r($datesTotal);
+    }
+
+    public function generateDateTime(Carbon $dateTime,string $time) : Carbon {
+        return date_add(clone ($dateTime), date_interval_create_from_date_string($time));
     }
 }

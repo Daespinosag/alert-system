@@ -19,16 +19,16 @@ class ControlLandslideAlert extends ControlAlertBase implements ControlAlertCont
      * @param array $primaryStations
      * @param Carbon $dateTime
      */
-    public function __construct(Carbon $dateTime)
+    public function __construct(Carbon $dateTime, $config = null)
     {
-        parent::__construct('landslide', $dateTime);
+        parent::__construct('landslide', $dateTime, $config);
         $this->config();
     }
 
     public function config()
     {
         foreach ($this->controlAlerts as $controlAlert) {
-            $this->alerts[] = new LandslideAlert($this->alertCode, $controlAlert, $this->dateTime, $this->initDateTime, $this->finalDateTime);
+            $this->alerts[] = new LandslideAlert($this->alertCode, $controlAlert, $this->dateTime, $this->initDateTime, $this->finalDateTime, $this->config);
         }
     }
 
@@ -91,9 +91,13 @@ class ControlLandslideAlert extends ControlAlertBase implements ControlAlertCont
      */
     public function sendDataToEvent()
     {
-        $data = $this->formatDataToEvent();
-        event(new AlertLandslideEvent($data));
-        $this->sendEmailAndMsm($data);
+        if($this->config['sendEventData']){
+            $data = $this->formatDataToEvent();
+            event(new AlertLandslideEvent($data));
+        }
+        if($this->config['sendEmail']){
+            $this->sendEmailAndMsm($data);
+        }
     }
 
     /**
@@ -116,6 +120,7 @@ class ControlLandslideAlert extends ControlAlertBase implements ControlAlertCont
 //                envia EMAIL
                 $dataReal = $this->sortData($data);
                 \Mail::to('ideaalertas@gmail.com')->bcc($arrEmail)->send(new AlertMail($name, $dataReal, $message, $code));
+                break;
             }
         }
     }

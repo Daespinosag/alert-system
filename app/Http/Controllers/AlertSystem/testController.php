@@ -66,43 +66,71 @@ class testController extends Controller
 
     }
 
+    public function testConfig()
+    {
+        //echo('inicia');
+        print_r(Carbon::now());
+        $date = Carbon::parse('2021-02-25 00:00:00');
 
-    public function testConnectionsAndTablesServerAcquisition(){
+        $config = [
+            'floodAlert'=>true,
+            'landslideAlert'=>false,
+            'initialDate' => clone $date,
+            'flood' => [1],
+            'landslide' => [],
+            'windowTemp' => 864,
+            'sendEmail' => true,
+            'insertDatabase' => true,
+            'sendEventData' => true
+        ];
+        $ali = new AlertExecuteCommand();
+        $ali->testMode($config);
+        //echo('termina');
+        print_r(Carbon::now());
+        dd('terminé');
+
+    }
+
+
+    public function testConnectionsAndTablesServerAcquisition()
+    {
         $tem = $this->stationRepository->getAllStationFlood();
         #$tem = $this->stationRepository->getAllStationLandslide();
 
         $arr = [];
 
-        foreach ($tem as $station){
-            $connection = $this->searchStaticConnection($station->connection_name,$station->station_table);
+        foreach ($tem as $station) {
+            $connection = $this->searchStaticConnection($station->connection_name, $station->station_table);
 
             $value = null;
 
-            if ($connection){
+            if ($connection) {
                 $value = DB::connection($connection)
                     ->table($station->station_table)
                     ->selectRaw("COUNT(fecha) as count")
-                    ->where('fecha','=','2019-11-21')
+                    ->where('fecha', '=', '2019-11-21')
                     ->first()->count;
             }
 
             $arr[] = [
                 'station_id' => $station->station_sk,
-                'connection'=>$station->connection_name,
-                'table'=>$station->station_table,
+                'connection' => $station->connection_name,
+                'table' => $station->station_table,
                 'data' => $value,
             ];
         }
 
         dd($arr);
     }
+
     /**
      * @param Carbon $dateTime
      * @param string $time
      * @return Carbon
      */
-    public function generateDateTime(Carbon $dateTime,string $time) : Carbon {
-        return date_add(clone ($dateTime), date_interval_create_from_date_string($time));
+    public function generateDateTime(Carbon $dateTime, string $time): Carbon
+    {
+        return date_add(clone($dateTime), date_interval_create_from_date_string($time));
     }
 
     /**
@@ -139,13 +167,13 @@ class testController extends Controller
         $data2 = Carbon::parse('2018-11-04 13:00:00');
 
         $configurations1 = [
-            'sendEmail'             => false,
-            'sendEmailChanges'      => true,
-            'insertDatabase'        => false,
-            'sendEventData'         => false,
-            'sendEventDataChanges'  => false,
-            'initialDate'           => clone $data,//2017-11-07 23:55:00
-            'finalDate'             => clone $data2,
+            'sendEmail' => false,
+            'sendEmailChanges' => true,
+            'insertDatabase' => false,
+            'sendEventData' => false,
+            'sendEventDataChanges' => false,
+            'initialDate' => clone $data,//2017-11-07 23:55:00
+            'finalDate' => clone $data2,
             //'stations'              => [6,105]
         ];
 
@@ -161,28 +189,28 @@ class testController extends Controller
         $alertSystem1->init();
 
         //dd($alertSystem1,'test controller');
-/*
-        $data = $alertSystem->getAlertsDefences();
+        /*
+                $data = $alertSystem->getAlertsDefences();
 
-        if ($data->changes){
-            Mail::to('ideaalertas@gmail.com')
-                ->bcc(['daespinosag@unal.edu.co','mayordan01@gmail.com'])
-                ->send(new \App\Mail\TestEmail('Alerta por Inundación', $data));
-        }
-*/
+                if ($data->changes){
+                    Mail::to('ideaalertas@gmail.com')
+                        ->bcc(['daespinosag@unal.edu.co','mayordan01@gmail.com'])
+                        ->send(new \App\Mail\TestEmail('Alerta por Inundación', $data));
+                }
+        */
 
         //dd($alertSystem->values);
 
         //return new \App\Mail\TestEmail('Alerta por Inundación', $data);
 
         $configurations = [
-            'sendEmail'             => false,
-            'sendEmailChanges'      => true,
-            'insertDatabase'        => false,
-            'sendEventData'         => false,
-            'sendEventDataChanges'  => false,
-            'initialDate'           => clone $data,//2017-11-07 23:55:00
-            'finalDate'             => clone $data2,
+            'sendEmail' => false,
+            'sendEmailChanges' => true,
+            'insertDatabase' => false,
+            'sendEventData' => false,
+            'sendEventDataChanges' => false,
+            'initialDate' => clone $data,//2017-11-07 23:55:00
+            'finalDate' => clone $data2,
             //'stations'              => [6,105]
         ];
 
@@ -195,13 +223,13 @@ class testController extends Controller
             $configurations
         );
         $alertSystem->init();
-        dd($alertSystem,$alertSystem1);
+        dd($alertSystem, $alertSystem1);
 
-/*
-        Mail::send('emails.testEmail',['alert' => 'enviando desde el sistema de alertas'], function ($message){
-            $message->to('daespinosag@unal.edu.co','Alert System')->subject('test send emails');
-        });
-*/
+        /*
+                Mail::send('emails.testEmail',['alert' => 'enviando desde el sistema de alertas'], function ($message){
+                    $message->to('daespinosag@unal.edu.co','Alert System')->subject('test send emails');
+                });
+        */
 
         //Mail::to('jdzambranona@unal.edu.co')->send(new \App\Mail\TestEmail());
         //return new \App\Mail\TestEmail();
@@ -220,7 +248,7 @@ class testController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -231,7 +259,7 @@ class testController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -242,7 +270,7 @@ class testController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -253,8 +281,8 @@ class testController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -265,7 +293,7 @@ class testController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -273,11 +301,12 @@ class testController extends Controller
         //
     }
 
-    private function recursive_change_key($arr, $set) {
+    private function recursive_change_key($arr, $set)
+    {
         if (is_array($arr) && is_array($set)) {
             $newArr = array();
             foreach ($arr as $k => $v) {
-                $key = array_key_exists( $k, $set) ? $set[$k] : $k;
+                $key = array_key_exists($k, $set) ? $set[$k] : $k;
                 $newArr[$key] = is_array($v) ? $this->recursive_change_key($v, $set) : $v;
             }
             return $newArr;

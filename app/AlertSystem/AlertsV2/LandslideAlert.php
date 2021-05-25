@@ -20,21 +20,23 @@ class LandslideAlert extends AlertBase implements AlertContract
      * @param Carbon $initDateTime
      * @param Carbon $finalDateTime LandslideRepository
      */
-    public function __construct(string $alertCode,ControlNewData $controlNewData, Carbon $dateTime,Carbon $initDateTime,Carbon $finalDateTime){
-        parent::__construct(new AlertLandslideRepository(),new LandslideRepository(),$alertCode,'precipitacion_real',$controlNewData,$dateTime,$initDateTime,$finalDateTime);
+    public function __construct(string $alertCode, ControlNewData $controlNewData, Carbon $dateTime, Carbon $initDateTime, Carbon $finalDateTime, $config = null)
+    {
+        parent::__construct(new AlertLandslideRepository(), new LandslideRepository(), $alertCode, 'precipitacion_real', $controlNewData, $dateTime, $initDateTime, $finalDateTime, $config);
     }
 
     /**
      *
      */
-    public function execute(){
+    public function execute()
+    {
         # Se ejecuta la consulta de la variable para la estacion primaria
         $this->primaryStationAlert->execute($this->variableToValidate);
 
         # Se valida si fue posible realizar el calculo con la estacion primaria
-        if ($this->primaryStationAlert->homogenization->validateHomogenization){
+        if ($this->primaryStationAlert->homogenization->validateHomogenization) {
             # Se crea el objeto para el calculo del indicador
-            $this->setIndicator($this->primaryStationAlert->homogenization->data);
+            $this->setIndicator($this->primaryStationAlert->homogenization->data, $this->config);
 
             # Se calcula el  indicador dependi
             $this->calculateIndicator(true);
@@ -52,7 +54,7 @@ class LandslideAlert extends AlertBase implements AlertContract
         $this->backupStationsAlert->execute($this->variableToValidate);
 
         # Se valida la ejecusion del proceso por medio de las estaciones de respaldo
-        if ($this->backupStationsAlert->complete){
+        if ($this->backupStationsAlert->complete) {
 
             # Se crea el objeto para el calculo del indicador
             $this->setIndicator($this->backupStationsAlert->data);
@@ -70,25 +72,29 @@ class LandslideAlert extends AlertBase implements AlertContract
     /**
      * @param $value
      */
-    public function setIndicator($value){
-        $this->indicator = new A25Indicator($value);
+    public function setIndicator($value)
+    {
+        $this->indicator = new A25Indicator($value, $this->config);
     }
+
     /**
      * @param bool $primaryProcess
      */
-    public function calculateIndicator(bool $primaryProcess = true){
+    public function calculateIndicator(bool $primaryProcess = true)
+    {
         $this->indicator->execute(
             $this->controlNewData->alert_id,
             $this->primaryStation->station_sk,
-            'weight_'.$this->variableToValidate,$primaryProcess,
+            'weight_' . $this->variableToValidate, $primaryProcess,
             [
-                'red'=> (float)$this->alert->limit_red,
-                'yellow'=> (float)$this->alert->limit_yellow,
-                'orange'=> (float)$this->alert->limit_orange
+                'red' => (float)$this->alert->limit_red,
+                'yellow' => (float)$this->alert->limit_yellow,
+                'orange' => (float)$this->alert->limit_orange
             ]
         );
     }
-    public function formatDataToEvent() : array
+
+    public function formatDataToEvent(): array
     {
         $arr = [];
 
@@ -106,7 +112,9 @@ class LandslideAlert extends AlertBase implements AlertContract
             array_push($arr, $temporalArr);
         }
     }
-        public function sendDataToEvent(){
+
+    public function sendDataToEvent()
+    {
         $data = $this->formatDataToEvent();
         event(new AlertLandslideEvent($data));
     }

@@ -22,8 +22,19 @@ class ControlNewDataRepository extends EloquentRepository implements Repositorie
      * @param string $alertCode
      * @return Collection
      */
-    public function getUnsettledAlerts(string $alertCode) : Collection{
+    public function getUnsettledAlerts(string $alertCode): Collection
+    {
 
-        return $this->select('*')->where('alert_code','=',$alertCode)->where('active','=',true)->where('homogenization','=',false)->get();
+        return $this->select('*')->where('alert_code', '=', $alertCode)->where('active', '=', true)->where('homogenization', '=', false)->get();
+    }
+
+    /**
+     * @param string $alertCode
+     * @return Collection
+     */
+    public function getUnsettledAlertsSpecific(string $alertCode, $alertsId): Collection
+    {
+
+        return $this->select('*')->where('alert_code', '=', $alertCode)->where('active', '=', true)->where('homogenization', '=', false)->whereIn('id', $alertsId)->get();
     }
 }
