@@ -2,6 +2,7 @@
 
 namespace App\Repositories\AlertSystem;
 
+use App\Mail\LogMail;
 use App\Repositories\RepositoriesContract;
 use Illuminate\Database\Eloquent\Collection;
 use Rinvex\Repository\Repositories\EloquentRepository;
@@ -18,6 +19,11 @@ class LogsRepository extends EloquentRepository implements RepositoriesContract
      */
     protected $model = Logs::class;
 
+    public function newObject()
+    {
+        return new Logs();
+    }
+
     /**
      * @param string $code
      * @return mixed
@@ -27,4 +33,8 @@ class LogsRepository extends EloquentRepository implements RepositoriesContract
         return $this->select('*')->get();
     }
 
+    public function sendEmail($data)
+    {
+        \Mail::to('ideaalertas@gmail.com')->bcc(['ideaalertas@gmail.com'])->send(new LogMail($data->type.' Detectado Prioridad '.$data->priority, $data, 'Anomalía Detectada - Revise Logs'));
+    }
 }

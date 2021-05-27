@@ -2,8 +2,11 @@
 
 namespace App\AlertSystem\Traits;
 
+use App\Repositories\AlertSystem\LogsRepository;
+use Exception;
 use function Couchbase\defaultDecoder;
 use DB;
+use Carbon\Carbon;
 
 trait StorageServerTrait
 {
@@ -27,14 +30,41 @@ trait StorageServerTrait
         int $constData
     )
     {
-        return DB::connection($externalConnection)
-            ->table($tableName)
-            ->select('fecha','hora','precipitacion_real')
-            ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
-            ->orderByRaw('fecha DESC , hora DESC')
-            ->limit($constData)
-            ->get()
-            ->toArray();
+        try {
+
+            return DB::connection($externalConnection)
+                ->table($tableName)
+                ->select('fecha', 'hora', 'precipitacion_real')
+                ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
+                ->orderByRaw('fecha DESC , hora DESC')
+                ->limit($constData)
+                ->get()
+                ->toArray();
+        }catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Traits|StorageServerTrait|calculateA25|No se recuperaron los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $externalConnection,
+                    $tableName,
+                    $dataOne,
+                    $timeOne,
+                    $dataTwo,
+                    $timeTwo,
+                    $constData
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
+
+            return;
+        }
     }
 
     /**
@@ -58,14 +88,41 @@ trait StorageServerTrait
         int $constData
     )
     {
-        return DB::connection($externalConnection)
-            ->table($tableName)
-            ->select('fecha','hora','precipitacion_real')
-            ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
-            ->orderByRaw('fecha DESC , hora DESC')
-            ->limit($constData)
-            ->get()
-            ->toArray();
+        try {
+
+            return DB::connection($externalConnection)
+                ->table($tableName)
+                ->select('fecha', 'hora', 'precipitacion_real')
+                ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
+                ->orderByRaw('fecha DESC , hora DESC')
+                ->limit($constData)
+                ->get()
+                ->toArray();
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Traits|StorageServerTrait|calculateA10|No se recuperaron los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $externalConnection,
+                    $tableName,
+                    $dataOne,
+                    $timeOne,
+                    $dataTwo,
+                    $timeTwo,
+                    $constData
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
+
+            return;
+        }
     }
 
     /**
@@ -88,16 +145,41 @@ trait StorageServerTrait
         string $timeTwo
     )
     {
-        /** TODO Notificar al sistema de errores cuando no se encuentren datos -> no tener datos hace que todo el proceso no se ejecute**/
+        try {
+            $value = DB::connection($externalConnection)
+                ->table($tableName)
+                ->selectRaw("COUNT($variable) as count")
+                ->where($variable, '!=', '-')->whereNotNull($variable)
+                ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
+                ->first();
+            return is_null($value) ? 0 : $value->count;
 
-        $value = DB::connection($externalConnection)
-            ->table($tableName)
-            ->selectRaw("COUNT($variable) as count")
-            ->where($variable,'!=','-')->whereNotNull($variable)
-            ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
-            ->first();
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Traits|StorageServerTrait|countDataToExtract|No se recuperaron los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $externalConnection,
+                    $tableName,
+                    $variable,
+                    $dataOne,
+                    $timeOne,
+                    $dataTwo,
+                    $timeTwo
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
 
-        return is_null($value) ? 0 : $value->count;
+            return 0;
+        }
+
     }
 
     /**
@@ -118,26 +200,41 @@ trait StorageServerTrait
         string $timeOne,
         string $dataTwo,
         string $timeTwo
-    ){
-        return DB::connection($externalConnection)
-            ->table($tableName)
-            ->select('fecha','hora',$variable) #  TODO incluir nivel para las de inundacion nivel
-            ->where($variable,'!=','-')
-            ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
-            ->orderByRaw('fecha DESC , hora DESC')
-            ->get()
-            ->toArray();
+    )
+    {
+        try {
+
+            return DB::connection($externalConnection)
+                ->table($tableName)
+                ->select('fecha', 'hora', $variable) #  TODO incluir nivel para las de inundacion nivel
+                ->where($variable, '!=', '-')
+                ->whereRaw("((( fecha = '$dataOne' and hora >= '$timeOne') or ( fecha > '$dataOne')) and ((fecha < '$dataTwo') or ( fecha = '$dataTwo' and hora <= '$timeTwo')))")
+                ->orderByRaw('fecha DESC , hora DESC')
+                ->get()
+                ->toArray();
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Traits|StorageServerTrait|getExternalData|No se recuperaron los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $externalConnection,
+                    $tableName,
+                    $variable,
+                    $dataOne,
+                    $timeOne,
+                    $dataTwo,
+                    $timeTwo
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
+            return;
+        }
     }
-
-    /*
-     DB::connection($externalConnection)
-            ->table($tableName)
-            ->select('fecha','hora','precipitacion_real')#DB::raw('sum(precipitacion_real) as a10, count(precipitacion_real) as count')
-            ->where('fecha', '=', $dataOne)
-            ->where('hora','>=',$timeOne)
-            ->where('fecha','=',$dataTwo)
-            ->where('hora','<=',$timeTwo)
-            ->get();
-    */
-
 }

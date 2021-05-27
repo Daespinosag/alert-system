@@ -46,7 +46,6 @@ class StationAlert
      * @param Carbon $finalDateTime
      */
     public function __construct($station,Carbon $dateTime,Carbon $initDateTime, Carbon $finalDateTime){
-
         $this->station = $station;
         $this->dateTime = $dateTime;
         $this->initDateTime = $initDateTime;

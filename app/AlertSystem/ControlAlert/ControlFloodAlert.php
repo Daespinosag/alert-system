@@ -49,8 +49,8 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
     public function formatDataToEvent()
     {
         $data = DB::table('tracking_flood_alert')
-            ->select(DB::raw('distinct on(alert_id, primary_station_id) *'))
-            ->orderByRaw('alert_id DESC,primary_station_id DESC, id DESC limit 100')
+            ->select("*")
+            ->where("date_time_homogenization", "=", $this->dateTime)
             ->get();
         $station = new StationRepository();
         for ($i = 0; $i < count($data); $i++) {
@@ -85,11 +85,16 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
      */
     public function sendDataToEvent()
     {
-        if ($this->config['sendEventData']) {
-            $data = $this->formatDataToEvent();
+        $data = $this->formatDataToEvent();
+        if (isset($this->config)) {
+            if ($this->config['sendEventData']) {
+                event(new AlertFloodEvent($data));
+            }
+            if ($this->config['sendEmail']) {
+                $this->sendEmailAndMsm($data);
+            }
+        } else {
             event(new AlertFloodEvent($data));
-        }
-        if ($this->config['sendEmail']) {
             $this->sendEmailAndMsm($data);
         }
     }
@@ -102,7 +107,7 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
     {
         $arrEmail = [];
         $name = 'Alerta por Inundación';
-        $message = 'Cambio Indicadores Inundación (' . (clone($this->initDateTime))->format('Y-m-d H:i:s') . ') - (' . Carbon::now()->format('Y-m-d H:i:s') . ')';
+        $message = 'Cambio Indicadores Inundación (' . (clone($this->dateTime))->format('Y-m-d H:i:s') . ')';
         $code = 'a10';
         $users = new UserRepository();
         $emails = $users->getEmailUserFromAlert($code);
@@ -116,6 +121,7 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
                 \Mail::to('ideaalertas@gmail.com')->bcc($arrEmail)->send(new AlertMail($name, $dataReal, $message, $code));
                 break;
             }
+
         }
     }
 }

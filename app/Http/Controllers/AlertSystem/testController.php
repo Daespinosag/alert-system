@@ -68,25 +68,23 @@ class testController extends Controller
 
     public function testConfig()
     {
-        //echo('inicia');
-        print_r(Carbon::now());
+
         $date = Carbon::parse('2021-02-25 00:00:00');
 
         $config = [
-            'floodAlert'=>true,
-            'landslideAlert'=>false,
+            'floodAlert' => true,
+            'landslideAlert' => false,
             'initialDate' => clone $date,
             'flood' => [1],
             'landslide' => [],
-            'windowTemp' => 864,
+            'windowTemp' => 1,
             'sendEmail' => true,
             'insertDatabase' => true,
             'sendEventData' => true
         ];
         $ali = new AlertExecuteCommand();
         $ali->testMode($config);
-        //echo('termina');
-        print_r(Carbon::now());
+
         dd('terminé');
 
     }

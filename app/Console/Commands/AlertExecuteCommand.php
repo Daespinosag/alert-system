@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use  App\AlertSystem\ControlAlert\ControlFloodAlert;
 use  App\AlertSystem\ControlAlert\ControlLandslideAlert;
+use Illuminate\Support\Facades\Storage;
 
 
 class AlertExecuteCommand extends Command
@@ -86,10 +87,10 @@ class AlertExecuteCommand extends Command
         $datesTotal = [];
         $dateInit = $config['initialDate'];
         for ($i = 0; $i < $config['windowTemp']; $i++) {
-            array_push($datesTotal,$dateInit);
-            $extract = new ControlLandslideAlert($dateInit,$config);
+            //array_push($datesTotal,$dateInit);
+            $extract = new ControlLandslideAlert($dateInit, $config);
             $extract->execute();
-            $dateInit = $this->generateDateTime($dateInit,'+5 minutes');
+            $dateInit = $this->generateDateTime($dateInit, '+5 minutes');
         }
         //print_r($datesTotal);
     }
@@ -109,19 +110,22 @@ class AlertExecuteCommand extends Command
      */
     public function executeTestModeFloodAlert($config)
     {
-        //echo 'LandslideAlert';
-        $datesTotal = [];
+
+        $content = "";
         $dateInit = $config['initialDate'];
+        $content .= 'Inicio {'.Carbon::now().'}';
         for ($i = 0; $i < $config['windowTemp']; $i++) {
-            array_push($datesTotal,$dateInit);
-            $extract = new ControlFloodAlert($dateInit,$config);
+            $content .= $dateInit.'|';
+            $extract = new ControlFloodAlert($dateInit, $config);
             $extract->execute();
-            $dateInit = $this->generateDateTime($dateInit,'+5 minutes');
+            $dateInit = $this->generateDateTime($dateInit, '+5 minutes');
         }
-        //print_r($datesTotal);
+        $content .= 'Fin {'.Carbon::now().'}';
+        Storage::disk('local')->put($config['initialDate'] . '-test.txt', $content);
     }
 
-    public function generateDateTime(Carbon $dateTime,string $time) : Carbon {
-        return date_add(clone ($dateTime), date_interval_create_from_date_string($time));
+    public function generateDateTime(Carbon $dateTime, string $time): Carbon
+    {
+        return date_add(clone($dateTime), date_interval_create_from_date_string($time));
     }
 }

@@ -48,9 +48,13 @@ class A10MinIndicator extends IndicatorsBase implements IndicatorContract
 
         # Se valida la diferencia con el valor de tacking anterior
         $this->validatePreviousDeference();
-
+dd($this->actualTracking);
         # Se guarda el valor calculado para el indicador
-        if ($this->config['insertDatabase']) {
+        if (isset($this->config)) {
+            if ($this->config['insertDatabase']) {
+                $this->insertInTrackingTable = $this->actualTracking->save();
+            }
+        } else {
             $this->insertInTrackingTable = $this->actualTracking->save();
         }
     }

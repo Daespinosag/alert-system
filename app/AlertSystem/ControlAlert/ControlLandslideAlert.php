@@ -47,8 +47,8 @@ class ControlLandslideAlert extends ControlAlertBase implements ControlAlertCont
     public function formatDataToEvent()
     {
         $data = DB::table('tracking_landslide_alert')
-            ->select(DB::raw('distinct on(alert_id, primary_station_id) *'))
-            ->orderByRaw('alert_id DESC,primary_station_id DESC, id DESC limit 100')
+            ->select("*")
+            ->where("date_time_homogenization", "=", $this->dateTime)
             ->get();
         $station = new StationRepository();
         for ($i = 0; $i < count($data); $i++) {
@@ -91,11 +91,16 @@ class ControlLandslideAlert extends ControlAlertBase implements ControlAlertCont
      */
     public function sendDataToEvent()
     {
-        if($this->config['sendEventData']){
-            $data = $this->formatDataToEvent();
+        $data = $this->formatDataToEvent();
+        if (isset($this->config)) {
+            if ($this->config['sendEventData']) {
+                event(new AlertLandslideEvent($data));
+            }
+            if ($this->config['sendEmail']) {
+                $this->sendEmailAndMsm($data);
+            }
+        } else {
             event(new AlertLandslideEvent($data));
-        }
-        if($this->config['sendEmail']){
             $this->sendEmailAndMsm($data);
         }
     }
@@ -108,14 +113,14 @@ class ControlLandslideAlert extends ControlAlertBase implements ControlAlertCont
     {
         $arrEmail = [];
         $name = 'Alerta por Deslizamiento';
-        $message = 'Cambio Indicadores Deslizamiento (' . (clone($this->initDateTime))->format('Y-m-d H:i:s') . ') - (' . Carbon::now()->format('Y-m-d H:i:s') . ')';
+        $message = 'Cambio Indicadores Deslizamiento (' . (clone($this->dateTime))->format('Y-m-d H:i:s') . ')';
         $code = 'a25';
         $users = new UserRepository();
         $emails = $users->getEmailUserFromAlert($code);
         foreach ($emails as $email) {
             array_push($arrEmail, $email->email);
         }
-        foreach ($data as $item) {
+        foreach ($data as $item) {#to-do cambiar por while
             if ($item->alert_status == 'increase') {
 //                envia EMAIL
                 $dataReal = $this->sortData($data);

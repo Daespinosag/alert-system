@@ -38,7 +38,9 @@ class ControlAlertBase extends AlertSystem
      * @var ControlNewDataRepository
      */
     public $controlNewDataRepository;
-
+    /**
+     * @var config test by date
+     */
     public $config;
 
     /**

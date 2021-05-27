@@ -50,7 +50,11 @@ class A25Indicator extends IndicatorsBase implements IndicatorContract
         $this->validatePreviousDeference();
 
         # Se guarda el valor calculado para el indicador
-        if ($this->config['insertDatabase']) {
+        if (isset($this->config)) {
+            if ($this->config['insertDatabase']) {
+                $this->insertInTrackingTable = $this->actualTracking->save();
+            }
+        } else {
             $this->insertInTrackingTable = $this->actualTracking->save();
         }
     }
