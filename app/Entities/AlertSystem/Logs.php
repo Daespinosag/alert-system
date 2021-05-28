@@ -26,6 +26,7 @@ class Logs extends Model
      * @var array
      */
     protected $fillable = [
+        'code',
         'type',
         'status',
         'priority',

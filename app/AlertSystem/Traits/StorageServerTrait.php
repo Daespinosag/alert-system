@@ -43,6 +43,7 @@ trait StorageServerTrait
         }catch (Exception $e) {
             $logRepository = new  LogsRepository();
             $log = $logRepository->newObject();
+            $log->code = 'Traits';
             $log->type = 'Error';
             $log->status = 'Active';
             $log->priority = 'Max';
@@ -101,6 +102,7 @@ trait StorageServerTrait
         } catch (Exception $e) {
             $logRepository = new  LogsRepository();
             $log = $logRepository->newObject();
+            $log->code = 'Traits';
             $log->type = 'Error';
             $log->status = 'Active';
             $log->priority = 'Max';
@@ -157,6 +159,7 @@ trait StorageServerTrait
         } catch (Exception $e) {
             $logRepository = new  LogsRepository();
             $log = $logRepository->newObject();
+            $log->code = 'Traits';
             $log->type = 'Error';
             $log->status = 'Active';
             $log->priority = 'Max';

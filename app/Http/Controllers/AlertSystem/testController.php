@@ -6,6 +6,7 @@ use App\AlertSystem\Connection\SearchTableInExternalStaticConnection;
 use App\Console\Commands\AlertExecuteCommand;
 use App\Events\AlertEchoCalculatedEvent;
 use App\Repositories\AlertSystem\ControlNewDataRepository;
+use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\AlertSystem\UserRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -69,21 +70,21 @@ class testController extends Controller
     public function testConfig()
     {
 
-        $date = Carbon::parse('2021-02-25 00:00:00');
+       $date = Carbon::parse('2021-02-25 00:00:00');
 
-        $config = [
-            'floodAlert' => true,
-            'landslideAlert' => false,
-            'initialDate' => clone $date,
-            'flood' => [1],
-            'landslide' => [],
-            'windowTemp' => 1,
-            'sendEmail' => true,
-            'insertDatabase' => true,
-            'sendEventData' => true
-        ];
-        $ali = new AlertExecuteCommand();
-        $ali->testMode($config);
+                $config = [
+                    'floodAlert' => true,
+                    'landslideAlert' => false,
+                    'initialDate' => clone $date,
+                    'flood' => [1,2],
+                    'landslide' => [],
+                    'windowTemp' => 5,
+                    'sendEmail' => true,
+                    'insertDatabase' => true,
+                    'sendEventData' => true
+                ];
+                $ali = new AlertExecuteCommand();
+                $ali->testMode($config);
 
         dd('terminé');
 

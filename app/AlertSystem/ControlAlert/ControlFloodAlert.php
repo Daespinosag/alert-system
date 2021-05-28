@@ -7,6 +7,7 @@ use App\Entities\AlertSystem\TrackingFloodAlert;
 use App\Events\AlertFloodEvent;
 use App\Mail\AlertMail;
 use App\Repositories\Administrator\StationRepository;
+use App\Repositories\AlertSystem\LogsRepository;
 use Carbon\Carbon;
 use mysql_xdevapi\Table;
 use function Couchbase\defaultDecoder;
@@ -48,15 +49,37 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
      */
     public function formatDataToEvent()
     {
-        $data = DB::table('tracking_flood_alert')
-            ->select("*")
-            ->where("date_time_homogenization", "=", $this->dateTime)
-            ->get();
-        $station = new StationRepository();
-        for ($i = 0; $i < count($data); $i++) {
-            $data[$i]->station = $station->getAllDataStation($data[$i]->primary_station_id);
+        try {
+
+            $data = DB::table('tracking_flood_alert')
+                ->select("*")
+                ->where("date_time_homogenization", "=", $this->dateTime)
+                ->get();
+
+            $station = new StationRepository();
+            for ($i = 0; $i < count($data); $i++) {
+                $data[$i]->station = $station->getAllDataStation($data[$i]->primary_station_id);
+            }
+            return $data;
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'ControlFloodAlert';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|ControlAlert|ControlFloodAlert|formatDataToEvent|No se recuperaron los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
+            return [];
         }
-        return $data;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Administrator;
 
+use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\RepositoriesContract;
 use DB;
 use Rinvex\Repository\Repositories\EloquentRepository;
@@ -18,14 +19,33 @@ class AlertRepository extends EloquentRepository implements RepositoriesContract
      */
     protected $model = Alert::class;
 
-    // The new method from alert-system TODO
-
     /**
      * @return mixed
      */
     protected function queryBuilder()
     {
-        return DB::connection('administrator')->table('alert');
+
+        try {
+            return DB::connection('administrator')->table('alert');
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'AlertRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|Administrator|AlertRepository|queryBuilder|No pudo conectar';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
+            return;
+        }
     }
 
     /**
@@ -33,14 +53,35 @@ class AlertRepository extends EloquentRepository implements RepositoriesContract
      * @return mixed
      */
 
-   public function getLevelAlert($alertCode)
-   {
-      return $this->queryBuilder()
-                ->select('alert.id','alert.code','level_alert.*')
-                ->join('level_alert','level_alert.alert_id','=','alert.id')
-                ->where('alert.code','=',$alertCode)
-                ->orderBy('level_alert.level','DESC')
+    public function getLevelAlert($alertCode)
+    {
+        try {
+            return $this->queryBuilder()
+                ->select('alert.id', 'alert.code', 'level_alert.*')
+                ->join('level_alert', 'level_alert.alert_id', '=', 'alert.id')
+                ->where('alert.code', '=', $alertCode)
+                ->orderBy('level_alert.level', 'DESC')
                 ->get();
+
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'AlertRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|Administrator|AlertRepository|getLevelAlert|No se recuperaron las alertas';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $alertCode
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
+            return;
+        }
     }
 
     /**
@@ -48,7 +89,28 @@ class AlertRepository extends EloquentRepository implements RepositoriesContract
      */
     public function getAlerts()
     {
-        return $this->select('*')->where('active','=',true)->get()->toArray();
+        try {
+            return $this->select('*')->where('active', '=', true)->get()->toArray();
+
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'AlertRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|Administrator|AlertRepository|getAlerts|No pudo recuperar las alertas';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
+            return;
+        }
     }
 
     /**
@@ -57,7 +119,28 @@ class AlertRepository extends EloquentRepository implements RepositoriesContract
      */
     public function getAlertsWhereIn(array $codes)
     {
-        return $this->select('*')->where('active','=',true)->whereIn('code',$codes)->get()->toArray();
+        try {
+            return $this->select('*')->where('active', '=', true)->whereIn('code', $codes)->get()->toArray();
+
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'AlertRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|Administrator|AlertRepository|getAlertsWhereIn|No pudo recuperar las alertas';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $codes
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
+            return;
+        }
     }
 
 }

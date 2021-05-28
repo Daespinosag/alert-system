@@ -80,13 +80,17 @@ trait DatabaseConfig
 
       private function configExternalConnection($connection,$defaultConnection)
       {
-          DB::disconnect($defaultConnection);
+          try{
+              DB::disconnect($defaultConnection);
+
+          }catch (Exception $e){
+              return false;
+          }
 
           if ($connection->id == 1){
               return false;
           }
           if (!$connection->etl_active){
-                // TODO.. Excepcion por no estar activa la conección.
               Log::info('Coneccion desabilidata para el proceso de etl');
               return false;
           }

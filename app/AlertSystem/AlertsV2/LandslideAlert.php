@@ -94,28 +94,4 @@ class LandslideAlert extends AlertBase implements AlertContract
         );
     }
 
-    public function formatDataToEvent(): array
-    {
-        $arr = [];
-
-        foreach ($this->values as $value) {
-            $temporalArr = [];
-            $temporalArr['alert'] = $this->code;
-            $temporalArr['station'] = $value['station'];
-            $temporalArr['change_alert'] = $value['change_alert'];
-            $temporalArr['values'][$this->code . '_value'] = $value[$this->code . '_value'];
-            $temporalArr['values']['alert'] = $value['alert'];
-            $temporalArr['values']['date_execution'] = $value['date_execution'];
-            $temporalArr['values']['error'] = $value['error'];
-            $temporalArr['values']['comment'] = $value['comment'];
-
-            array_push($arr, $temporalArr);
-        }
-    }
-
-    public function sendDataToEvent()
-    {
-        $data = $this->formatDataToEvent();
-        event(new AlertLandslideEvent($data));
-    }
 }

@@ -31,12 +31,36 @@ class TrackingLandslideAlertRepository extends EloquentRepository implements Rep
      */
     public function getFromDate(string $dateTime, int $supId, int $alertId, int $stationSk)
     {
-        return $this->select('*')
-            ->where('sup_id', '=', $supId)
-            ->where('alert_id', '=', $alertId)
-            ->where('primary_station_id', '=', $stationSk)
-            ->where('date_time_homogenization', '=', $dateTime)
-            ->first();
+        try {
+            return $this->select('*')
+                ->where('sup_id', '=', $supId)
+                ->where('alert_id', '=', $alertId)
+                ->where('primary_station_id', '=', $stationSk)
+                ->where('date_time_homogenization', '=', $dateTime)
+                ->first();
+
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'TrackingLandslideAlertRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|AlertSystem|TrackingLandslideAlertRepository|getFromDate|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $dateTime,
+                    $supId,
+                    $alertId,
+                    $stationSk
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
+            return;
+        }
     }
 
     /**
@@ -50,30 +74,102 @@ class TrackingLandslideAlertRepository extends EloquentRepository implements Rep
      */
     public function calculateIndicator(string $initialDateTime, string $finalDateTime, int $supId, int $alertId, int $stationSk, string $localVariable)
     {
-        return (Object)$this->selectRaw('SUM(' . $localVariable . ') AS indicator, COUNT(' . $localVariable . ') AS recovered')
-            ->where('sup_id', '=', $supId)
-            ->where('alert_id', '=', $alertId)
-            ->where('primary_station_id', '=', $stationSk)
-            ->whereBetween('date_time_homogenization', [$initialDateTime, $finalDateTime])
-            ->first();
+        try {
+            return (Object)$this->selectRaw('SUM(' . $localVariable . ') AS indicator, COUNT(' . $localVariable . ') AS recovered')
+                ->where('sup_id', '=', $supId)
+                ->where('alert_id', '=', $alertId)
+                ->where('primary_station_id', '=', $stationSk)
+                ->whereBetween('date_time_homogenization', [$initialDateTime, $finalDateTime])
+                ->first();
+
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'TrackingLandslideAlertRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|AlertSystem|TrackingLandslideAlertRepository|calculateIndicator|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $initialDateTime,
+                    $finalDateTime,
+                    $supId,
+                    $alertId,
+                    $stationSk,
+                    $localVariable
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
+            return;
+        }
     }
 
     public function getLastInformation(int $typeAlertId, int $alertId, int $stationId)
     {
-        return $this->select('*')
-            ->where('sup_id', '=', $typeAlertId)
-            ->where('alert_id', '=', $alertId)
-            ->where('primary_station_id', '=', $stationId)
-            ->get()
-            ->last();
+        try {
+            return $this->select('*')
+                ->where('sup_id', '=', $typeAlertId)
+                ->where('alert_id', '=', $alertId)
+                ->where('primary_station_id', '=', $stationId)
+                ->get()
+                ->last();
+
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'TrackingLandslideAlertRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|AlertSystem|TrackingLandslideAlertRepository|getLastInformation|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $typeAlertId,
+                    $alertId,
+                    $stationId
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
+            return;
+        }
     }
 
     public function getAllTrackinByStationId($stationId, $alertId, $date)
     {
-        return $this->select('alert_id', 'primary_station_id', 'rainfall', 'indicator_value')
-            ->where('primary_station_id', "=", $stationId)
-            ->where('alert_id', "=", $alertId)
-            ->whereBetween('date_time_initial', [$date->startDate, $date->endDate])
-            ->get();
+        try {
+            return $this->select('alert_id', 'primary_station_id', 'rainfall', 'indicator_value')
+                ->where('primary_station_id', "=", $stationId)
+                ->where('alert_id', "=", $alertId)
+                ->whereBetween('date_time_initial', [$date->startDate, $date->endDate])
+                ->get();
+
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'TrackingLandslideAlertRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|AlertSystem|TrackingLandslideAlertRepository|getAllTrackinByStationId|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $stationId,
+                    $alertId,
+                    $date
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
+            return;
+        }
     }
 }

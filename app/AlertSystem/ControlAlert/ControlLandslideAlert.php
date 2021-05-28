@@ -7,6 +7,7 @@ use App\AlertSystem\AlertsV2\LandslideAlert;
 use App\Events\AlertLandslideEvent;
 use App\Mail\AlertMail;
 use App\Repositories\Administrator\StationRepository;
+use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\AlertSystem\UserRepository;
 use Carbon\Carbon;
 use DB;
@@ -46,15 +47,35 @@ class ControlLandslideAlert extends ControlAlertBase implements ControlAlertCont
      */
     public function formatDataToEvent()
     {
-        $data = DB::table('tracking_landslide_alert')
-            ->select("*")
-            ->where("date_time_homogenization", "=", $this->dateTime)
-            ->get();
-        $station = new StationRepository();
-        for ($i = 0; $i < count($data); $i++) {
-            $data[$i]->station = $station->getAllDataStation($data[$i]->primary_station_id);
+        try {
+            $data = DB::table('tracking_landslide_alert')
+                ->select("*")
+                ->where("date_time_homogenization", "=", $this->dateTime)
+                ->get();
+            $station = new StationRepository();
+            for ($i = 0; $i < count($data); $i++) {
+                $data[$i]->station = $station->getAllDataStation($data[$i]->primary_station_id);
+            }
+            return $data;
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'ControlLandslideAlert';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|ControlAlert|ControlLandslideAlert|formatDataToEvent|No se recuperaron los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+
+                ])
+            ]);
+            $logRepository->sendEmail($log);
+            $log->save();
+            return [];
         }
-        return $data;
     }
 
     /**

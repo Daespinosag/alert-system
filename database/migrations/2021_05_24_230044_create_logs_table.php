@@ -15,6 +15,7 @@ class CreateLogsTable extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('code');
             $table->string('type');
             $table->string('status');
             $table->string('priority');
