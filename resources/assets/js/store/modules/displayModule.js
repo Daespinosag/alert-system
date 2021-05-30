@@ -5,7 +5,7 @@ export const displayModule = {
         existenceFiltersActive: false,
         alertsView: 'map',
         floodLayerVisible: true,
-        landslideLayerVisible: true,
+        landslideLayerVisible: false,
         floodIconsVisible: true,
         floodPolygonsVisible: true,
         landslideIconsVisible: true,

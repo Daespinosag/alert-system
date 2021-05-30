@@ -4,7 +4,7 @@
 
 const proxy = 'https://cors-anywhere.herokuapp.com/';
 
-const api_url = 'http://cdiac.manizales.unal.edu.co/alert-system-backend/api/v2/';
+const api_url = 'http://cdiac.manizales.unal.edu.co/alert-system/api/v2/';
 
 const url_img = 'http://cdiac.manizales.unal.edu.co/images/alert-icons/';
 

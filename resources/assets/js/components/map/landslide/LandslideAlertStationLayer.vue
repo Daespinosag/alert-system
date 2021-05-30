@@ -10,10 +10,10 @@
             </landslide-alert-marker>
         </l-layer-group>
 
-        <l-layer-group v-if="false" :layer-type="polygonAlertType" :name="polygonAlertName" :visible="this.landslidePolygonsVisible">
-            <div v-if="zone.kml !== null">
-                <l-geo-json :geojson="require(`@alert-system-vue/assets/geojson/zone/${ this.zone.code }.json`)" :options="{ color : polygonColor}"> </l-geo-json>
-            </div>
+        <l-layer-group :layer-type="polygonAlertType" :name="polygonAlertName" :visible="this.landslidePolygonsVisible">
+<!--            //<div v-if="zone.kml !== null">-->
+                <l-geo-json :geojson="require(`@alert-system-vue/assets/geojson/zone/${ this.zone.code }-2vs.json`)" :options="{ color : polygonColor}"> </l-geo-json>
+<!--            </div>-->
         </l-layer-group>
     </div>
 </template>

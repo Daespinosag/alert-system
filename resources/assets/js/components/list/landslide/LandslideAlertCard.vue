@@ -33,7 +33,7 @@
                 show: true,
                 iconColor: 'black',
                 iconsOptions:{
-                    grey:'black',
+                    grey:'error',
                     green: 'black',
                     yellow: 'yellow',
                     orange: 'orange',

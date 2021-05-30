@@ -6,6 +6,7 @@
         <toggle-alerts-view> </toggle-alerts-view>
         <check-internet-connection></check-internet-connection>
         <status-bar></status-bar>
+        <sound-alert></sound-alert>
         <div class="large-3 medium-3 small-12 cell">
             <router-view></router-view>
         </div>
@@ -18,11 +19,12 @@
     import AlertMap from "@alert-system-vue/components/map/AlertMap";
     import AlertList from './list/AlertList';
     import StatusBar from "./alerts/StatusBar";
+    import SoundAlert from "./alerts/SoundAlert";
 
 
     export default {
         name: "print-alerts-component",
-        components: {ToggleAlertsView, AlertMap, AlertList, CheckInternetConnection, StatusBar},
+        components: {ToggleAlertsView, AlertMap, AlertList, CheckInternetConnection, StatusBar, SoundAlert},
         computed: {
             alertsView(){
                 return this.$store.getters.getAlertsView;
