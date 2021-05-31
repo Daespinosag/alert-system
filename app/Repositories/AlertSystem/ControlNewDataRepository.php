@@ -41,7 +41,6 @@ class ControlNewDataRepository extends EloquentRepository implements Repositorie
                     $alertCode
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return [];
         }
@@ -71,7 +70,6 @@ class ControlNewDataRepository extends EloquentRepository implements Repositorie
                     $alertsId
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return [];
         }

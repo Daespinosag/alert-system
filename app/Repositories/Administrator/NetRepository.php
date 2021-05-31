@@ -41,7 +41,6 @@ class NetRepository extends EloquentRepository implements RepositoriesContract
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -68,7 +67,6 @@ class NetRepository extends EloquentRepository implements RepositoriesContract
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -97,7 +95,6 @@ class NetRepository extends EloquentRepository implements RepositoriesContract
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -127,7 +124,6 @@ class NetRepository extends EloquentRepository implements RepositoriesContract
                     $nets
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

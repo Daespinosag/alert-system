@@ -40,7 +40,6 @@ class UserRepository extends EloquentRepository implements RepositoriesContract
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -70,7 +69,6 @@ class UserRepository extends EloquentRepository implements RepositoriesContract
                     $code
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return null;
         }
@@ -113,7 +111,6 @@ class UserRepository extends EloquentRepository implements RepositoriesContract
                     $email
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -145,7 +142,6 @@ class UserRepository extends EloquentRepository implements RepositoriesContract
                     $updates
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -174,7 +170,6 @@ class UserRepository extends EloquentRepository implements RepositoriesContract
                     $id
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return null;
         }
@@ -204,7 +199,6 @@ class UserRepository extends EloquentRepository implements RepositoriesContract
                     $id
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return null;
         }
@@ -244,7 +238,6 @@ class UserRepository extends EloquentRepository implements RepositoriesContract
                     $alertCode
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return [];
         }

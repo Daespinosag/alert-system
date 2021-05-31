@@ -80,7 +80,6 @@ class BackupStationsAlert
                     $variable
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

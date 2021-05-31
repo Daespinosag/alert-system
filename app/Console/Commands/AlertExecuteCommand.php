@@ -85,14 +85,17 @@ class AlertExecuteCommand extends Command
     {
         $content = "";
         $dateInit = $config['initialDate'];
-        $content .= 'Inicio {' . Carbon::now() . '}';
+        $content .= 'Inicio {' . Carbon::now() . '}\\n';
         for ($i = 0; $i < $config['windowTemp']; $i++) {
-            $content .= $dateInit . '|';
+            $content .= $dateInit . '\\t|';
+            if($i % 4 == 0){
+                $content .= '\\n';
+            }
             $extract = new ControlLandslideAlert($dateInit, $config);
             $extract->execute();
             $dateInit = $this->generateDateTime($dateInit, '+5 minutes');
         }
-        $content .= 'Fin {' . Carbon::now() . '}';
+        $content .= '\\nFin {' . Carbon::now() . '}';
         Storage::disk('local')->put($config['initialDate'] . '-test-landslide.txt', $content);
     }
 
@@ -114,14 +117,17 @@ class AlertExecuteCommand extends Command
 
         $content = "";
         $dateInit = $config['initialDate'];
-        $content .= 'Inicio {' . Carbon::now() . '}';
+        $content .= 'Inicio {' . Carbon::now() . '}\\n';
         for ($i = 0; $i < $config['windowTemp']; $i++) {
-            $content .= $dateInit . '|';
+            $content .= $dateInit . '\\t|';
+            if($i % 4 == 0){
+                $content .= '\\n';
+            }
             $extract = new ControlFloodAlert($dateInit, $config);
             $extract->execute();
             $dateInit = $this->generateDateTime($dateInit, '+5 minutes');
         }
-        $content .= 'Fin {' . Carbon::now() . '}';
+        $content .= '\\nFin {' . Carbon::now() . '}';
         Storage::disk('local')->put($config['initialDate'] . '-test-flood.txt', $content);
     }
 

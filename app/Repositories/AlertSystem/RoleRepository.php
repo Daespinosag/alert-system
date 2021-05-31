@@ -38,7 +38,6 @@ class RoleRepository extends EloquentRepository implements RepositoriesContract
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -67,7 +66,6 @@ class RoleRepository extends EloquentRepository implements RepositoriesContract
                     $id
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

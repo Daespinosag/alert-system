@@ -41,7 +41,6 @@ class PermissionRepository extends EloquentRepository implements RepositoriesCon
                     $code
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -65,7 +64,6 @@ class PermissionRepository extends EloquentRepository implements RepositoriesCon
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

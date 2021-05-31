@@ -72,7 +72,6 @@ class ControlLandslideAlert extends ControlAlertBase implements ControlAlertCont
 
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return [];
         }

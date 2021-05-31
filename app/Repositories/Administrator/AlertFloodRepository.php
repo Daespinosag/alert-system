@@ -42,7 +42,6 @@ class AlertFloodRepository extends EloquentRepository implements RepositoriesCon
 
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -67,7 +66,6 @@ class AlertFloodRepository extends EloquentRepository implements RepositoriesCon
 
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

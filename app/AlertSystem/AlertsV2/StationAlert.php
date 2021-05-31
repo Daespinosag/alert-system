@@ -88,7 +88,6 @@ class StationAlert
                     $variable
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -112,7 +111,6 @@ class StationAlert
                     $variable
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

@@ -7,6 +7,7 @@ use App\Repositories\RepositoriesContract;
 use Illuminate\Database\Eloquent\Collection;
 use Rinvex\Repository\Repositories\EloquentRepository;
 use App\Entities\AlertSystem\Logs;
+use Carbon\Carbon;
 
 class LogsRepository extends EloquentRepository implements RepositoriesContract
 {
@@ -46,7 +47,6 @@ class LogsRepository extends EloquentRepository implements RepositoriesContract
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -58,7 +58,7 @@ class LogsRepository extends EloquentRepository implements RepositoriesContract
             return count($this->select('*')
                 ->where('code', '=', $code)
                 ->where('type', '=', $type)
-                ->whereBetween('date', [$date, date_add(clone($date), date_interval_create_from_date_string('+60 minutes'))])
+                ->whereBetween('date', [date_add(clone($date), date_interval_create_from_date_string('-60 minutes'))->format('Y-m-d H:i:s'), (clone($date))->format('Y-m-d H:i:s')])
                 ->get()) > 0 ? false : true;
         } catch (Exception $e) {
             $logRepository = new  LogsRepository();
@@ -77,7 +77,6 @@ class LogsRepository extends EloquentRepository implements RepositoriesContract
                     $date
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

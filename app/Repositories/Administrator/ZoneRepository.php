@@ -43,7 +43,6 @@ class ZoneRepository extends EloquentRepository implements RepositoriesContract
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -72,7 +71,6 @@ class ZoneRepository extends EloquentRepository implements RepositoriesContract
                     $zones
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

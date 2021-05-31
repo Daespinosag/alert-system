@@ -53,7 +53,6 @@ class LandslideRepository extends AlertBaseRepository implements AlertContractRe
                     $date
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -93,7 +92,6 @@ class LandslideRepository extends AlertBaseRepository implements AlertContractRe
                     $dateTwo
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

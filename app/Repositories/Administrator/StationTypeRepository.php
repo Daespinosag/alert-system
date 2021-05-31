@@ -41,7 +41,6 @@ class StationTypeRepository extends EloquentRepository implements RepositoriesCo
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -70,7 +69,6 @@ class StationTypeRepository extends EloquentRepository implements RepositoriesCo
                     $codes
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -99,7 +97,6 @@ class StationTypeRepository extends EloquentRepository implements RepositoriesCo
                     $stationTypes
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

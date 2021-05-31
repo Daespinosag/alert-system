@@ -127,7 +127,6 @@ class Homogenization extends HomogenizationBase implements HomogenizationContrac
                     $t3
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
 
             return [];
@@ -150,7 +149,6 @@ class Homogenization extends HomogenizationBase implements HomogenizationContrac
                     $t3
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
 
             return [];

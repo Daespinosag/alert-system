@@ -69,17 +69,15 @@ class testController extends Controller
 
     public function testConfig()
     {
-        /*$liog = new LogsRepository();
-        dd($liog->prueba('Homogenization','Fallo',Carbon::now()));*/
        $date = Carbon::parse('2021-02-25 00:00:00');
 
                 $config = [
                     'floodAlert' => true,
                     'landslideAlert' => false,
                     'initialDate' => clone $date,
-                    'flood' => [1,2],
+                    'flood' => [],
                     'landslide' => [],
-                    'windowTemp' => 5,
+                    'windowTemp' => 864,
                     'sendEmail' => true,
                     'insertDatabase' => true,
                     'sendEventData' => true

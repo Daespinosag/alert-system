@@ -17,11 +17,11 @@ class CreateLogsTable extends Migration
             $table->increments('id');
             $table->string('code');
             $table->string('type');
-            $table->string('status');
-            $table->string('priority');
-            $table->string('date');
-            $table->string('comments');
-            $table->json('aditionalData');
+            $table->string('status')->nullable();
+            $table->string('priority')->nullable();
+            $table->dateTime('date')->nullable();
+            $table->string('comments')->nullable();
+            $table->json('aditionalData')->nullable();
             $table->timestamps();
         });
     }

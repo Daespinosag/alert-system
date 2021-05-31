@@ -57,7 +57,6 @@ class TrackingFloodAlertRepository extends EloquentRepository implements Reposit
                     $stationSk
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -101,7 +100,6 @@ class TrackingFloodAlertRepository extends EloquentRepository implements Reposit
                     $localVariable
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -133,7 +131,6 @@ class TrackingFloodAlertRepository extends EloquentRepository implements Reposit
                     $stationId
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -164,7 +161,6 @@ class TrackingFloodAlertRepository extends EloquentRepository implements Reposit
                     $date
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

@@ -43,7 +43,6 @@ class ConnectionRepository extends EloquentRepository implements RepositoriesCon
                     $variables
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -70,7 +69,6 @@ class ConnectionRepository extends EloquentRepository implements RepositoriesCon
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

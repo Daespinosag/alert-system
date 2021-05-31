@@ -53,7 +53,6 @@ class FloodRepository extends AlertBaseRepository implements AlertContractReposi
                     $date
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -92,7 +91,6 @@ class FloodRepository extends AlertBaseRepository implements AlertContractReposi
                     $dateTwo
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

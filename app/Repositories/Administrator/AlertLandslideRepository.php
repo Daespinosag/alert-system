@@ -39,7 +39,6 @@ class AlertLandslideRepository extends EloquentRepository implements Repositorie
 
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

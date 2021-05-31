@@ -42,7 +42,6 @@ class BasinRepository extends EloquentRepository implements RepositoriesContract
 
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -72,7 +71,6 @@ class BasinRepository extends EloquentRepository implements RepositoriesContract
                     $basins
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

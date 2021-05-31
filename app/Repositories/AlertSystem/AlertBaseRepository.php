@@ -33,7 +33,6 @@ class AlertBaseRepository extends EloquentRepository implements RepositoriesCont
                     $id
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

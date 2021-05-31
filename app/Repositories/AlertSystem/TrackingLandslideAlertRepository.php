@@ -57,7 +57,6 @@ class TrackingLandslideAlertRepository extends EloquentRepository implements Rep
                     $stationSk
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -102,7 +101,6 @@ class TrackingLandslideAlertRepository extends EloquentRepository implements Rep
                     $localVariable
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -135,7 +133,6 @@ class TrackingLandslideAlertRepository extends EloquentRepository implements Rep
                     $stationId
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -167,7 +164,6 @@ class TrackingLandslideAlertRepository extends EloquentRepository implements Rep
                     $date
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

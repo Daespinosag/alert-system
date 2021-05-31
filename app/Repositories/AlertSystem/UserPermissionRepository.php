@@ -42,7 +42,6 @@ class UserPermissionRepository extends EloquentRepository implements Repositorie
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -87,7 +86,6 @@ class UserPermissionRepository extends EloquentRepository implements Repositorie
                     $activeEmail
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -114,7 +112,6 @@ class UserPermissionRepository extends EloquentRepository implements Repositorie
                     $userId,
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

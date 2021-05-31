@@ -40,7 +40,6 @@ class StationRepository extends EloquentRepository
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -65,7 +64,6 @@ class StationRepository extends EloquentRepository
                     $stationId
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -90,7 +88,6 @@ class StationRepository extends EloquentRepository
                     $stationId
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -130,7 +127,6 @@ class StationRepository extends EloquentRepository
                     $alertsCode
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -182,7 +178,6 @@ class StationRepository extends EloquentRepository
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -234,7 +229,6 @@ class StationRepository extends EloquentRepository
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -260,7 +254,6 @@ class StationRepository extends EloquentRepository
                     $stationId
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -318,7 +311,6 @@ class StationRepository extends EloquentRepository
                     $primary
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return [];
         }
@@ -363,7 +355,6 @@ class StationRepository extends EloquentRepository
                 'parametersIn' => json_encode([
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -442,7 +433,6 @@ class StationRepository extends EloquentRepository
                     $alertType
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

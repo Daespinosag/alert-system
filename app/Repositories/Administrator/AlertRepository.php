@@ -42,7 +42,6 @@ class AlertRepository extends EloquentRepository implements RepositoriesContract
 
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -78,7 +77,6 @@ class AlertRepository extends EloquentRepository implements RepositoriesContract
                     $alertCode
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -107,7 +105,6 @@ class AlertRepository extends EloquentRepository implements RepositoriesContract
 
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }
@@ -137,7 +134,6 @@ class AlertRepository extends EloquentRepository implements RepositoriesContract
                     $codes
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return;
         }

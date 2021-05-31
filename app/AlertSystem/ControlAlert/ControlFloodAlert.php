@@ -30,7 +30,6 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
     public function config()
     {
         foreach ($this->controlAlerts as $controlAlert) {
-            //dd($this);
             $this->alerts[] = new FloodAlert($this->alertCode, $controlAlert, $this->dateTime, $this->initDateTime, $this->finalDateTime, $this->config);
         }
     }
@@ -53,7 +52,7 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
 
             $data = DB::table('tracking_flood_alert')
                 ->select("*")
-                ->where("date_time_homogenization", "=", $this->dateTime)
+                ->where("date_time_homogenization", "=", (clone($this->dateTime))->format('Y-m-d H:i:s'))
                 ->get();
 
             $station = new StationRepository();
@@ -76,7 +75,6 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
 
                 ])
             ]);
-            $logRepository->sendEmail($log);
             $log->save();
             return [];
         }
