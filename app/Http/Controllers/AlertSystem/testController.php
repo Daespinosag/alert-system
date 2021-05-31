@@ -69,7 +69,8 @@ class testController extends Controller
 
     public function testConfig()
     {
-
+        /*$liog = new LogsRepository();
+        dd($liog->prueba('Homogenization','Fallo',Carbon::now()));*/
        $date = Carbon::parse('2021-02-25 00:00:00');
 
                 $config = [
