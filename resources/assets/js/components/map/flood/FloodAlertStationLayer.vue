@@ -35,15 +35,14 @@
                 polygonAlertName : 'kml_', // + this.specificAlert.name,
                 polygonAlertType: 'overlay',
 
-                polygonColor: '#000',
-                polygonOptionsColor: {grey: '#000', 'green': '#339900','yellow': '#ffcc00','orange': '#e2580b','red': '#cc3300'}, // TODO
+                polygonOptionsColor: {grey: '#808080', 'green': '#339900','red': '#cc3300'}, // TODO
             }
         },
         created() {
 
         },
         mounted() {
-            this.polygonColor = this.polygonOptionsColor[this.FloodStations[0].alert_tag];
+
         },
         computed: {
             FloodStations(){
@@ -58,6 +57,9 @@
             floodPolygonsVisible(){
                 return this.$store.getters.getFloodPolygonsVisible;
             },
+            polygonColor(){
+                return this.polygonOptionsColor[this.FloodStations[0].alert_tag];
+            }
         }
     }
 </script>

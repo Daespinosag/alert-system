@@ -1,7 +1,7 @@
 <template>
     <div class="col-md-5 alert-card-container" v-show="show && alert.active">
         <router-link :to="{ name: 'Alert', params: { id: floodPrimaryStation.id } }" v-on:click.native="panToLocation( alert )">
-            <div v-bind:class="[floodPrimaryStation.alert_tag !== 'green' ? 'alert-card bg-danger' : 'alert-card bg-success']">
+            <div v-bind:class="[this.cardOptions[floodPrimaryStation.alert_tag]]">
                 <span class="title">{{ alert.name }}</span>
                 <span class="address">
                     <span class="street">{{ floodPrimaryStation.city }}</span>
@@ -39,8 +39,12 @@
         data(){
             return {
                 show: true,
-                iconColor: 'black',
-                iconsOptions: {green: 'black', grey: 'black', red: 'red'},
+                iconsOptions: {green: 'black', grey: 'error_red', red: 'red'},
+                cardOptions: {
+                    grey: 'alert-card bg-grey',
+                    green: 'alert-card bg-success',
+                    red:' alert-card bg-danger',
+                },
                 searchArray: [],
             }
         },
@@ -49,7 +53,7 @@
             EventBus.$on('filters-updated', function( filters ){
                 this.processFilters( filters );
             }.bind(this));
-            this.iconColor = this.iconsOptions[this.floodPrimaryStation.alert_tag];
+
         },
         created(){
 
@@ -64,6 +68,17 @@
             showFilters(){
                 return this.$store.getters.getShowFilters;
             },
+            iconColor(){
+                return this.iconsOptions[this.floodPrimaryStation.alert_tag];
+            },
+        },
+        watch: {
+          floodPrimaryStation() {
+              if (this.floodPrimaryStation.alert_tag == "red" && this.floodPrimaryStation.alert_status == "increase") {
+                  EventBus.$emit("play-alarm");
+                  return true;
+              }
+          }
         },
         methods: {
             processFilters: function (filters) {
@@ -87,6 +102,10 @@
         -webkit-transform: scaleX(1) scaleY(1);
         transform: scaleX(1) scaleY(1);
         transition: .2s;
+
+        &.bg-grey{
+            background-color: #d3d3d3;
+        }
 
         span.title{
             display: block;

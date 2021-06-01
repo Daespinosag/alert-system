@@ -5,11 +5,12 @@ export const displayModule = {
         existenceFiltersActive: false,
         alertsView: 'map',
         floodLayerVisible: true,
-        landslideLayerVisible: false,
+        landslideLayerVisible: true,
         floodIconsVisible: true,
         floodPolygonsVisible: true,
         landslideIconsVisible: true,
-        landslidePolygonsVisible: true,
+        landslidePolygonsVisible: false,
+        soundAlertEnabled: true,
     },
 
     actions: {
@@ -27,9 +28,13 @@ export const displayModule = {
         },
         toggleFloodLayerVisible({ commit }, data){
             commit ('setFloodLayerVisible', data.floodLayerVisible );
+            commit ('setFloodIconsVisible', data.floodLayerVisible );
+            commit ('setFloodPolygonsVisible', data.floodLayerVisible );
         },
         toggleLandslideLayerVisible({ commit }, data){
             commit ('setLandslideLayerVisible', data.landslideLayerVisible );
+            commit ('setLandslideIconsVisible', data.landslideLayerVisible );
+            commit ('setLandslidePolygonsVisible', data.landslideLayerVisible );
         },
         toggleFloodIconsVisible({ commit }, data){
             commit ('setFloodIconsVisible', data.floodIconsVisible );
@@ -43,6 +48,9 @@ export const displayModule = {
         toggleLandslidePolygonsVisible({ commit }, data){
             commit ('setLandslidePolygonsVisible', data.landslidePolygonsVisible );
         },
+        toggleSoundAlert({commit}, data){
+            commit ("setSoundAlertEnabled", data.soundAlertEnabled);
+        }
     },
 
     mutations: {
@@ -76,6 +84,9 @@ export const displayModule = {
         setLandslidePolygonsVisible(state, show){
             state.landslidePolygonsVisible = show;
         },
+        setSoundAlertEnabled(state, show){
+            state.soundAlertEnabled = show;
+        }
     },
 
     getters: {
@@ -109,5 +120,8 @@ export const displayModule = {
         getLandslidePolygonsVisible(state){
             return state.landslidePolygonsVisible;
         },
+        getSoundAlertEnabled(state){
+            return state.soundAlertEnabled;
+        }
     }
 }

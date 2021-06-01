@@ -38,8 +38,7 @@
                 polygonAlertType: 'overlay',
 
                 polygonExist: false,
-                polygonColor: '#000',
-                polygonOptionsColor: [], // TODO
+                polygonOptionsColor: {grey: '#808080', 'green': '#339900','yellow': '#ffcc00','orange': '#e2580b','red': '#cc3300'}, // TODO
             }
         },
         computed: {
@@ -55,6 +54,9 @@
             landslidePolygonsVisible(){
                 return this.$store.getters.getLandslidePolygonsVisible;
             },
+            polygonColor(){
+                return this.polygonOptionsColor[this.landslideStations[0].alert_tag];
+            }
         },
         methods: {
 
