@@ -1,18 +1,9 @@
 /*
     Defines the API route we are using.
 */
-
-const proxy = 'https://cors-anywhere.herokuapp.com/';
-
-const api_url = 'http://cdiac.manizales.unal.edu.co/alert-system/api/v2/';
-
-const url_img = 'http://cdiac.manizales.unal.edu.co/images/alert-icons/';
-
-const google_maps_js_api = 'AIzaSyDZWMe7WI59R_HaHS55TdqaNmHidkuLNKs';
-
 export const ALERT_SYSTEM_CONFIG = {
-    PROXY_URL: proxy,
-    API_URL: api_url,
-    GOOGLE_MAPS_JS_API: google_maps_js_api,
-    URL_IMAGES: url_img
+    PROXY_URL: process.env.MIX_PROXY,
+    API_URL: process.env.MIX_API_URL,
+    GOOGLE_MAPS_JS_API: process.env.MIX_GOOGLE_MAPS_JS_API,
+    URL_IMAGES: process.env.MIX_URL_IMG
 };
