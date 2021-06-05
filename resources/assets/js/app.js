@@ -44,18 +44,17 @@ if (token) {
  * allows your team to easily build robust real-time web applications.
  */
 
-/*
+
 import Echo from 'laravel-echo'
 
 window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: '8df52873a106a2d72c45',
+    key: process.env.MIX_PUSHER_APP_KEY,
     cluster: 'eu',
     encrypted: true
 });
-*/
 
 import Vue from 'vue';
 
