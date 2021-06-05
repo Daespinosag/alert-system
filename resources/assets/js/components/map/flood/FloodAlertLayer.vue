@@ -1,6 +1,6 @@
 <template>
     <div id="flood-alert-layer" class="flood-alert-layer">
-        <l-layer-group :layer-type="alertLayerType" :name="alertLayerName" :visible="alertLayerVisible">
+        <l-layer-group :layer-type="alertLayerType" :name="alertLayerName" :visible="floodLayerVisible">
             <div v-for="floodAlert in floodAlerts">
                 <flood-alert-station-layer :specific-alert="floodAlert"> </flood-alert-station-layer>
             </div>
@@ -20,13 +20,15 @@
             return {
                 alertLayerName: 'general-layer-flood-alert',
                 alertLayerType: 'overlay',
-                alertLayerVisible: true,
             }
         },
         computed: {
             floodAlerts(){
                 return floodAlert.all()
-            }
+            },
+            floodLayerVisible(){
+                return this.$store.getters.getFloodLayerVisible;
+            },
         }
     }
 </script>

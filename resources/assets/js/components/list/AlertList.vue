@@ -51,6 +51,9 @@
                 this.shownCount = $('.alert-card-container').filter(function() {
                     return $(this).css('display') !== 'none';
                 }).length;
+            },
+            searchAlert(filters){
+
             }
         }
     }

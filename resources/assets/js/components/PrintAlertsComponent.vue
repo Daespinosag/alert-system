@@ -4,9 +4,7 @@
         <alert-map id="alert-map-container" class="alert-map-container" v-show="alertsView === 'map'"> </alert-map>
         <alert-list v-show="alertsView === 'list'"> </alert-list>
 
-
         <toggle-alerts-view> </toggle-alerts-view>
-
         <div class="large-3 medium-3 small-12 cell">
             <router-view></router-view>
         </div>
@@ -20,7 +18,7 @@
 
     export default {
         name: "print-alerts-component",
-        components: {ToggleAlertsView, AlertMap, AlertList },
+        components: {ToggleAlertsView, AlertMap, AlertList, },
         computed: {
             alertsView(){
                 return this.$store.getters.getAlertsView;

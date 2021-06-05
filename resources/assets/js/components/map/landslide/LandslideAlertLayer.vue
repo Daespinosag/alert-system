@@ -1,6 +1,6 @@
 <template>
     <div id="landslide-alert-layer" class="landslide-alert-layer">
-        <l-layer-group :layer-type="alertLayerType" :name="alertLayerName" :visible="alertLayerVisible">
+        <l-layer-group :layer-type="alertLayerType" :name="alertLayerName" :visible="landslideLayerVisible">
             <div v-for="landslideAlert in landslideAlerts">
                 <landslide-alert-station-layer :specific-alert="landslideAlert"> </landslide-alert-station-layer>
             </div>
@@ -20,13 +20,15 @@
             return {
                 alertLayerName: 'general-layer-landslide-alert',
                 alertLayerType: 'overlay',
-                alertLayerVisible: true,
             }
         },
         computed: {
             landslideAlerts(){
                 return LandslideAlert.all()
-            }
+            },
+            landslideLayerVisible(){
+                return this.$store.getters.getLandslideLayerVisible;
+            },
         }
     }
 </script>

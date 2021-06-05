@@ -1,5 +1,10 @@
 <style lang="scss">
-
+    div#status-icon{
+        position: absolute;
+        z-index: 999999;
+        right: 10px;
+        top: 60px;
+    }
     div#toggle-alerts-view{
         position: absolute;
         z-index: 999999;
@@ -41,14 +46,28 @@
 </style>
 
 <template>
-    <div id="toggle-alerts-view" v-show="$route.name === 'PrintAlerts'">
-        <span class="map-view toggle-button" v-bind:class="{ 'active': alertsView === 'map' }" v-on:click="displayView('map')">Map</span><span class="list-view toggle-button" v-bind:class="{ 'active': alertsView === 'list' }" v-on:click="displayView('list')">List</span>
+    <div>
+        <div id="toggle-alerts-view" v-show="$route.name === 'PrintAlerts'">
+            <span class="map-view toggle-button" v-bind:class="{ 'active': alertsView === 'map' }" v-on:click="displayView('map')">Map</span><span class="list-view toggle-button" v-bind:class="{ 'active': alertsView === 'list' }" v-on:click="displayView('list')">List</span>
+        </div>
+        <div id="status-icon">
+            <i class="fa-2x" v-bind:class="{'fa fa-plug text-success': isOnline, 'fa fa-times-circle text-danger' : !isOnline} " aria-hidden="true"></i>
+        </div>
     </div>
 </template>
 
 <script>
+
     export default {
         name: 'toggle-alerts-view',
+        data() {
+            return {
+                isOnline: true,
+            };
+        },
+        created() {
+            this.checkInternetConnection();
+        },
         computed: {
             alertsView(){
                 return this.$store.getters.getAlertsView;
@@ -58,6 +77,19 @@
         methods: {
             displayView( type ){
                 this.$store.dispatch( 'changeAlertsView', type );
+            },
+            getConnectionStatus: async () => {
+                try {
+                    const online = await fetch("http://ipv4.icanhazip.com/");
+                    return online.status >= 200 && online.status < 300;
+                } catch (err) {
+                    return false;
+                }
+            },
+            checkInternetConnection(){
+                setInterval(async () => {
+                    this.isOnline = await this.getConnectionStatus();
+                }, 60000)
             }
         }
     }
