@@ -4,6 +4,7 @@
 
 <script>
     import User from "@alert-system-vue/store/models/users/User";
+    import { EventBus } from "../event-bus";
 
     export default {
         name: "Load-initial-information",
@@ -27,7 +28,9 @@
                     .then(() => {
                         this.initLoadAlertsInformation()
                     })
-                    .catch(() => { console.log('ahora si tenemos un error')})
+                    .catch(() => { EventBus.$emit("message-logged", {error: true, message: "ahora si tenemos un error"})
+                        console.log('ahora si tenemos un error')
+                    })
             },
             initLoadUserInformation(){
                 return this.$store.dispatch('initUserInformation',{ id : this.user_id })
@@ -36,21 +39,25 @@
             },
             initLoadFloodInformation(){
                 return this.$store.dispatch('initFloodInformation')
-                    .then(() => { console.log(' load : Se cargaron las flood') })
+                    .then(() => { EventBus.$emit("message-logged", {error: false, message: "Se cargaron las flood"})
+                        console.log(' load : Se cargaron las flood') })
                     .catch(() => { })
             },
             initLoadLandslideInformation(){
                 return this.$store.dispatch('initLandslideInformation')
-                    .then(() => { console.log(' load : Se cargaron las landslide')  })
+                    .then(() => { EventBus.$emit("message-logged", {error: false, message: "Se cargaron las landslide"})
+                        console.log(' load : Se cargaron las landslide')  })
                     .catch(() => { })
             },
             initLoadAlertsInformation(){
                 return Promise.all([ this.initLoadFloodInformation(), this.initLoadLandslideInformation() ])
                     .then(()=>{
                         this.$router.push({ name: /*this.redirectRouteName*/ 'PrintAlerts' });
+                        EventBus.$emit("message-logged", {error: false, message: "Toda la información cargada correctamente"})
                         console.log('termine de terminar terminar')
                     })
-                    .catch(()=>{ console.log('no te lo creo, no termine por un error')})
+                    .catch(()=>{ EventBus.$emit("message-logged", {error: true, message: "No se termió de cargar informacion"})
+                        console.log('no te lo creo, no termine por un error')})
             }
         }
     }

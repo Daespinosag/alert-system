@@ -28,9 +28,8 @@
         components:{ LMarker, LIcon, LPopup, LTooltip },
         data(){
             return {
-                iconColor: 'black',
                 iconsOptions:{
-                    grey:'black',
+                    grey:'error_red',
                     green: 'black',
                     yellow: 'yellow',
                     orange: 'orange',
@@ -44,6 +43,10 @@
         computed: {
             net(){
                 return Net.query().find(this.stationAlert.net_id);
+            },
+
+            iconColor(){
+                return this.iconsOptions[this.stationAlert.alert_tag];
             }
         },
         mounted() {
@@ -51,7 +54,6 @@
             EventBus.$on('filters-updated', function( filters ){
                 this.processFilters( filters );
             }.bind(this));
-            this.iconColor = this.iconsOptions[this.stationAlert.alert_tag];
         },
         methods: {
             openPopup: function (event) { this.$nextTick(() => event.target.openPopup())},

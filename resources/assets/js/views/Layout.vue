@@ -14,10 +14,11 @@
     import Navigation from "../components/global/Navigation";
     import Filters from "../components/global/Filters";
     import FloatButton from '../components/global/FloatButton';
+    import StatusBar from "../components/alerts/StatusBar";
 
     export default {
         name: 'layout',
-        components: { LoadInitialInformationComponent, Navigation, FloatButton, Filters },
+        components: {StatusBar, LoadInitialInformationComponent, Navigation, FloatButton, Filters },
         created(){
 
         }
