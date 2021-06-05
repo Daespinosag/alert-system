@@ -73,7 +73,7 @@ class BackupStationsAlert
             $log->status = 'Active';
             $log->priority = 'Med';
             $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|AlertsV2|BackupStationsAlert|execute|No fue posible realizar el calculo';
+            $log->comments = 'AlertSystem|AlertsV2|BackupStationsAlert|execute|No fue posible realizar el cálculo';
             $log->aditionalData = json_encode([
                 'exeptionMessage' => '',
                 'parametersIn' => json_encode([

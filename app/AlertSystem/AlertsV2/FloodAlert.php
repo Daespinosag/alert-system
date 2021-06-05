@@ -34,6 +34,7 @@ class FloodAlert extends AlertBase implements AlertContract
 
         # Se valida si fue posible realizar el calculo con la estacion primaria
         if ($this->primaryStationAlert->homogenization->validateHomogenization) {
+
             # Se crea el objeto para el calculo del indicador
             $this->setIndicator($this->primaryStationAlert->homogenization->data, $this->config);
 

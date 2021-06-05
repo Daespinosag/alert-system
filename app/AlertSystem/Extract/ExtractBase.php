@@ -57,9 +57,9 @@ class ExtractBase
             $this->stationTable,
             $variable,
             $this->initDateTime->format('Y-m-d'),
-            $this->initDateTime->format('h:i:s'),
+            $this->initDateTime->format('H:i:s'),
             $this->finalDateTime->format('Y-m-d'),
-            $this->finalDateTime->format('h:i:s')
+            $this->finalDateTime->format('H:i:s')
         );
 
         if ($value >= 2){ $this->dataExistence = true; }
@@ -71,9 +71,10 @@ class ExtractBase
             $this->stationTable,
             $variable,
             $this->initDateTime->format('Y-m-d'),
-            $this->initDateTime->format('h:i:s'),
+            $this->initDateTime->format('H:i:s'),
             $this->finalDateTime->format('Y-m-d'),
-            $this->finalDateTime->format('h:i:s')
+            $this->finalDateTime->format('H:i:s')
         );
+
     }
 }

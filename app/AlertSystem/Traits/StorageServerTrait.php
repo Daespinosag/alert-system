@@ -206,7 +206,6 @@ trait StorageServerTrait
     )
     {
         try {
-
             return DB::connection($externalConnection)
                 ->table($tableName)
                 ->select('fecha', 'hora', $variable) #  TODO incluir nivel para las de inundacion nivel

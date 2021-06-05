@@ -53,7 +53,7 @@ class ControlNewDataRepository extends EloquentRepository implements Repositorie
     public function getUnsettledAlertsSpecific(string $alertCode, $alertsId): Collection
     {
         try {
-            return $this->select('*')->where('alert_code', '=', $alertCode)->where('active', '=', true)->where('homogenization', '=', false)->whereIn('id', $alertsId)->get();
+            return $this->select('*')->where('alert_code', '=', $alertCode)->where('active', '=', true)->where('homogenization', '=', false)->whereIn('alert_id', $alertsId)->get();
         } catch (Exception $e) {
             $logRepository = new  LogsRepository();
             $log = $logRepository->newObject();

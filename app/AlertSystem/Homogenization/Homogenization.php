@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use phpDocumentor\Reflection\DocBlock\Description;
 
+
 class Homogenization extends HomogenizationBase implements HomogenizationContract
 {
 
@@ -44,7 +45,6 @@ class Homogenization extends HomogenizationBase implements HomogenizationContrac
 
         # Se valida si la estacion reporto los datos en la fecha de homogenizacion
         $validation = array_search($t3, array_column($preProcessData, 'timeNumber'));
-
         # Se valida si se encontro el valor en el array entrante
         if (!is_bool($validation)) {
 
@@ -70,7 +70,6 @@ class Homogenization extends HomogenizationBase implements HomogenizationContrac
 
 
         $this->validateHomogenization = true;
-
         # Se realiza la Homogenizacion
         $this->homogenization($preparedData[0], $preparedData[1], $variable, $t3);
 
@@ -104,7 +103,6 @@ class Homogenization extends HomogenizationBase implements HomogenizationContrac
 
         # Se extrae la posición del valor a homogenizar en el array
         $val = array_search($t3, array_column($sortedRecoveryData, 'timeNumber'));
-
         # Cundo el valor a homogenizar no se encuenta, no es posible homogenizar
         if (is_bool($val)) {
             return [];

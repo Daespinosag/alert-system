@@ -41,14 +41,14 @@ class ControlAlertBase extends AlertSystem
     /**
      * @var config test by date
      */
-    public $config;
+    public $config = null;
 
     /**
      * ControlAlertBase constructor.
      * @param string $alertCode
      * @param Carbon $dateTime
      */
-    public function __construct(string $alertCode, Carbon $dateTime, $config)
+    public function __construct(string $alertCode, Carbon $dateTime, $config = null)
     {
         $this->controlNewDataRepository = new ControlNewDataRepository(); # TODO Esto debe ser dinamico
 
@@ -92,8 +92,10 @@ class ControlAlertBase extends AlertSystem
      */
     public function getControlAlerts()
     {
-        if (!isset($this->config) && isset($this->config[$this->alertCode])) {
+
+        if (!is_null($this->config)) {
             if (count($this->config[$this->alertCode]) > 0) {
+
                 return $this->controlNewDataRepository->getUnsettledAlertsSpecific($this->alertCode, $this->config[$this->alertCode]);
             }
         }

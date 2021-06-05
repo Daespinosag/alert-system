@@ -69,7 +69,7 @@ class testController extends Controller
 
     public function testConfig()
     {
-       $date = Carbon::parse('2021-02-25 00:00:00');
+       $date = Carbon::parse('2020-10-24 00:30:00');
 
                 $config = [
                     'floodAlert' => true,
@@ -77,7 +77,7 @@ class testController extends Controller
                     'initialDate' => clone $date,
                     'flood' => [],
                     'landslide' => [],
-                    'windowTemp' => 864,
+                    'windowTemp' => 6,
                     'sendEmail' => true,
                     'insertDatabase' => true,
                     'sendEventData' => true
