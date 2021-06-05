@@ -28,7 +28,7 @@
                         </table>
                     </td>
                     <td class="img-alert-panel">
-                        <img src="{{ asset($alertStatus) }}" />
+                        <img src="{{ asset('images/alert-icons/alert-'.$alertStatus.'.png') }}" />
                     </td>
                 </tr>
             </table>

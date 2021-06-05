@@ -25,7 +25,26 @@ class UserPermissionRepository extends EloquentRepository implements Repositorie
      */
     protected function queryBuilder()
     {
-        return DB::connection('alert-system')->table('user_permissions');
+        try {
+            return DB::connection('alert-system')->table('user_permissions');
+
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'UserPermissionRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|AlertSystem|UserPermissionRepository|queryBuilder|No pudo conectarse';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                ])
+            ]);
+            $log->save();
+            return;
+        }
     }
 
 
@@ -36,19 +55,65 @@ class UserPermissionRepository extends EloquentRepository implements Repositorie
      * @param bool $activeEmail
      * @return mixed
      */
-    public function assignPermissionUser(int $permissionId, int $userId, bool $active, bool $activeEmail){
-        return $this->queryBuilder()
-            ->insert([
-                'permission_id' => $permissionId,
-                'user_id'=>$userId,
-                'active'=> $active,
-                'active_email' => $activeEmail,
-                'created_at'    => Carbon::now(),
-                'updated_at'    => Carbon::now(),
+    public function assignPermissionUser(int $permissionId, int $userId, bool $active, bool $activeEmail)
+    {
+        try {
+            return $this->queryBuilder()
+                ->insert([
+                    'permission_id' => $permissionId,
+                    'user_id' => $userId,
+                    'active' => $active,
+                    'active_email' => $activeEmail,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'UserPermissionRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|AlertSystem|UserPermissionRepository|assignPermissionUser|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $permissionId,
+                    $userId,
+                    $active,
+                    $activeEmail
+                ])
             ]);
+            $log->save();
+            return;
+        }
     }
 
-    public function getPermissionUser(int $userId) : Collection {
-        return $this->select('*')->where('user_id','=',$userId)->get();
+    public function getPermissionUser(int $userId): Collection
+    {
+        try {
+
+            return $this->select('*')->where('user_id', '=', $userId)->get();
+
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'UserPermissionRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|AlertSystem|UserPermissionRepository|getPermissionUser|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $userId,
+                ])
+            ]);
+            $log->save();
+            return;
+        }
     }
 }

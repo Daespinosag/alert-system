@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Administrator;
 
+use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\RepositoriesContract;
 use Illuminate\Support\Collection;
 use DB;
@@ -22,8 +23,27 @@ class NetRepository extends EloquentRepository implements RepositoriesContract
     /**
      * @return mixed
      */
-    protected function queryBuilder(){
-        return DB::connection('administrator')->table('net');
+    protected function queryBuilder()
+    {
+        try {
+            return DB::connection('administrator')->table('net');
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'NetRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|Administrator|NetRepository|queryBuilder|No pudo conectar';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                ])
+            ]);
+            $log->save();
+            return;
+        }
     }
 
     /**
@@ -31,7 +51,25 @@ class NetRepository extends EloquentRepository implements RepositoriesContract
      */
     public function getNetName()
     {
-        return $this->select('id','name')->where('etl_active',true)->pluck('name','id');
+        try {
+            return $this->select('id', 'name')->where('etl_active', true)->pluck('name', 'id');
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'NetRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|Administrator|NetRepository|getNetName|No pudo obtener los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                ])
+            ]);
+            $log->save();
+            return;
+        }
     }
 
     // The new method from alert-system TODO
@@ -41,15 +79,54 @@ class NetRepository extends EloquentRepository implements RepositoriesContract
      */
     public function getNets()
     {
-        return $this->select('*')->get();
+        try {
+            return $this->select('*')->get();
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'NetRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|Administrator|NetRepository|getNets|No pudo obtener los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                ])
+            ]);
+            $log->save();
+            return;
+        }
     }
 
     /**
      * @param array $nets
      * @return Collection
      */
-    public function getNetsById(array $nets) : Collection {
-        return $this->queryBuilder()->select('id','name','description','administrator_name','rt_active')->whereIn('id',$nets)->get();
+    public function getNetsById(array $nets): Collection
+    {
+        try {
+            return $this->queryBuilder()->select('id', 'name', 'description', 'administrator_name', 'rt_active')->whereIn('id', $nets)->get();
+
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'NetRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|Administrator|NetRepository|getNetsById|No pudo obtener los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $nets
+                ])
+            ]);
+            $log->save();
+            return;
+        }
     }
 
 }

@@ -34,6 +34,7 @@ Route::group(['prefix' => 'test','name' => 'test'], function()
 {
     Route::get('index', [ 'as'=>'test.index','uses'=>'AlertSystem\testController@index']);
     Route::get('v2', [ 'as'=>'test.v2','uses'=>'AlertSystem\testController@testV2']);
+    Route::get('testConfig', [ 'as'=>'test.testConfig','uses'=>'AlertSystem\testController@testConfig']);
     //Route::get('index', [ 'as'=>'test.index','uses'=>'API\AlertSystemController@getStations']);
 
 

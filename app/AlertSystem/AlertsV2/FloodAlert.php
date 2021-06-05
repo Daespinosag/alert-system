@@ -19,9 +19,9 @@ class FloodAlert extends AlertBase implements AlertContract
      * @param Carbon $initDateTime
      * @param Carbon $finalDateTime
      */
-    public function __construct(string $alertCode, ControlNewData $controlNewData, Carbon $dateTime, Carbon $initDateTime, Carbon $finalDateTime)
+    public function __construct(string $alertCode, ControlNewData $controlNewData, Carbon $dateTime, Carbon $initDateTime, Carbon $finalDateTime, $config = null)
     {
-        parent::__construct(new AlertFloodRepository(), new FloodRepository(), $alertCode, 'precipitacion_real', $controlNewData, $dateTime, $initDateTime, $finalDateTime);
+        parent::__construct(new AlertFloodRepository(), new FloodRepository(), $alertCode, 'precipitacion_real', $controlNewData, $dateTime, $initDateTime, $finalDateTime, $config);
     }
 
     /**
@@ -34,8 +34,9 @@ class FloodAlert extends AlertBase implements AlertContract
 
         # Se valida si fue posible realizar el calculo con la estacion primaria
         if ($this->primaryStationAlert->homogenization->validateHomogenization) {
+
             # Se crea el objeto para el calculo del indicador
-            $this->setIndicator($this->primaryStationAlert->homogenization->data);
+            $this->setIndicator($this->primaryStationAlert->homogenization->data, $this->config);
 
             # Se calcula el  indicador dependi
             $this->calculateIndicator(true);
@@ -71,9 +72,9 @@ class FloodAlert extends AlertBase implements AlertContract
     /**
      * @param $value
      */
-    public function setIndicator($value)
+    public function setIndicator($value, $config = null)
     {
-        $this->indicator = new A10MinIndicator($value);
+        $this->indicator = new A10MinIndicator($value, $config);
     }
 
     /**

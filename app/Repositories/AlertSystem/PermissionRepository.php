@@ -24,10 +24,48 @@ class PermissionRepository extends EloquentRepository implements RepositoriesCon
      */
     public function getPermissionFromCode(string $code)
     {
-        return $this->select('*')->where('code',$code)->first();
+        try {
+            return $this->select('*')->where('code', $code)->first();
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'PermissionRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|AlertSystem|PermissionRepository|getPermissionFromCode|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $code
+                ])
+            ]);
+            $log->save();
+            return;
+        }
     }
 
-    public function getPermissions() : Collection {
-        return $this->select('*')->get();
+    public function getPermissions(): Collection
+    {
+        try {
+            return $this->select('*')->get();
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'PermissionRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|AlertSystem|PermissionRepository|getPermissions|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                ])
+            ]);
+            $log->save();
+            return;
+        }
     }
 }

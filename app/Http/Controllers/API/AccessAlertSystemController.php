@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Entities\AlertSystem\TrackingFloodAlert;
 use App\Repositories\Administrator\AlertFloodRepository;
 use App\Repositories\Administrator\AlertLandslideRepository;
 use App\Repositories\Administrator\BasinRepository;
@@ -21,6 +20,8 @@ use function Couchbase\defaultDecoder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use DB;
 
 class AccessAlertSystemController extends Controller
 {
@@ -110,52 +111,59 @@ class AccessAlertSystemController extends Controller
         ZoneRepository $zoneRepository,
         TrackingFloodAlertRepository $trackingFloodAlertRepository,
         TrackingLandslideAlertRepository $trackingLandslideAlertRepository
-    ){
+    )
+    {
         $this->userRepository = $userRepository;
         $this->roleRepository = $roleRepository;
         $this->permissionRepository = $permissionRepository;
         $this->userPermissionRepository = $userPermissionRepository;
         $this->alertFloodRepository = $alertFloodRepository;
-        $this->stationRepository = $stationRepository;
+//        $this->stationRepository = $stationRepository;
+        $this->stationRepository = new StationRepository();
         $this->netRepository = $netRepository;
         $this->stationTypeRepository = $stationTypeRepository;
         $this->basinRepository = $basinRepository;
         $this->zoneRepository = $zoneRepository;
         $this->alertLandslideRepository = $alertLandslideRepository;
-        $this->trackingFloodAlertRepository = $trackingFloodAlertRepository;
-        $this->trackingLandslideAlertRepository = $trackingLandslideAlertRepository;
+//        $this->trackingFloodAlertRepository = $trackingFloodAlertRepository;
+        $this->trackingFloodAlertRepository = new TrackingFloodAlertRepository();
+//        $this->trackingLandslideAlertRepository = $trackingLandslideAlertRepository;
+        $this->trackingLandslideAlertRepository = new TrackingLandslideAlertRepository();
     }
 
-    public function landslideInformation(){
-        $landslideAlerts =  $this->alertLandslideRepository->getAlerts();
+    public function landslideInformation()
+    {
+        $landslideAlerts = $this->alertLandslideRepository->getAlerts();
         $landslideStations = $this->includeDecimalCoordinates($this->stationRepository->getStationsAlertLandslideToMap());
-        $landslideStations = $this ->includeTrackingInformation($landslideStations,2,$this->trackingLandslideAlertRepository);
-        $nets = $this->netRepository->getNetsById($this->extractDistinctValuesToKey('net_id',$landslideStations));
-        $stationType = $this->stationTypeRepository->getStationTypeById($this->extractDistinctValuesToKey('station_type_id',$landslideStations));
-        $zones = $this->zoneRepository->getZonesById($this->extractDistinctValuesToKey('zone_id',$landslideAlerts));
+        $landslideStations = $this->includeTrackingInformation($landslideStations, 2, $this->trackingLandslideAlertRepository);
+        $nets = $this->netRepository->getNetsById($this->extractDistinctValuesToKey('net_id', $landslideStations));
+        $stationType = $this->stationTypeRepository->getStationTypeById($this->extractDistinctValuesToKey('station_type_id', $landslideStations));
+        $zones = $this->zoneRepository->getZonesById($this->extractDistinctValuesToKey('zone_id', $landslideAlerts));
 
-        return ['alerts'=> $landslideAlerts, 'stations' => $landslideStations,'nets'=>$nets,'stationType' => $stationType, 'zones' => $zones];
+        return ['alerts' => $landslideAlerts, 'stations' => $landslideStations, 'nets' => $nets, 'stationType' => $stationType, 'zones' => $zones];
     }
 
-    public function floodInformation(){
-        $floodAlerts =  $this->alertFloodRepository->getAlerts();
+    public function floodInformation()
+    {
+        $floodAlerts = $this->alertFloodRepository->getAlerts();
         $floodStations = $this->includeDecimalCoordinates($this->stationRepository->getStationsAlertFloodToMap());
-        $floodStations = $this ->includeTrackingInformation($floodStations,1,$this->trackingFloodAlertRepository);
-        $nets = $this->netRepository->getNetsById($this->extractDistinctValuesToKey('net_id',$floodStations));
-        $stationType = $this->stationTypeRepository->getStationTypeById($this->extractDistinctValuesToKey('station_type_id',$floodStations));
-        $basins = $this->basinRepository->getBasinsById($this->extractDistinctValuesToKey('basin_id',$floodAlerts));
+        $floodStations = $this->includeTrackingInformation($floodStations, 1, $this->trackingFloodAlertRepository);
+        $nets = $this->netRepository->getNetsById($this->extractDistinctValuesToKey('net_id', $floodStations));
+        $stationType = $this->stationTypeRepository->getStationTypeById($this->extractDistinctValuesToKey('station_type_id', $floodStations));
+        $basins = $this->basinRepository->getBasinsById($this->extractDistinctValuesToKey('basin_id', $floodAlerts));
 
-        return ['alerts'=> $floodAlerts, 'stations' => $floodStations,'nets'=>$nets,'stationType' => $stationType, 'basins' => $basins];
+        return ['alerts' => $floodAlerts, 'stations' => $floodStations, 'nets' => $nets, 'stationType' => $stationType, 'basins' => $basins];
     }
 
-    public function includeTrackingInformation($stations, $typeAlertId,$repository){
+    public function includeTrackingInformation($stations, $typeAlertId, $repository)
+    {
 
-        foreach ($stations as $station){
-            $trackingValues = $repository->getLastInformation($typeAlertId,$station->alert_id,$station->id); # TODO Esto hay que cambiarlo para que extraiga el ultimo dato pero teniendo en cuenta la ultima medicion
+        foreach ($stations as $station) {
+            $trackingValues = $repository->getLastInformation($typeAlertId, $station->alert_id, $station->id); # TODO Esto hay que cambiarlo para que extraiga el ultimo dato pero teniendo en cuenta la ultima medicion
 
-            if (is_null($trackingValues)){
+            if (is_null($trackingValues)) {
                 $station->tracking_values = false;
-            }else{
+            } else {
                 $station->tracking_values = true;
                 $station->secondary_calculate = $trackingValues->secondary_calculate;
                 $station->rainfall = $trackingValues->rainfall;
@@ -174,7 +182,8 @@ class AccessAlertSystemController extends Controller
         return $stations;
     }
 
-    public function userInformation(Request $request){
+    public function userInformation(Request $request)
+    {
 
         $user = $this->userRepository->getUser($request->get('id'))->toArray();
         $permissions = $this->permissionRepository->getPermissions()->toArray();
@@ -189,19 +198,23 @@ class AccessAlertSystemController extends Controller
         ];
     }
 
-    public function getAuthUser(){
+    public function getAuthUser()
+    {
         return $this->userRepository->getUser(1)->toArray();
     }
 
-    public function getPermissions(){
+    public function getPermissions()
+    {
         return $this->permissionRepository->getPermissions()->toArray();
     }
 
-    public function getRoleAuthUser(Request $request){
+    public function getRoleAuthUser(Request $request)
+    {
         return $this->roleRepository->getRole($request->get('id'))->toArray();
     }
 
-    public function getUserPermissions(Request $request){
+    public function getUserPermissions(Request $request)
+    {
         return $this->userPermissionRepository->getPermissionUser($request->get('userId'))->toArray();
     }
 
@@ -212,18 +225,20 @@ class AccessAlertSystemController extends Controller
      * @param $direction
      * @return float
      */
-    private function calculateDecimalCoordinates($degrees, $minutes, $seconds, $direction) : float {
+    private function calculateDecimalCoordinates($degrees, $minutes, $seconds, $direction): float
+    {
         $val = ($direction == 'W' or $direction == 'S') ? -1 : 1;
 
-        return round(( ( $degrees + ( $minutes / 60 ) + ( $seconds / 3600 )) * $val ) , 6);
+        return round((($degrees + ($minutes / 60) + ($seconds / 3600)) * $val), 6);
     }
 
     /**
      * @param $stations
      * @return mixed
      */
-    private function includeDecimalCoordinates($stations){
-        foreach ($stations as $station){
+    private function includeDecimalCoordinates($stations)
+    {
+        foreach ($stations as $station) {
             $station->longitude = $this->calculateDecimalCoordinates(
                 $station->longitude_degrees,
                 $station->longitude_minutes,
@@ -236,8 +251,8 @@ class AccessAlertSystemController extends Controller
                 $station->latitude_seconds,
                 $station->latitude_direction
             );
-            unset($station->longitude_degrees,$station->longitude_minutes,$station->longitude_seconds,$station->longitude_direction);
-            unset($station->latitude_degrees,$station->latitude_minutes,$station->latitude_seconds,$station->latitude_direction);
+            unset($station->longitude_degrees, $station->longitude_minutes, $station->longitude_seconds, $station->longitude_direction);
+            unset($station->latitude_degrees, $station->latitude_minutes, $station->latitude_seconds, $station->latitude_direction);
         }
 
         return $stations;
@@ -248,9 +263,47 @@ class AccessAlertSystemController extends Controller
      * @param $stations
      * @return array
      */
-    private function extractDistinctValuesToKey(string $key,$stations) :array {
+    private function extractDistinctValuesToKey(string $key, $stations): array
+    {
         $elements = [];
-        foreach ($stations as $station){ if (!in_array($station->{$key},$elements)){ $elements[] = $station->{$key};} }
+        foreach ($stations as $station) {
+            if (!in_array($station->{$key}, $elements)) {
+                $elements[] = $station->{$key};
+            }
+        }
         return $elements;
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function getAllDataStationById(Request $request)
+    {
+        $status = false;
+        $response = 'Consulta fallida';
+        $data = new \stdClass();
+        $data->stationData = $this->stationRepository->getAllDataStationById($request->id, $request->alertId, $request->stationType);
+
+        $date = new \stdClass();
+        $date->endDate = Carbon::now()->format('Y-m-d H:i:s');
+        $date->startDate = Carbon::now()->subMonth()->format('Y-m-d H:i:s');
+//        dd($date);
+        if ($request->stationType == 'flood') {
+            $data->tracking = $this->trackingFloodAlertRepository->getAllTrackinByStationId($request->id, $request->alertId, $date);
+        } else if ($request->stationType == 'landslide') {
+            $data->tracking = $this->trackingLandslideAlertRepository->getAllTrackinByStationId($request->id, $request->alertId, $date);
+        }
+        $data->dates = $date;
+
+        if (isset($data->stationData) && isset($data->tracking)) {
+            $status = true;
+            $response = 'Consulta exitosa';
+        }
+        return response()->json([
+            'status' => $status,
+            'message' => $response,
+            'data' => $data
+        ]);
     }
 }

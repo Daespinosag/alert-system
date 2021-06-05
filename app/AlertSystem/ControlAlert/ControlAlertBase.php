@@ -38,50 +38,67 @@ class ControlAlertBase extends AlertSystem
      * @var ControlNewDataRepository
      */
     public $controlNewDataRepository;
+    /**
+     * @var config test by date
+     */
+    public $config = null;
 
     /**
      * ControlAlertBase constructor.
      * @param string $alertCode
      * @param Carbon $dateTime
      */
-    public function __construct(string $alertCode, Carbon $dateTime){
+    public function __construct(string $alertCode, Carbon $dateTime, $config = null)
+    {
         $this->controlNewDataRepository = new ControlNewDataRepository(); # TODO Esto debe ser dinamico
 
         $this->alertCode = $alertCode;
         $this->dateTime = $dateTime;
-
+        $this->config = $config;
         $this->generateInitDateTime();
         $this->generateFinalDateTime();
-        $this->getControlAlerts();
+        $this->controlAlerts = $this->getControlAlerts();
+
     }
 
     /**
      * Generate Initial DateTime | Carbon
      */
-    protected function generateInitDateTime(){
-        $this->initDateTime = $this->generateDateTime($this->dateTime,'-5 minutes');
+    protected function generateInitDateTime()
+    {
+        $this->initDateTime = $this->generateDateTime($this->dateTime, '-5 minutes');
     }
 
     /**
      * Generate Final DateTime | Carbon
      */
-    protected function generateFinalDateTime(){
-        $this->finalDateTime = $this->generateDateTime($this->dateTime,'+5 minutes');
+    protected function generateFinalDateTime()
+    {
+        $this->finalDateTime = $this->generateDateTime($this->dateTime, '+5 minutes');
     }
+
     /**
      * @param Carbon $dateTime
      * @param string $time
      * @return Carbon
      */
-    public function generateDateTime(Carbon $dateTime,string $time) : Carbon {
-        return date_add(clone ($dateTime), date_interval_create_from_date_string($time));
+    public function generateDateTime(Carbon $dateTime, string $time): Carbon
+    {
+        return date_add(clone($dateTime), date_interval_create_from_date_string($time));
     }
 
     /**
      * Generate ControlAlerts | Collection
      */
-    public function getControlAlerts(){
-        $this->controlAlerts = $this->controlNewDataRepository->getUnsettledAlerts($this->alertCode);
+    public function getControlAlerts()
+    {
 
+        if (!is_null($this->config)) {
+            if (count($this->config[$this->alertCode]) > 0) {
+
+                return $this->controlNewDataRepository->getUnsettledAlertsSpecific($this->alertCode, $this->config[$this->alertCode]);
+            }
+        }
+        return $this->controlAlerts = $this->controlNewDataRepository->getUnsettledAlerts($this->alertCode);
     }
 }

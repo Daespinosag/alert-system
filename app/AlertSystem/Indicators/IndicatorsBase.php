@@ -46,7 +46,7 @@ class IndicatorsBase
     /**
      * @var array
      */
-    private $alertLevels = ['green','yellow','orange','red'];
+    private $alertLevels = ['green', 'yellow', 'orange', 'red'];
     /**
      * @var bool
      */
@@ -56,6 +56,8 @@ class IndicatorsBase
      */
     private $expectedAmount;
 
+    public $config;
+
     /**
      * IndicatorsBase constructor.
      * @param RepositoriesContract $trackingTableRepository
@@ -64,18 +66,20 @@ class IndicatorsBase
      * @param $value : value in minutes
      * @param string $localVariable
      */
-    public function __construct(RepositoriesContract $trackingTableRepository,int $range,int $expectedAmount,$value,string $localVariable){
+    public function __construct(RepositoriesContract $trackingTableRepository, int $range, int $expectedAmount, $value, string $localVariable, $config = null)
+    {
         $this->trackingTableRepository = $trackingTableRepository;
         $this->value = $value;
         $this->range = $range;
         $this->expectedAmount = $expectedAmount;
         $this->localVariable = $localVariable;
-
+        $this->config = $config;
         # Se crea el objeto Tracking especifico con el que se va a seguir interactuando
         $this->actualTracking = $this->trackingTableRepository->newObject();
     }
 
-    protected function generateRageDateTime(){
+    protected function generateRageDateTime()
+    {
         # Se calcula la fecha homogenizada para el calculo del indicador
         $this->actualTracking->date_time_homogenization = $this->value->dateTime;
 
@@ -83,10 +87,10 @@ class IndicatorsBase
         $this->actualTracking->date_time_final = $this->value->dateTime;
 
         # Se calcula la fecha inicial para el calculo del indicador
-        $this->actualTracking->date_time_initial = (Carbon::parse($this->value->dateTime))->addSeconds( - $this->range * 60 )->format('Y-m-d H:i:s');
+        $this->actualTracking->date_time_initial = (Carbon::parse($this->value->dateTime))->addSeconds(-$this->range * 60)->format('Y-m-d H:i:s');
 
         # Se calcula la fecha inicial para el calculo del indicador
-        $this->beforeDateTime = (Carbon::parse($this->value->dateTime))->addSeconds( - $this->period * 60 )->format('Y-m-d H:i:s');
+        $this->beforeDateTime = (Carbon::parse($this->value->dateTime))->addSeconds(-$this->period * 60)->format('Y-m-d H:i:s');
     }
 
     /**
@@ -96,7 +100,8 @@ class IndicatorsBase
      * @param string $variable
      * @param bool $primary
      */
-    protected function initializationTracking(int $supId,int $alertId,int $stationSk,string $variable,bool $primary){
+    protected function initializationTracking(int $supId, int $alertId, int $stationSk, string $variable, bool $primary)
+    {
         $this->actualTracking->sup_id = $supId;
         $this->actualTracking->alert_id = $alertId;
         $this->actualTracking->primary_station_id = $stationSk;
@@ -110,7 +115,8 @@ class IndicatorsBase
         $this->actualTracking->indicator_previous_difference = 0;
     }
 
-    protected function getBeforeIndicatorTracking(){
+    protected function getBeforeIndicatorTracking()
+    {
         $this->beforeIndicatorTracking = $this->trackingTableRepository->getFromDate(
             $this->beforeDateTime,
             $this->actualTracking->sup_id,
@@ -119,7 +125,8 @@ class IndicatorsBase
         );
     }
 
-    protected function calculatePartialIndicator(){
+    protected function calculatePartialIndicator()
+    {
         $this->infoIndicator = $this->trackingTableRepository->calculateIndicator(
             $this->actualTracking->date_time_initial,
             $this->actualTracking->date_time_final,
@@ -130,12 +137,13 @@ class IndicatorsBase
         );
     }
 
-    protected function calculateIndicator(){
+    protected function calculateIndicator()
+    {
         # Se calcula el valor del indicador
         $this->actualTracking->indicator_value = $this->actualTracking->{$this->localVariable} + $this->infoIndicator->indicator;
 
         # Se calcula el porcentaje de recuperados
-        $this->actualTracking->rainfall_recovered = ($this->infoIndicator->recovered + 1 ) / $this->expectedAmount;
+        $this->actualTracking->rainfall_recovered = ($this->infoIndicator->recovered + 1) / $this->expectedAmount;
     }
 
     /**
@@ -143,28 +151,34 @@ class IndicatorsBase
      * @param string $tag
      * @return bool
      */
-    public function validateIndicator(string $tag,float $limit) : bool{
-        if ($this->actualTracking->indicator_value >= $limit){
+    public function validateIndicator(string $tag, float $limit): bool
+    {
+        if ($this->actualTracking->indicator_value >= $limit) {
             $this->actualTracking->alert_tag = $tag;
-            $this->actualTracking->alert_level = array_search($tag,$this->alertLevels);
+            $this->actualTracking->alert_level = array_search($tag, $this->alertLevels);
             return true;
         }
         return false;
     }
 
-    public function validatePreviousDeference(){
+    public function validatePreviousDeference()
+    {
         # Se valida que si exista un valor anterior
-        if (is_null($this->beforeIndicatorTracking)){return;}
+        if (is_null($this->beforeIndicatorTracking)) {
+            return;
+        }
 
         # Se valida que exista un valor de indicador calculado
-        if (is_null($this->beforeIndicatorTracking->indicator_value)){return;}
+        if (is_null($this->beforeIndicatorTracking->indicator_value)) {
+            return;
+        }
 
         # Se calcula la diferencia de los indicadores
         $this->actualTracking->indicator_previous_difference = abs($this->actualTracking->indicator_value - $this->beforeIndicatorTracking->indicator_value);
 
-        if ($this->actualTracking->alert_level < $this->beforeIndicatorTracking->alert_leve){
+        if ($this->actualTracking->alert_level < $this->beforeIndicatorTracking->alert_leve) {
             $this->actualTracking->alert_status = 'decrease';
-        } else if ($this->actualTracking->alert_level > $this->beforeIndicatorTracking->alert_level){
+        } else if ($this->actualTracking->alert_level > $this->beforeIndicatorTracking->alert_level) {
             $this->actualTracking->alert_status = 'increase';
         }
     }

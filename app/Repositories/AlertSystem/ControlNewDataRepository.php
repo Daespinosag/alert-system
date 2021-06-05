@@ -22,8 +22,56 @@ class ControlNewDataRepository extends EloquentRepository implements Repositorie
      * @param string $alertCode
      * @return Collection
      */
-    public function getUnsettledAlerts(string $alertCode) : Collection{
+    public function getUnsettledAlerts(string $alertCode): Collection
+    {
+        try {
+            return $this->select('*')->where('alert_code', '=', $alertCode)->where('active', '=', true)->where('homogenization', '=', false)->get();
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'ControlNewDataRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|AlertSystem|ControlNewDataRepository|getUnsettledAlerts|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $alertCode
+                ])
+            ]);
+            $log->save();
+            return [];
+        }
+    }
 
-        return $this->select('*')->where('alert_code','=',$alertCode)->where('active','=',true)->where('homogenization','=',false)->get();
+    /**
+     * @param string $alertCode
+     * @return Collection
+     */
+    public function getUnsettledAlertsSpecific(string $alertCode, $alertsId): Collection
+    {
+        try {
+            return $this->select('*')->where('alert_code', '=', $alertCode)->where('active', '=', true)->where('homogenization', '=', false)->whereIn('alert_id', $alertsId)->get();
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'ControlNewDataRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|AlertSystem|ControlNewDataRepository|getUnsettledAlertsSpecific|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $alertCode,
+                    $alertsId
+                ])
+            ]);
+            $log->save();
+            return [];
+        }
     }
 }
