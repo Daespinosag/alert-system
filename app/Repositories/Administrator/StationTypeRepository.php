@@ -98,7 +98,7 @@ class StationTypeRepository extends EloquentRepository implements RepositoriesCo
                 ])
             ]);
             $log->save();
-            return;
+            return new Collection;
         }
     }
 }

@@ -80,6 +80,7 @@ class IndicatorsBase
 
     protected function generateRageDateTime()
     {
+
         # Se calcula la fecha homogenizada para el calculo del indicador
         $this->actualTracking->date_time_homogenization = $this->value->dateTime;
 
@@ -91,6 +92,7 @@ class IndicatorsBase
 
         # Se calcula la fecha inicial para el calculo del indicador
         $this->beforeDateTime = (Carbon::parse($this->value->dateTime))->addSeconds(-$this->period * 60)->format('Y-m-d H:i:s');
+
     }
 
     /**

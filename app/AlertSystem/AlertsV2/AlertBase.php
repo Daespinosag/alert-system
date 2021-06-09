@@ -19,11 +19,11 @@ class AlertBase
     /**
      * @var
      */
-    protected $alert;
+    public $alert;
     /**
      * @var ControlNewData
      */
-    protected $controlNewData;
+    public $controlNewData;
     /**
      * @var Station
      */
@@ -37,7 +37,7 @@ class AlertBase
     /**
      * @var StationAlert
      */
-    protected $primaryStationAlert;
+    public $primaryStationAlert;
 
     /**
      * @var
@@ -47,12 +47,12 @@ class AlertBase
     /**
      * @var Carbon
      */
-    protected $initDateTime;
+    public $initDateTime;
 
     /**
      * @var Carbon
      */
-    protected $finalDateTime;
+    public $finalDateTime;
 
     /**
      * @var StationRepository
@@ -66,7 +66,7 @@ class AlertBase
     /**
      * @var Carbon
      */
-    protected $dateTime;
+    public $dateTime;
 
     /**
      * @var bool

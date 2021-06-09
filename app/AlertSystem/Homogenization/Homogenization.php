@@ -52,7 +52,7 @@ class Homogenization extends HomogenizationBase implements HomogenizationContrac
             $this->data = (object)$preProcessData[$validation];
 
             # Se calcula la marcha de fecha y tiempo
-            $this->data->dateTime = $this->dateTime->format('Y-m-d h:i:s');
+            $this->data->dateTime = $this->dateTime->format('Y-m-d H:i:s');
 
             # La validacion de los datos es aceptada
             $this->validateHomogenization = true;
@@ -166,8 +166,8 @@ class Homogenization extends HomogenizationBase implements HomogenizationContrac
     {
         $this->data = (object)[
             'fecha' => $this->dateTime->format('Y-m-d'),
-            'hora' => $this->dateTime->format('h:i:s'),
-            'dateTime' => $this->dateTime->format('Y-m-d h:i:s'),
+            'hora' => $this->dateTime->format('H:i:s'),
+            'dateTime' => $this->dateTime->format('Y-m-d H:i:s'),
             $variable => $this->formula($firstValue->{$variable}, $secondValue->{$variable}, $firstValue->timeNumber, $secondValue->timeNumber, $t3)
         ];
     }

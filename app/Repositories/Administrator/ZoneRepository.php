@@ -72,7 +72,7 @@ class ZoneRepository extends EloquentRepository implements RepositoriesContract
                 ])
             ]);
             $log->save();
-            return;
+            return new Collection;
         }
     }
 }

@@ -312,7 +312,7 @@ class StationRepository extends EloquentRepository
                 ])
             ]);
             $log->save();
-            return [];
+            return new Collection;
         }
     }
 

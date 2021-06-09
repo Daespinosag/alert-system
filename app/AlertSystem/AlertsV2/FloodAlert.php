@@ -4,9 +4,11 @@ namespace App\AlertSystem\AlertsV2;
 
 use App\AlertSystem\Indicators\A10MinIndicator;
 use App\Entities\AlertSystem\ControlNewData;
+use App\Entities\AlertSystem\TrackingFloodAlert;
 use App\Events\AlertFloodEvent;
 use App\Repositories\Administrator\AlertFloodRepository;
 use App\Repositories\AlertSystem\FloodRepository;
+use App\Repositories\AlertSystem\TrackingFloodAlertRepository;
 use Carbon\Carbon;
 
 class FloodAlert extends AlertBase implements AlertContract
@@ -37,7 +39,6 @@ class FloodAlert extends AlertBase implements AlertContract
 
             # Se crea el objeto para el calculo del indicador
             $this->setIndicator($this->primaryStationAlert->homogenization->data, $this->config);
-
             # Se calcula el  indicador dependi
             $this->calculateIndicator(true);
 
@@ -53,9 +54,9 @@ class FloodAlert extends AlertBase implements AlertContract
         # Se ejecuta la el componente mediador para las estaciones secundarias
         $this->backupStationsAlert->execute($this->variableToValidate);
 
+
         # Se valida la ejecusion del proceso por medio de las estaciones de respaldo
         if ($this->backupStationsAlert->complete) {
-
             # Se crea el objeto para el calculo del indicador
             $this->setIndicator($this->backupStationsAlert->data);
 
@@ -66,7 +67,37 @@ class FloodAlert extends AlertBase implements AlertContract
 
             return;
         }
+        #se guarda el registro de igual forma si se tuvieron errores
+        $this->actualTracking = new TrackingFloodAlert();
+        $this->actualTracking->sup_id = 1;
+        $this->actualTracking->alert_id = $this->primaryStationAlert->station->net_id;
+        $this->actualTracking->primary_station_id = $this->primaryStationAlert->station->station_sk;
+        $this->actualTracking->rainfall_recovered = 0;
+        $this->actualTracking->alert_tag = 'green';
+        $this->actualTracking->alert_status = 'equal';
+        $this->actualTracking->date_time_homogenization = $this->primaryStationAlert->dateTime;
+        $this->actualTracking->date_time_initial = $this->primaryStationAlert->initDateTime;
+        $this->actualTracking->date_time_final = $this->primaryStationAlert->finalDateTime;
 
+        if (is_bool($this->primaryStationAlert->exactMethod->connection)) {
+            //error no conection
+            $this->actualTracking->error = 'communication';
+            $this->complete = true;
+            $this->actualTracking->save();
+            return;
+        }
+        if (!$this->primaryStationAlert->exactMethod->dataExistence) {
+            //error no existencia de datos
+            $this->actualTracking->error = 'no_data';
+            $this->complete = true;
+            $this->actualTracking->save();
+            return;
+        }
+        //error de homogenizacion
+        $this->actualTracking->error = 'no_homogenization';
+        $this->complete = true;
+        $this->actualTracking->save();
+        return;
     }
 
     /**
@@ -74,6 +105,7 @@ class FloodAlert extends AlertBase implements AlertContract
      */
     public function setIndicator($value, $config = null)
     {
+
         $this->indicator = new A10MinIndicator($value, $config);
     }
 

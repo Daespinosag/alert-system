@@ -113,7 +113,7 @@ class UserPermissionRepository extends EloquentRepository implements Repositorie
                 ])
             ]);
             $log->save();
-            return;
+            return new Collection();
         }
     }
 }

@@ -67,7 +67,7 @@ class RoleRepository extends EloquentRepository implements RepositoriesContract
                 ])
             ]);
             $log->save();
-            return;
+            return null;
         }
     }
 }

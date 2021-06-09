@@ -65,7 +65,7 @@ class PermissionRepository extends EloquentRepository implements RepositoriesCon
                 ])
             ]);
             $log->save();
-            return;
+            return new Collection();
         }
     }
 }

@@ -72,7 +72,7 @@ class BasinRepository extends EloquentRepository implements RepositoriesContract
                 ])
             ]);
             $log->save();
-            return;
+            return new Collection;
         }
     }
 }

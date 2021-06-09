@@ -42,7 +42,7 @@ class ControlNewDataRepository extends EloquentRepository implements Repositorie
                 ])
             ]);
             $log->save();
-            return [];
+            return new Collection;
         }
     }
 
@@ -71,7 +71,7 @@ class ControlNewDataRepository extends EloquentRepository implements Repositorie
                 ])
             ]);
             $log->save();
-            return [];
+            return new Collection;
         }
     }
 }
