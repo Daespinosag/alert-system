@@ -9,7 +9,7 @@ class LandslideRepository extends AlertBaseRepository implements AlertContractRe
     /**
      * @var string
      */
-    protected $repositoryId = 'rinvex.repository.uniqueid';
+    protected $repositoryId = 'app.repository.uniqueid';
     /**
      * @var string
      */

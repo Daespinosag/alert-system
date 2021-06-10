@@ -3,7 +3,7 @@
 namespace App\Repositories\AlertSystem;
 
 use App\Repositories\RepositoriesContract;
-use Rinvex\Repository\Repositories\EloquentRepository;
+use App\Repositories\EloquentRepository;
 use App\Entities\AlertSystem\Role;
 
 class RoleRepository extends EloquentRepository implements RepositoriesContract
@@ -11,7 +11,7 @@ class RoleRepository extends EloquentRepository implements RepositoriesContract
     /**
      * @var string
      */
-    protected $repositoryId = 'rinvex.repository.uniqueid';
+    protected $repositoryId = 'app.repository.uniqueid';
     /**
      * @var string
      */

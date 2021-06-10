@@ -6,14 +6,14 @@ use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\RepositoriesContract;
 use Illuminate\Container\Container;
 use App\Entities\Administrator\Connection;
-use Rinvex\Repository\Repositories\EloquentRepository;
+use App\Repositories\EloquentRepository;
 
 class ConnectionRepository extends EloquentRepository implements RepositoriesContract
 {
     /**
      * @var string
      */
-    protected $repositoryId = 'rinvex.repository.uniqueid';
+    protected $repositoryId = 'app.repository.uniqueid';
     /**
      * @var string
      */

@@ -9,7 +9,7 @@ class FloodRepository extends AlertBaseRepository implements AlertContractReposi
     /**
      * @var string
      */
-    protected $repositoryId = 'rinvex.repository.uniqueid';
+    protected $repositoryId = 'app.repository.uniqueid';
     /**
      * @var string
      */

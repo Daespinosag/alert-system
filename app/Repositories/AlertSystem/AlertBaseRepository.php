@@ -3,7 +3,7 @@
 namespace App\Repositories\AlertSystem;
 
 use App\Repositories\RepositoriesContract;
-use Rinvex\Repository\Repositories\EloquentRepository;
+use App\Repositories\EloquentRepository;
 use Illuminate\Support\Facades\DB;
 
 class AlertBaseRepository extends EloquentRepository implements RepositoriesContract

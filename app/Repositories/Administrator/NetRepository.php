@@ -6,7 +6,7 @@ use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\RepositoriesContract;
 use Illuminate\Support\Collection;
 use DB;
-use Rinvex\Repository\Repositories\EloquentRepository;
+use App\Repositories\EloquentRepository;
 use App\Entities\Administrator\Net;
 
 class NetRepository extends EloquentRepository implements RepositoriesContract
@@ -14,7 +14,7 @@ class NetRepository extends EloquentRepository implements RepositoriesContract
     /**
      * @var string
      */
-    protected $repositoryId = 'rinvex.repository.uniqueid';
+    protected $repositoryId = 'app.repository.uniqueid';
     /**
      * @var string
      */

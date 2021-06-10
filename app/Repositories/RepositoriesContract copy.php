@@ -12,21 +12,21 @@ interface RepositoriesContract extends RepositoryContract
      * RepositoriesContract constructor.
      * @param Container $container
      */
-    #public function __construct(Container $container);
+    public function __construct(Container $container);
 
     /**
      * @return Builder
      */
-    #public function queryBuilder() : Builder;
+    public function queryBuilder() : Builder;
 
     /**
      * @param array $columns
      * @return mixed
      */
-    #public function fillingColumnsModel(array $columns = []);
+    public function fillingColumnsModel(array $columns = []);
 
     /**
      * @return mixed
      */
-    #public function newEmptyEntity();
+    public function newEmptyEntity();
 }
