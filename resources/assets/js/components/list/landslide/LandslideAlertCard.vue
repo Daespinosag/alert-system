@@ -31,16 +31,15 @@
         data(){
             return {
                 show: true,
-                iconColor: 'black',
                 iconsOptions:{
-                    grey:'black',
+                    grey:'error_red',
                     green: 'black',
                     yellow: 'yellow',
                     orange: 'orange',
                     red: 'red'
                 },
                 cardOptions: {
-                    grey: 'alert-card bg-success',
+                    grey: 'alert-card bg-grey',
                     green: 'alert-card bg-success',
                     yellow: 'alert-card bg-warning',
                     red:' alert-card bg-danger',
@@ -58,14 +57,16 @@
             },
             showFilters(){
                 return this.$store.getters.getShowFilters;
-            }
+            },
+            iconColor(){
+                return this.iconsOptions[this.landslidePrimaryStation.alert_tag];
+            },
         },
         mounted(){
             this.searchArray = [this.landslidePrimaryStation.name, this.net.name, this.landslidePrimaryStation.city];
             EventBus.$on('filters-updated', function( filters ){
                 this.processFilters( filters );
             }.bind(this));
-            this.iconColor = this.iconsOptions[this.landslidePrimaryStation.alert_tag];
         },
         methods: {
             processFilters: function (filters) {
@@ -74,6 +75,14 @@
             panToLocation( station ){
 
             },
+        },
+        watch: {
+            landslidePrimaryStation() {
+                if (this.landslidePrimaryStation.alert_tag == "red" && this.landslidePrimaryStation.alert_status == "increase") {
+                    EventBus.$emit("play-alarm");
+                    return true;
+                }
+            }
         }
     }
 </script>
@@ -95,6 +104,9 @@
             background-color: #ffc4a3;
         }
 
+        &.bg-grey{
+            background-color: #d3d3d3;
+        }
         span.title{
             display: block;
             text-align: center;

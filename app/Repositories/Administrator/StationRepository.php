@@ -4,7 +4,7 @@ namespace App\Repositories\Administrator;
 
 use App\Repositories\AlertSystem\LogsRepository;
 use Illuminate\Support\Collection;
-use Rinvex\Repository\Repositories\EloquentRepository;
+use App\Repositories\EloquentRepository;
 use App\Entities\Administrator\Station;
 use DB;
 
@@ -13,7 +13,7 @@ class StationRepository extends EloquentRepository
     /**
      * @var string
      */
-    protected $repositoryId = 'rinvex.repository.uniqueid';
+    protected $repositoryId = 'app.repository.uniqueid';
     /**
      * @var string
      */

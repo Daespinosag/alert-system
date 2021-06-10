@@ -5,7 +5,7 @@ namespace App\Repositories\AlertSystem;
 use App\Mail\LogMail;
 use App\Repositories\RepositoriesContract;
 use Illuminate\Database\Eloquent\Collection;
-use Rinvex\Repository\Repositories\EloquentRepository;
+use App\Repositories\EloquentRepository;
 use App\Entities\AlertSystem\Logs;
 use Carbon\Carbon;
 
@@ -14,7 +14,7 @@ class LogsRepository extends EloquentRepository implements RepositoriesContract
     /**
      * @var string
      */
-    protected $repositoryId = 'rinvex.repository.uniqueid';
+    protected $repositoryId = 'app.repository.uniqueid';
     /**
      * @var string
      */

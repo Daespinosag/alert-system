@@ -11,6 +11,9 @@
                 <input type="text" class="search-filters form-control" v-model="textSearch" placeholder="Buscar Estaciones"/>
             </div>
             <br><br>
+            <div class="m-4 col-md-12 text-center" id="toggle-sound-container">
+                <label class="btn btn-success" @click="toggleSoundAlert"><p v-if="soundAlertEnabled">Silenciar sonido</p> <p v-else>Activar sonido</p></label>
+            </div>
             <div class="m-4 col-md-12 text-center" id="toggle-container">
                 <label class="btn btn-success" @click="toggleFloodLayer"><p v-if="floodLayerVisible">Ocultar indundación</p> <p v-else>Mostrar inundación</p></label>
                 <label class="btn btn-success" @click="toggleLandslideLayer"><p v-if="landslideLayerVisible">Ocultar deslizamiento</p> <p v-else>Mostrar deslizamiento</p></label>
@@ -19,11 +22,11 @@
             <div class="m-4 col-md-12" id="flood-layer-toggle">
                 <b>Alerta inundación</b>
                 <div class="form-check pull-right">
-                    <input class="form-check-input" type="checkbox" value="" id="flood-icon-check" checked @click="toggleFloodIcons">
+                    <input class="form-check-input" type="checkbox" v-model="floodIconsVisible" value="" id="flood-icon-check" @click="toggleFloodIcons">
                     <label class="form-check-label" for="flood-icon-check">
                         Iconos
                     </label>
-                    <input class="form-check-input" type="checkbox" value="" id="flood-overlay-check" checked @click="toggleFloodPolygons">
+                    <input class="form-check-input" type="checkbox" value="" id="flood-overlay-check" v-model="floodPolygonsVisible" @click="toggleFloodPolygons">
                     <label class="form-check-label" for="flood-overlay-check">
                         Polígonos
                     </label>
@@ -32,11 +35,11 @@
             <div class="m-4 col-md-12" id="landslide-layer-toggle">
                 <b>Alerta deslizamiento</b>
                 <div class="form-check pull-right">
-                    <input class="form-check-input" type="checkbox" value="" id="landslide-icon-check" checked @click="toggleLandslideIcons">
+                    <input class="form-check-input" type="checkbox" value="" id="landslide-icon-check" v-model="landslideIconsVisible" @click="toggleLandslideIcons">
                     <label class="form-check-label" for="landslide-icon-check">
                         Iconos
                     </label>
-                    <input class="form-check-input" type="checkbox" value="" id="landslide-overlay-check" checked @click="toggleLandslidePolygons">
+                    <input class="form-check-input" type="checkbox" value="" id="landslide-overlay-check" v-model="landslidePolygonsVisible" @click="toggleLandslidePolygons">
                     <label class="form-check-label" for="landslide-overlay-check">
                         Polígonos
                     </label>
@@ -137,6 +140,9 @@
             landslidePolygonsVisible(){
                 return this.$store.getters.getLandslidePolygonsVisible;
             },
+            soundAlertEnabled(){
+                return this.$store.getters.getSoundAlertEnabled;
+            }
 
         },
 
@@ -173,6 +179,10 @@
             },
             toggleLandslidePolygons(){
                 this.$store.dispatch('toggleLandslidePolygonsVisible', {landslidePolygonsVisible: !this.landslidePolygonsVisible});
+            },
+            toggleSoundAlert(){
+                EventBus.$emit("sound-enabled", {muted: this.soundAlertEnabled});
+                this.$store.dispatch('toggleSoundAlert', {soundAlertEnabled: !this.soundAlertEnabled});
             },
 
             clearFilters(){

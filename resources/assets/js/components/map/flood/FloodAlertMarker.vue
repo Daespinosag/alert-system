@@ -23,10 +23,9 @@
         components: {  LMarker, LIcon, LPopup, LTooltip },
         data(){
             return {
-                iconColor: 'black',
                 iconSize: [25, 41],
                 iconsOptions: {
-                    grey: 'black',
+                    grey: 'error_red',
                     green: 'black',
                     red: 'red'
                 },
@@ -38,13 +37,15 @@
             net(){
                 return Net.query().find(this.stationAlert.net_id);
             },
+            iconColor(){
+                return this.iconsOptions[this.stationAlert.alert_tag];
+            }
         },
         mounted(){
             this.searchArray = [this.stationAlert.name, this.net.name, this.stationAlert.city];
             EventBus.$on('filters-updated', function( filters ){
                 this.processFilters( filters );
             }.bind(this));
-            this.iconColor = this.iconsOptions[this.stationAlert.alert_tag];
         },
         methods: {
             openPopup: function (event) { this.$nextTick(() => event.target.openPopup())},

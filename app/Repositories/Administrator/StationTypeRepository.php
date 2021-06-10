@@ -6,7 +6,7 @@ use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\RepositoriesContract;
 use DB;
 use Illuminate\Support\Collection;
-use Rinvex\Repository\Repositories\EloquentRepository;
+use App\Repositories\EloquentRepository;
 use App\Entities\Administrator\StationType;
 
 class StationTypeRepository extends EloquentRepository implements RepositoriesContract
@@ -14,7 +14,7 @@ class StationTypeRepository extends EloquentRepository implements RepositoriesCo
     /**
      * @var string
      */
-    protected $repositoryId = 'rinvex.repository.uniqueid';
+    protected $repositoryId = 'app.repository.uniqueid';
     /**
      * @var string
      */

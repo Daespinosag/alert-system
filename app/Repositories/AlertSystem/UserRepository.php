@@ -3,7 +3,7 @@
 namespace App\Repositories\AlertSystem;
 
 use App\Repositories\RepositoriesContract;
-use Rinvex\Repository\Repositories\EloquentRepository;
+use App\Repositories\EloquentRepository;
 use App\Entities\AlertSystem\User;
 use DB;
 
@@ -12,7 +12,7 @@ class UserRepository extends EloquentRepository implements RepositoriesContract
     /**
      * @var string
      */
-    protected $repositoryId = 'rinvex.repository.uniqueid';
+    protected $repositoryId = 'app.repository.uniqueid';
     /**
      * @var string
      */

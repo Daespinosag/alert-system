@@ -5,7 +5,7 @@ namespace App\Repositories\Administrator;
 use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\RepositoriesContract;
 use DB;
-use Rinvex\Repository\Repositories\EloquentRepository;
+use App\Repositories\EloquentRepository;
 use App\Entities\Administrator\Alert;
 
 class AlertRepository extends EloquentRepository implements RepositoriesContract
@@ -13,7 +13,7 @@ class AlertRepository extends EloquentRepository implements RepositoriesContract
     /**
      * @var string
      */
-    protected $repositoryId = 'rinvex.repository.uniqueid';
+    protected $repositoryId = 'app.repository.uniqueid';
     /**
      * @var string
      */

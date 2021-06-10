@@ -5,14 +5,14 @@ namespace App\Repositories\AlertSystem;
 use App\Entities\AlertSystem\TrackingFloodAlert;
 use App\Repositories\RepositoriesContract;
 use PhpParser\Node\Expr\Cast\Object_;
-use Rinvex\Repository\Repositories\EloquentRepository;
+use App\Repositories\EloquentRepository;
 
 class TrackingFloodAlertRepository extends EloquentRepository implements RepositoriesContract
 {
     /**
      * @var string
      */
-    protected $repositoryId = 'rinvex.repository.uniqueid';
+    protected $repositoryId = 'app.repository.uniqueid';
     /**
      * @var string
      */
