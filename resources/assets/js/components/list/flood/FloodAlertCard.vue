@@ -1,26 +1,26 @@
 <template>
-    <div class="col-md-5 alert-card-container" v-show="show && alert.active">
-        <router-link :to="{ name: 'Alert', params: { id: floodPrimaryStation.id } }" v-on:click.native="panToLocation( alert )">
-            <div v-bind:class="[this.cardOptions[floodPrimaryStation.alert_tag]]">
-                <span class="title">{{ alert.name }}</span>
-                <span class="address">
-                    <span class="street">{{ floodPrimaryStation.city }}</span>
-                    <span class="city"> {{ floodPrimaryStation.city }} </span>
-                    <span class="state"> {{ floodPrimaryStation.city }}</span>
+    <div class="alert-card-container" v-show="show && alert.active">
+        <router-link :to="{ name: 'Alert', params: { id: floodPrimaryStation.id } }" v-on:click.native="panToLocation( alert )" style="text-decoration: none; color: inherit;">
+            <b-card v-bind:class="[this.cardOptions[floodPrimaryStation.alert_tag]]" class="col-md-5 m-2 border-75 shadow-lg rounded-75" style="height: 150px; border-radius: 10px">
+                <b-card-title class="title">{{ alert.name }}</b-card-title>
 
-                </span>
-                <span class="pull-right"><img v-bind:src="`images/assets/alerts/flood_alert_${this.iconColor}.png` " ></span>
+                <b-card-text>
+                    <span class="address">
+                        <span class="city"> {{ floodPrimaryStation.city }} </span>
+                    </span>
+                        <span class="pull-right"><img v-bind:src="`images/assets/alerts/flood_alert_${this.iconColor}.png` " ></span>
+                    </b-card-text>
 
-                <span class="address" v-show="floodPrimaryStation.tracking_values">
-                   <span>{{ floodPrimaryStation.date_time_homogenization }}</span> :
-                    <span>{{ floodPrimaryStation.alert_status }}</span> |
-                    <span>{{ floodPrimaryStation.indicator_value }}</span>
-<!--                    <span class="pull-right">-->
-<!--                        <img v-bind:class="[ this.showFilters ? 'icon-alert-with-filters' : 'icon-alert-without-filters']" :src="`images/assets/alerts/flood_alert_${this.iconColor}.png`" >-->
-<!--                    </span>-->
-                   <br>
-                </span>
-            </div>
+                    <b-card-text class="small text-muted">
+                        <h6>
+                            <span class="address" v-show="floodPrimaryStation.tracking_values">
+                                <span class="badge badge-dark">{{ floodPrimaryStation.date_time_homogenization }}</span> :
+                                <span class="badge badge-dark">{{ floodPrimaryStation.alert_status }}</span> |
+                                <span class="badge badge-dark">{{ floodPrimaryStation.indicator_value }}</span>
+                            </span>
+                        </h6>
+                </b-card-text>
+            </b-card>
         </router-link>
     </div>
 </template>
@@ -104,7 +104,15 @@
         transition: .2s;
 
         &.bg-grey{
-            background-color: #d3d3d3;
+            background-color: #d2d2d2;
+        }
+
+        &.bg-success{
+            background-color: rgba(66, 203, 152, 0.89) !important;
+        }
+
+        &.bg-danger{
+            background-color: rgba(239, 83, 80, 0.84) !important;
         }
 
         span.title{
@@ -146,7 +154,6 @@
             border-radius: 10px;
             width: 20px;
             height: 20px;
-
         }
 
         .icon-alert-with-filters{
