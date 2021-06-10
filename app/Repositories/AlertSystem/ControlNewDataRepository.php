@@ -24,26 +24,7 @@ class ControlNewDataRepository extends EloquentRepository implements Repositorie
      */
     public function getUnsettledAlerts(string $alertCode): Collection
     {
-        try {
-            return $this->select('*')->where('alert_code', '=', $alertCode)->where('active', '=', true)->where('homogenization', '=', false)->get();
-        } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'ControlNewDataRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|AlertSystem|ControlNewDataRepository|getUnsettledAlerts|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $alertCode
-                ])
-            ]);
-            $log->save();
-            return new Collection;
-        }
+        return $this->select('*')->where('alert_code', '=', $alertCode)->where('active', '=', true)->where('homogenization', '=', false)->get();
     }
 
     /**
@@ -52,26 +33,6 @@ class ControlNewDataRepository extends EloquentRepository implements Repositorie
      */
     public function getUnsettledAlertsSpecific(string $alertCode, $alertsId): Collection
     {
-        try {
-            return $this->select('*')->where('alert_code', '=', $alertCode)->where('active', '=', true)->where('homogenization', '=', false)->whereIn('alert_id', $alertsId)->get();
-        } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'ControlNewDataRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|AlertSystem|ControlNewDataRepository|getUnsettledAlertsSpecific|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $alertCode,
-                    $alertsId
-                ])
-            ]);
-            $log->save();
-            return new Collection;
-        }
+        return $this->select('*')->where('alert_code', '=', $alertCode)->where('active', '=', true)->where('homogenization', '=', false)->whereIn('alert_id', $alertsId)->get();
     }
 }

@@ -10,6 +10,7 @@ use App\Repositories\Administrator\StationRepository;
 use App\Repositories\Administrator\StationTypeRepository;
 use App\Repositories\Administrator\ZoneRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
+use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\AlertSystem\PermissionRepository;
 use App\Repositories\AlertSystem\RoleRepository;
 use App\Repositories\AlertSystem\TrackingFloodAlertRepository;
@@ -157,29 +158,49 @@ class AccessAlertSystemController extends Controller
 
     public function includeTrackingInformation($stations, $typeAlertId, $repository)
     {
+        try {
+            foreach ($stations as $station) {
+                $trackingValues = $repository->getLastInformation($typeAlertId, $station->alert_id, $station->id); # TODO Esto hay que cambiarlo para que extraiga el ultimo dato pero teniendo en cuenta la ultima medicion
 
-        foreach ($stations as $station) {
-            $trackingValues = $repository->getLastInformation($typeAlertId, $station->alert_id, $station->id); # TODO Esto hay que cambiarlo para que extraiga el ultimo dato pero teniendo en cuenta la ultima medicion
-
-            if (is_null($trackingValues)) {
-                $station->tracking_values = false;
-            } else {
-                $station->tracking_values = true;
-                $station->secondary_calculate = $trackingValues->secondary_calculate;
-                $station->rainfall = $trackingValues->rainfall;
-                $station->water_level = $trackingValues->water_level;
-                $station->rainfall_recovered = $trackingValues->rainfall_recovered;
-                $station->indicator_value = $trackingValues->indicator_value;
-                $station->indicator_previous_difference = $trackingValues->indicator_previous_difference;
-                $station->alert_level = $trackingValues->alert_level;
-                $station->alert_tag = $trackingValues->alert_tag;
-                $station->alert_status = $trackingValues->alert_status;
-                $station->date_time_homogenization = $trackingValues->date_time_homogenization;
-                $station->error = $trackingValues->error;
-                $station->comment = $trackingValues->comment;
+                if (is_null($trackingValues)) {
+                    $station->tracking_values = false;
+                } else {
+                    $station->tracking_values = true;
+                    $station->secondary_calculate = $trackingValues->secondary_calculate;
+                    $station->rainfall = $trackingValues->rainfall;
+                    $station->water_level = $trackingValues->water_level;
+                    $station->rainfall_recovered = $trackingValues->rainfall_recovered;
+                    $station->indicator_value = $trackingValues->indicator_value;
+                    $station->indicator_previous_difference = $trackingValues->indicator_previous_difference;
+                    $station->alert_level = $trackingValues->alert_level;
+                    $station->alert_tag = $trackingValues->alert_tag;
+                    $station->alert_status = $trackingValues->alert_status;
+                    $station->date_time_homogenization = $trackingValues->date_time_homogenization;
+                    $station->error = $trackingValues->error;
+                    $station->comment = $trackingValues->comment;
+                }
             }
+            return $stations;
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'AccessAlertSystemController';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'Http|Controllers|API|AccessAlertSystemController|includeTrackingInformation|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $typeAlertId,
+                    $station->alert_id,
+                    $station->id
+                ])
+            ]);
+            $log->save();
+            return;
         }
-        return $stations;
     }
 
     public function userInformation(Request $request)
@@ -280,30 +301,50 @@ class AccessAlertSystemController extends Controller
      */
     public function getAllDataStationById(Request $request)
     {
-        $status = false;
-        $response = 'Consulta fallida';
-        $data = new \stdClass();
-        $data->stationData = $this->stationRepository->getAllDataStationById($request->id, $request->alertId, $request->stationType);
+        try {
+            $status = false;
+            $response = 'Consulta fallida';
+            $data = new \stdClass();
+            $data->stationData = $this->stationRepository->getAllDataStationById($request->id, $request->alertId, $request->stationType);
 
-        $date = new \stdClass();
-        $date->endDate = Carbon::now()->format('Y-m-d H:i:s');
-        $date->startDate = Carbon::now()->subMonth()->format('Y-m-d H:i:s');
-//        dd($date);
-        if ($request->stationType == 'flood') {
-            $data->tracking = $this->trackingFloodAlertRepository->getAllTrackinByStationId($request->id, $request->alertId, $date);
-        } else if ($request->stationType == 'landslide') {
-            $data->tracking = $this->trackingLandslideAlertRepository->getAllTrackinByStationId($request->id, $request->alertId, $date);
-        }
-        $data->dates = $date;
+            $date = new \stdClass();
+            $date->endDate = Carbon::now()->format('Y-m-d H:i:s');
+            $date->startDate = Carbon::now()->subMonth()->format('Y-m-d H:i:s');
 
-        if (isset($data->stationData) && isset($data->tracking)) {
-            $status = true;
-            $response = 'Consulta exitosa';
+            if ($request->stationType == 'flood') {
+                $data->tracking = $this->trackingFloodAlertRepository->getAllTrackinByStationId($request->id, $request->alertId, $date);
+            } else if ($request->stationType == 'landslide') {
+                $data->tracking = $this->trackingLandslideAlertRepository->getAllTrackinByStationId($request->id, $request->alertId, $date);
+            }
+            $data->dates = $date;
+
+            if (isset($data->stationData) && isset($data->tracking)) {
+                $status = true;
+                $response = 'Consulta exitosa';
+            }
+            return response()->json([
+                'status' => $status,
+                'message' => $response,
+                'data' => $data
+            ]);
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'AccessAlertSystemController';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'Http|Controllers|API|AccessAlertSystemController|getAllDataStationById|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $request->id,
+                    $request->alertId,
+                    $date
+                ])
+            ]);
+            $log->save();
         }
-        return response()->json([
-            'status' => $status,
-            'message' => $response,
-            'data' => $data
-        ]);
     }
 }
