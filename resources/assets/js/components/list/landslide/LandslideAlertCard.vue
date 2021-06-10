@@ -1,19 +1,26 @@
 <template>
-    <div class="col-md-5 alert-card-container" v-show="show && alert.active"><!-- v-show="show" -->
-        <router-link :to="{ name: 'Alert', params: { id: alert.id } }" v-on:click.native="panToLocation( alert )">
-            <div v-bind:class="[this.cardOptions[landslidePrimaryStation.alert_tag]]">
-                <span class="title">{{ alert.name }}</span>
-                <span class="address">
-                    <span class="street"> Alert City </span>
-                    <span class="city">  More information </span> <span class="state"> more information</span>
+    <div class="alert-card-container" v-show="show && alert.active">
+        <router-link :to="{ name: 'Alert', params: { id: landslidePrimaryStation.id } }" v-on:click.native="panToLocation( alert )" style="text-decoration: none; color: inherit;">
+            <b-card v-bind:class="[this.cardOptions[landslidePrimaryStation.alert_tag]]" class="col-md-5 m-2 border-75 shadow-lg rounded-75" style="height: 150px; border-radius: 10px">
+                <b-card-title class="title" style="font-size: 20px;">{{ alert.name }}</b-card-title>
 
-                </span>
-                <span class="pull-right"><img v-bind:src="`images/assets/alerts/landslide_alert_${this.iconColor}.png` " ></span>
-                <!--<span v-for="alert in station.alerts" :key="alert.id" class="address">
-                   <span>{{ alert.name }}</span> : <span>{{ (alert.value !== null) ? alert.value[alert.code.replace('alert-','')+'_value'] : '-' }}</span> <span class="pull-right alert-state" v-bind:style="{'background-color': getColorAlert((alert.value !== null) ? alert.value.alert : -1)}"></span>
-                   <br>
-                </span>-->
-            </div>
+                <b-card-text>
+                    <span class="address">
+                        <span class="city"> {{ landslidePrimaryStation.city }} </span>
+                    </span>
+                    <span class="pull-right"><img v-bind:src="`images/assets/alerts/landslide_alert_${this.iconColor}.png` " ></span>
+                </b-card-text>
+
+                <b-card-text class="small text-muted">
+                    <h6>
+                        <span class="address" v-show="landslidePrimaryStation.tracking_values">
+                            <span class="badge badge-dark">{{ landslidePrimaryStation.date_time_homogenization }}</span> :
+                            <span class="badge badge-dark">{{ landslidePrimaryStation.alert_status }}</span> |
+                            <span class="badge badge-dark">{{ landslidePrimaryStation.indicator_value }}</span>
+                        </span>
+                    </h6>
+                </b-card-text>
+            </b-card>
         </router-link>
     </div>
 </template>
@@ -100,13 +107,26 @@
         transform: scaleX(1) scaleY(1);
         transition: .2s;
 
-        &.bg-orange{
-            background-color: #ffc4a3;
+        &.bg-orange {
+            background-color: #ffc4a3 !important;
         }
 
         &.bg-grey{
-            background-color: #d3d3d3;
+            background-color: #d3d3d3 !important;
         }
+
+        &.bg-warning{
+            background-color: #ffff7a !important;
+        }
+
+        &.bg-success{
+            background-color: rgba(66, 203, 152, 0.89) !important;
+        }
+
+        &.bg-danger{
+            background-color: rgba(239, 83, 80, 0.84) !important;
+        }
+
         span.title{
             display: block;
             text-align: center;

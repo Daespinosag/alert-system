@@ -1,5 +1,5 @@
 <template>
-    <div id="flood-alert-list" class="flood-alert-list" v-show="floodListVisible">
+    <div id="flood-alert-list" class="flood-alert-list mt-5" v-show="floodListVisible">
         <flood-alert-card v-for="floodAlert in floodAlerts" :key="floodAlert.code" :alert="floodAlert"></flood-alert-card>
     </div>
 </template>
