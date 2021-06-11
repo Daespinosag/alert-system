@@ -134,26 +134,62 @@ class AccessAlertSystemController extends Controller
 
     public function landslideInformation()
     {
-        $landslideAlerts = $this->alertLandslideRepository->getAlerts();
-        $landslideStations = $this->includeDecimalCoordinates($this->stationRepository->getStationsAlertLandslideToMap());
-        $landslideStations = $this->includeTrackingInformation($landslideStations, 2, $this->trackingLandslideAlertRepository);
-        $nets = $this->netRepository->getNetsById($this->extractDistinctValuesToKey('net_id', $landslideStations));
-        $stationType = $this->stationTypeRepository->getStationTypeById($this->extractDistinctValuesToKey('station_type_id', $landslideStations));
-        $zones = $this->zoneRepository->getZonesById($this->extractDistinctValuesToKey('zone_id', $landslideAlerts));
+        try {
+            $landslideAlerts = $this->alertLandslideRepository->getAlerts();
+            $landslideStations = $this->includeDecimalCoordinates($this->stationRepository->getStationsAlertLandslideToMap());
+            $landslideStations = $this->includeTrackingInformation($landslideStations, 2, $this->trackingLandslideAlertRepository);
+            $nets = $this->netRepository->getNetsById($this->extractDistinctValuesToKey('net_id', $landslideStations));
+            $stationType = $this->stationTypeRepository->getStationTypeById($this->extractDistinctValuesToKey('station_type_id', $landslideStations));
+            $zones = $this->zoneRepository->getZonesById($this->extractDistinctValuesToKey('zone_id', $landslideAlerts));
 
-        return ['alerts' => $landslideAlerts, 'stations' => $landslideStations, 'nets' => $nets, 'stationType' => $stationType, 'zones' => $zones];
+            return ['alerts' => $landslideAlerts, 'stations' => $landslideStations, 'nets' => $nets, 'stationType' => $stationType, 'zones' => $zones];
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'AlertLandslideRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'Http|Controllers|API|AccessAlertSystemController|landslideInformation|No pudo recuperar las alertas';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+
+                ])
+            ]);
+            $log->save();
+        }
     }
 
     public function floodInformation()
     {
-        $floodAlerts = $this->alertFloodRepository->getAlerts();
-        $floodStations = $this->includeDecimalCoordinates($this->stationRepository->getStationsAlertFloodToMap());
-        $floodStations = $this->includeTrackingInformation($floodStations, 1, $this->trackingFloodAlertRepository);
-        $nets = $this->netRepository->getNetsById($this->extractDistinctValuesToKey('net_id', $floodStations));
-        $stationType = $this->stationTypeRepository->getStationTypeById($this->extractDistinctValuesToKey('station_type_id', $floodStations));
-        $basins = $this->basinRepository->getBasinsById($this->extractDistinctValuesToKey('basin_id', $floodAlerts));
+        try {
+            $floodAlerts = $this->alertFloodRepository->getAlerts();
+            $floodStations = $this->includeDecimalCoordinates($this->stationRepository->getStationsAlertFloodToMap());
+            $floodStations = $this->includeTrackingInformation($floodStations, 1, $this->trackingFloodAlertRepository);
+            $nets = $this->netRepository->getNetsById($this->extractDistinctValuesToKey('net_id', $floodStations));
+            $stationType = $this->stationTypeRepository->getStationTypeById($this->extractDistinctValuesToKey('station_type_id', $floodStations));
+            $basins = $this->basinRepository->getBasinsById($this->extractDistinctValuesToKey('basin_id', $floodAlerts));
 
-        return ['alerts' => $floodAlerts, 'stations' => $floodStations, 'nets' => $nets, 'stationType' => $stationType, 'basins' => $basins];
+            return ['alerts' => $floodAlerts, 'stations' => $floodStations, 'nets' => $nets, 'stationType' => $stationType, 'basins' => $basins];
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'BasinRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|Administrator|BasinRepository|getBasinsById|No pudo obtener los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $this
+                ])
+            ]);
+            $log->save();
+        }
     }
 
     public function includeTrackingInformation($stations, $typeAlertId, $repository)

@@ -27,25 +27,7 @@ class ZoneRepository extends EloquentRepository implements RepositoriesContract
      */
     protected function queryBuilder()
     {
-        try {
-            return DB::connection('administrator')->table('zone');
-        } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'ZoneRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|ZoneRepository|queryBuilder|No pudo conectarse';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                ])
-            ]);
-            $log->save();
-            return;
-        }
+        return DB::connection('administrator')->table('zone');
     }
 
     /**
@@ -54,25 +36,6 @@ class ZoneRepository extends EloquentRepository implements RepositoriesContract
      */
     public function getZonesById(array $zones): Collection
     {
-        try {
-            return $this->queryBuilder()->select('id', 'name', 'code', 'description', 'kml')->whereIn('id', $zones)->get();
-        } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'ZoneRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|ZoneRepository|getZonesById|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $zones
-                ])
-            ]);
-            $log->save();
-            return new Collection;
-        }
+        return $this->queryBuilder()->select('id', 'name', 'code', 'description', 'kml')->whereIn('id', $zones)->get();
     }
 }

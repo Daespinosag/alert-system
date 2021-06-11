@@ -6,6 +6,7 @@ use App\AlertSystem\Indicators\IndicatorContract;
 use App\Entities\Administrator\Station;
 use App\Entities\AlertSystem\ControlNewData;
 use App\Repositories\Administrator\StationRepository;
+use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\RepositoriesContract;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -83,6 +84,7 @@ class AlertBase
     private $alertRepository;
 
     public $config;
+
     /**
      * FloodAlert constructor.
      * @param RepositoriesContract $specificAlertRepository
@@ -106,20 +108,37 @@ class AlertBase
         $config = null
     )
     {
-        $this->specificAlertRepository = $specificAlertRepository;
-        $this->alertRepository = $alertRepository;
-        $this->alertCode = $alertCode;
-        $this->variableToValidate = $variableToValidate;
-        $this->controlNewData = $controlNewData;
-        $this->dateTime = $dateTime;
-        $this->initDateTime = $initDateTime;
-        $this->finalDateTime = $finalDateTime;
-        $this->config = $config;
-        $this->alert = $this->alertRepository->getAlert($this->controlNewData->alert_id);
-        $this->stationRepository = new StationRepository(); # TODO Esto debe ser dinamico
-        $this->primaryStation = $this->getStationAlert(true)[0]; # TODO Validar que hacer cuando no se encuentra estacion primaria
-        $this->primaryStationAlert = $this->createStation($this->primaryStation);
-
+        try {
+            $this->specificAlertRepository = $specificAlertRepository;
+            $this->alertRepository = $alertRepository;
+            $this->alertCode = $alertCode;
+            $this->variableToValidate = $variableToValidate;
+            $this->controlNewData = $controlNewData;
+            $this->dateTime = $dateTime;
+            $this->initDateTime = $initDateTime;
+            $this->finalDateTime = $finalDateTime;
+            $this->config = $config;
+            $this->alert = $this->alertRepository->getAlert($this->controlNewData->alert_id);
+            $this->stationRepository = new StationRepository(); # TODO Esto debe ser dinamico
+            $this->primaryStation = $this->getStationAlert(true)[0]; # TODO Validar que hacer cuando no se encuentra estacion primaria
+            $this->primaryStationAlert = $this->createStation($this->primaryStation);
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'AlertBaseRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|AlertSystem|AlertBaseRepository|getAlert|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $this
+                ])
+            ]);
+            $log->save();
+        }
     }
 
     /**
@@ -139,7 +158,28 @@ class AlertBase
     public
     function getStationAlert(bool $primary = false): Collection
     {
-        return $this->stationRepository->getStationsAlerts($this->alertCode, $this->controlNewData->alert_id, $primary);
+        try {
+            return $this->stationRepository->getStationsAlerts($this->alertCode, $this->controlNewData->alert_id, $primary);
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'StationRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|Administrator|StationRepository|getStationsAlerts|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $this->alertCode,
+                    $this->controlNewData->alert_id,
+                    $primary
+                ])
+            ]);
+            $log->save();
+            return new Collection;
+        }
     }
 
     /**

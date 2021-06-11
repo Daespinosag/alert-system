@@ -267,104 +267,82 @@ class StationRepository extends EloquentRepository
      */
     public function getStationsAlerts(string $alertCode, int $alertId, bool $primary = false): Collection
     {
-        try {
-            return $this->queryBuilder()
-                ->select(
-                    'station.id as station_sk',
-                    'net.id as net_id',
-                    'station.name as station_name',
-                    'net.name as net_name',
-                    'connection.name as connection_name',
-                    'station.table_db_name as station_table',
-                    'station_type.code as station_type_code',
-                    'station_' . $alertCode . '_alert.primary as station_alert_primary',
-                    'station_' . $alertCode . '_alert.active as station_alert_active',
-                    'station_' . $alertCode . '_alert.visible as station_alert_visible',
-                    'station_' . $alertCode . '_alert.distance as station_alert_distance'
-                )
-                ->join('station_' . $alertCode . '_alert', 'station_' . $alertCode . '_alert.station_id', '=', 'station.id')
-                ->join('net', 'net.id', '=', 'station.net_id')
-                ->join('connection', 'connection.id', '=', 'net.connection_id')
-                ->join('station_type', 'station_type.id', '=', 'station.station_type_id')
-                ->where('station_' . $alertCode . '_alert.primary', '=', $primary)
-                ->where('station_' . $alertCode . '_alert.' . $alertCode . '_alert_id', '=', $alertId)
-                ->where('station_' . $alertCode . '_alert.active', '=', true)
-                ->where('station_' . $alertCode . '_alert.visible', '=', true)
-                ->where('station.active', '=', true)
-                ->where('station.rt_active', '=', true)
-                ->orderBY('station.id')
-                ->get();
-        } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'StationRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|StationRepository|getStationsAlerts|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $alertCode,
-                    $alertId,
-                    $primary
-                ])
-            ]);
-            $log->save();
-            return new Collection;
-        }
+        return $this->queryBuilder()
+            ->select(
+                'station.id as station_sk',
+                'net.id as net_id',
+                'station.name as station_name',
+                'net.name as net_name',
+                'connection.name as connection_name',
+                'station.table_db_name as station_table',
+                'station_type.code as station_type_code',
+                'station_' . $alertCode . '_alert.primary as station_alert_primary',
+                'station_' . $alertCode . '_alert.active as station_alert_active',
+                'station_' . $alertCode . '_alert.visible as station_alert_visible',
+                'station_' . $alertCode . '_alert.distance as station_alert_distance'
+            )
+            ->join('station_' . $alertCode . '_alert', 'station_' . $alertCode . '_alert.station_id', '=', 'station.id')
+            ->join('net', 'net.id', '=', 'station.net_id')
+            ->join('connection', 'connection.id', '=', 'net.connection_id')
+            ->join('station_type', 'station_type.id', '=', 'station.station_type_id')
+            ->where('station_' . $alertCode . '_alert.primary', '=', $primary)
+            ->where('station_' . $alertCode . '_alert.' . $alertCode . '_alert_id', '=', $alertId)
+            ->where('station_' . $alertCode . '_alert.active', '=', true)
+            ->where('station_' . $alertCode . '_alert.visible', '=', true)
+            ->where('station.active', '=', true)
+            ->where('station.rt_active', '=', true)
+            ->orderBY('station.id')
+            ->get();
     }
 
     public function getAllStationFlood()
     {
-        try {
-            return $this->queryBuilder()
-                ->select(
-                    'station.id as station_sk',
-                    'net.id as net_id',
-                    'station.name as station_name',
-                    'net.name as net_name',
-                    'connection.name as connection_name',
-                    'station.table_db_name as station_table',
-                    'station_type.code as station_type_code',
-                    'station_flood_alert.primary as station_alert_primary'
-                )
-                ->join('station_flood_alert', 'station_flood_alert.station_id', '=', 'station.id')
-                ->join('net', 'net.id', '=', 'station.net_id')
-                ->join('connection', 'connection.id', '=', 'net.connection_id')
-                ->join('station_type', 'station_type.id', '=', 'station.station_type_id')
-                //->where('station_landslide_alert.landslide_alert_id','=',1)
-                ->where('station_flood_alert.active', '=', true)
-                ->where('station_flood_alert.visible', '=', true)
-                ->where('station.active', '=', true)
-                ->where('station.rt_active', '=', true)
-                ->orderBY('station.id')
-                ->get();
-        } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'StationRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|StationRepository|getAllStationFlood|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                ])
-            ]);
-            $log->save();
-            return;
-        }
+        return $this->queryBuilder()
+            ->select(
+                'station.id as station_sk',
+                'net.id as net_id',
+                'station.name as station_name',
+                'net.name as net_name',
+                'connection.name as connection_name',
+                'station.table_db_name as station_table',
+                'station_type.code as station_type_code',
+                'station_flood_alert.primary as station_alert_primary'
+            )
+            ->join('station_flood_alert', 'station_flood_alert.station_id', '=', 'station.id')
+            ->join('net', 'net.id', '=', 'station.net_id')
+            ->join('connection', 'connection.id', '=', 'net.connection_id')
+            ->join('station_type', 'station_type.id', '=', 'station.station_type_id')
+            //->where('station_landslide_alert.landslide_alert_id','=',1)
+            ->where('station_flood_alert.active', '=', true)
+            ->where('station_flood_alert.visible', '=', true)
+            ->where('station.active', '=', true)
+            ->where('station.rt_active', '=', true)
+            ->orderBY('station.id')
+            ->get();
     }
 
     public function getAllDataStationById($stationId, $alertId, $alertType)
     {
-        try {
-            $data = $this->queryBuilder()
-                ->select(
+        $data = $this->queryBuilder()
+            ->select(
+                'station.id',
+                'station.name',
+                'station.city',
+                'station.localization',
+                'station.basin',
+                'station.sub_basin',
+                'station_type.name as name_type',
+                'station_type.code',
+                'station_type.description')
+            ->join('net', 'net.id', '=', 'station.net_id')
+            ->join('station_type', 'station_type.id', '=', 'station.station_type_id')
+            ->where('station.id', '=', $stationId)
+            ->get();
+
+        for ($i = 0; $i < count($data); $i++) {
+
+            if ($alertType == 'flood') {
+                $data[$i]->StationsSeconds = $this->queryBuilder()->select(
                     'station.id',
                     'station.name',
                     'station.city',
@@ -374,67 +352,29 @@ class StationRepository extends EloquentRepository
                     'station_type.name as name_type',
                     'station_type.code',
                     'station_type.description')
-                ->join('net', 'net.id', '=', 'station.net_id')
-                ->join('station_type', 'station_type.id', '=', 'station.station_type_id')
-                ->where('station.id', '=', $stationId)
-                ->get();
-
-            for ($i = 0; $i < count($data); $i++) {
-
-                if ($alertType == 'flood') {
-                    $data[$i]->StationsSeconds = $this->queryBuilder()->select(
-                        'station.id',
-                        'station.name',
-                        'station.city',
-                        'station.localization',
-                        'station.basin',
-                        'station.sub_basin',
-                        'station_type.name as name_type',
-                        'station_type.code',
-                        'station_type.description')
-                        ->join('station_type', 'station_type.id', '=', 'station.station_type_id')
-                        ->join('station_flood_alert', 'station_flood_alert.station_id', '=', 'station.id')
-                        ->where('station_flood_alert.flood_alert_id', '=', $alertId)
-                        ->where('station_flood_alert.primary', '=', 'false')
-                        ->get();
-                } else if ($alertType == 'landslide') {
-                    $data[$i]->StationsSeconds = $this->queryBuilder()->select(
-                        'station.id',
-                        'station.name',
-                        'station.city',
-                        'station.localization',
-                        'station.basin',
-                        'station.sub_basin',
-                        'station_type.name as name_type',
-                        'station_type.code',
-                        'station_type.description')
-                        ->join('station_type', 'station_type.id', '=', 'station.station_type_id')
-                        ->join('station_landslide_alert', 'station_landslide_alert.station_id', '=', 'station.id')
-                        ->where('station_landslide_alert.flood_alert_id', '=', $alertId)
-                        ->where('station_landslide_alert.primary', '=', 'false')
-                        ->get();
-                }
+                    ->join('station_type', 'station_type.id', '=', 'station.station_type_id')
+                    ->join('station_flood_alert', 'station_flood_alert.station_id', '=', 'station.id')
+                    ->where('station_flood_alert.flood_alert_id', '=', $alertId)
+                    ->where('station_flood_alert.primary', '=', 'false')
+                    ->get();
+            } else if ($alertType == 'landslide') {
+                $data[$i]->StationsSeconds = $this->queryBuilder()->select(
+                    'station.id',
+                    'station.name',
+                    'station.city',
+                    'station.localization',
+                    'station.basin',
+                    'station.sub_basin',
+                    'station_type.name as name_type',
+                    'station_type.code',
+                    'station_type.description')
+                    ->join('station_type', 'station_type.id', '=', 'station.station_type_id')
+                    ->join('station_landslide_alert', 'station_landslide_alert.station_id', '=', 'station.id')
+                    ->where('station_landslide_alert.flood_alert_id', '=', $alertId)
+                    ->where('station_landslide_alert.primary', '=', 'false')
+                    ->get();
             }
-            return $data;
-        } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'StationRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|StationRepository|getAllDataStationById|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $stationId,
-                    $alertId,
-                    $alertType
-                ])
-            ]);
-            $log->save();
-            return;
         }
+        return $data;
     }
 }

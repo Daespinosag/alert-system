@@ -26,26 +26,7 @@ class ConnectionRepository extends EloquentRepository implements RepositoriesCon
      */
     public function getStationsNotIn($variables)
     {
-        try {
-            return $this->select('*')->whereNotIn('id', $variables)->get();
-        } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'ConnectionRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|ConnectionRepository|getStationsNotIn|No pudo obtener los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $variables
-                ])
-            ]);
-            $log->save();
-            return;
-        }
+        return $this->select('*')->whereNotIn('id', $variables)->get();
     }
 
     /**
@@ -53,24 +34,6 @@ class ConnectionRepository extends EloquentRepository implements RepositoriesCon
      */
     public function searchEtlActive()
     {
-        try {
-            return $this->select('*')->where('etl_active', true)->get();
-        } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'ConnectionRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|ConnectionRepository|searchEtlActive|No pudo obtener los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                ])
-            ]);
-            $log->save();
-            return;
-        }
+        return $this->select('*')->where('etl_active', true)->get();
     }
 }
