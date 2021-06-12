@@ -304,7 +304,7 @@ img {
     width: 10px;
 }
 
-.alert-dates,.alert-diff, .alert-value{
+.alert-dates,.alert-diff, .alert-value, .indicator-value{
     font-family:sans-serif;
     font-size: 80%;
 }

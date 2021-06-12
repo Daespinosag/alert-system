@@ -13,16 +13,20 @@
                                 <td class="title-alert-metadata">Valor Alerta: </td>
                                 <td>{{ $valueAlert or '-' }}</td>
                             </tr>
+                            <tr class="indicator-value">
+                                <td class="title-alert-metadata">Valor Indicador: </td>
+                                <td>{{ $indicatorValue or '-' }}</td>
+                            </tr>
                             <tr  class="alert-diff">
                                 <td class="title-alert-metadata">Diferencia Anterior: </td>
                                 <td>{{ $previousDeference or '-' }}</td>
                             </tr>
                             <tr class="alert-dates">
-                                <td class="title-alert-metadata">Fecha Final: </td>
+                                <td class="title-alert-metadata">Fecha Inicial: </td>
                                 <td>{{ $initialDate or '-' }}</td>
                             </tr>
                             <tr class="alert-dates">
-                                <td class="title-alert-metadata">Fecha Inicial: </td>
+                                <td class="title-alert-metadata">Fecha Final: </td>
                                 <td>{{ $finalDate or '-' }}</td>
                             </tr>
                         </table>
