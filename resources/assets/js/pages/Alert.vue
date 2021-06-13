@@ -4,7 +4,7 @@
             <b-sidebar id="sidebar-right" right shadow visible="true" width="550px">
                 <div class="px-3 py-2">
                     <b-tabs content-class="mt-3">
-                        <b-tab title="Informacigión estación" active>
+                        <b-tab title="Información estación" active>
                             <b-card :title="`Estación ${stationData.data.stationData[0].id}`">
                                 <b-card-text>
                                     <b-container>
