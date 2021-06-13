@@ -127,6 +127,9 @@
             background-color: rgba(239, 83, 80, 0.84) !important;
         }
 
+        &.bg-grey{
+            background-color: #d3d3d3;
+        }
         span.title{
             display: block;
             text-align: center;

@@ -56,12 +56,12 @@ window.Echo = new Echo({
     encrypted: true
 });
 
+import Vue from 'vue';
+
 import router from './router'
 import store from './store'
 
 Vue.config.devtools = true;
-
-import Vue from 'vue';
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 

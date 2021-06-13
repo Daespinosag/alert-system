@@ -8,7 +8,6 @@
             <div class="col-md-12 mb-5 mt-5" id="text-container">
                 <input type="text" class="search-filters form-control" v-model="textSearch" placeholder="Buscar Estaciones"/>
             </div>
-
             <div class="col-md-12 m-1" id="flood-layer-toggle">
                 <div class="col-md-5 m-1 shadow p-3 bg-white">
                     <h4>Alertas Inundación</h4>
@@ -40,7 +39,6 @@
                     <b-form-checkbox v-model="landslidePolygonsVisible" name="landslide-polygons-visible" switch size="mg">
                         Poligonos de alertas de deslizamiento
                     </b-form-checkbox>
-
                 </div>
             </div>
 
@@ -49,38 +47,6 @@
                     Alerta Sonora
                 </b-form-checkbox>
             </div>
-
-            <!--<div id="col-md-12 location-type-container " v-if="alerts.length > 1">
-                <div class="">
-                    <label class="filter-label">Tipos de alertas</label>
-                </div>
-
-                <div class="">
-                    <div class="location-filter all-locations" v-bind:class="{ 'active': activeAlertFilter === 'all' }" v-on:click="setActiveAlertFilter('all')" >
-                        Todas
-                    </div>
-                    <div class="location-filter" v-on:click="toggleAlertFilter( alert.code )" v-bind:class="{'active' : activeAlertFilter === alert.code}" v-for="alert in alerts">
-                        {{ alert.table }}
-                    </div>
-                </div>
-            </div>-->
-
-            <!-- <div id="brew-methods-container">
-                <div class="grid-x grid-padding-x">
-                    <div class="large-12 medium-12 small-12 cell">
-                        <label class="filter-label">Tipos de Estaciones</label>
-                    </div>
-                </div>
-                <div class="col-md-offset-1 col-md-10">
-                    <div class="brew-method" v-on:click="toggleTypeStationFilter( type.code )" v-bind:class="{'active' : activeTypeStationFilter.indexOf(type.code) >= 0 }" v-for="type in typeStation">
-                        <div class="brew-method-container">
-                            <img v-bind:src="'images/alert-icons/type-station-icon.svg'" class="brew-method-icon"/>
-                            <span class="brew-method-name">{{ type.name }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </transition>
 </template>
@@ -195,6 +161,7 @@
             },*/
             /*toggleLandslidePolygons(){
                 this.$store.dispatch('toggleLandslidePolygonsVisible', {landslidePolygonsVisible: !this.landslidePolygonsVisible});
+<<<<<<< HEAD
             },*/
             /*toggleSoundAlert(){
                 EventBus.$emit("sound-enabled", {muted: this.soundAlertEnabled});

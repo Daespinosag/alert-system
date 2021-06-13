@@ -6,6 +6,9 @@ import FloodStation from "../models/alerts/flood/floodStation";
 import Basin from "../models/alerts/flood/Basin";
 
 export const floodModule = {
+    state: {
+        currentStationInfo: null
+    },
     actions: {
         initFloodInformation( { commit } ){
             return new Promise((resolve, reject) => {
@@ -25,7 +28,15 @@ export const floodModule = {
                     })
             })
         },
-        updateFloodInformation({ commit }, tracking){
+        currentStationData( { commit }, stationData){
+            return new Promise( ((resolve, reject) => {
+                loadAPI.currentStationInfo(stationData)
+                    .then(function (response) {
+                        commit('setCurrentStationData', response.data);
+                    })
+            }))
+        },
+         updateFloodInformation({ commit }, tracking){
             return new Promise(((resolve) => {
                 resolve([
                     commit('updateTackingAlert', { model: FloodStation, data: tracking })
@@ -34,9 +45,13 @@ export const floodModule = {
         }
     },
     mutations: {
-
+        setCurrentStationData(state, stationData){
+            state.currentStationInfo = stationData;
+        }
     },
     getters:{
-
+        getCurrentStationData(state){
+            return state.currentStationInfo;
+        }
     }
 }
