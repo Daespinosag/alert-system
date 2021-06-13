@@ -24,6 +24,13 @@ export const floodModule = {
                         reject(error)
                     })
             })
+        },
+        updateFloodInformation({ commit }, tracking){
+            return new Promise(((resolve) => {
+                resolve([
+                    commit('updateTackingAlert', { model: FloodStation, data: tracking })
+                ]);
+            }))
         }
     },
     mutations: {
@@ -32,6 +39,4 @@ export const floodModule = {
     getters:{
 
     }
-
-
 }
