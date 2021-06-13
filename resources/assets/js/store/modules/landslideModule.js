@@ -4,6 +4,7 @@ import Zone from "../models/alerts/landslide/zone";
 import StationType from "../models/alerts/stationType";
 import LandslideStation from "../models/alerts/landslide/landslideStation";
 import LandslideAlert from "../models/alerts/landslide/landslideAlert";
+import FloodStation from "../models/alerts/flood/floodStation";
 
 export const landslideModule = {
     actions: {
@@ -24,6 +25,13 @@ export const landslideModule = {
                         reject(error)
                     })
             })
+        },
+        updateLandslideInformation({ commit }, tracking){
+            return new Promise(((resolve) => {
+                resolve([
+                    commit('updateTackingAlert', { model: LandslideStation, data: tracking })
+                ]);
+            }))
         }
     },
     mutations: {
