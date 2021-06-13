@@ -55,6 +55,11 @@ window.Echo = new Echo({
     cluster: 'eu',
     encrypted: true
 });
+<<<<<<< HEAD
+=======
+
+import Vue from 'vue';
+>>>>>>> e97c2fdf55d9dc054d49cd5fd45b26786e84e7d0
 
 import router from './router'
 import store from './store'
