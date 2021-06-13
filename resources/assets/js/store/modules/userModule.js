@@ -38,6 +38,9 @@ export const userModule = {
                     model.commit((state) => { state.loadStatus = 3})
                     console.log('Oops: '+ model.entity + ' no se pudo cargar')
                 })
+        },
+        updateTackingAlert(state,status){
+            status.model.update({ where: status.data.id, data : status.data });
         }
     },
     getters:{

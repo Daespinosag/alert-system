@@ -36,7 +36,13 @@ export const floodModule = {
                     })
             }))
         },
-
+         updateFloodInformation({ commit }, tracking){
+            return new Promise(((resolve) => {
+                resolve([
+                    commit('updateTackingAlert', { model: FloodStation, data: tracking })
+                ]);
+            }))
+        }
     },
     mutations: {
         setCurrentStationData(state, stationData){
@@ -48,6 +54,4 @@ export const floodModule = {
             return state.currentStationInfo;
         }
     }
-
-
 }
