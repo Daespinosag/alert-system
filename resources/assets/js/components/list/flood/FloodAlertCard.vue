@@ -104,7 +104,6 @@
         transition: .2s;
 
         &.bg-grey{
-<<<<<<< HEAD
             background-color: #d2d2d2;
         }
 
@@ -114,9 +113,6 @@
 
         &.bg-danger{
             background-color: rgba(239, 83, 80, 0.84) !important;
-=======
-            background-color: #d3d3d3;
->>>>>>> e97c2fdf55d9dc054d49cd5fd45b26786e84e7d0
         }
 
         span.title{

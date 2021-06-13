@@ -8,8 +8,6 @@
             <div class="col-md-12 mb-5 mt-5" id="text-container">
                 <input type="text" class="search-filters form-control" v-model="textSearch" placeholder="Buscar Estaciones"/>
             </div>
-<<<<<<< HEAD
-
             <div class="col-md-12 m-1" id="flood-layer-toggle">
                 <div class="col-md-5 m-1 shadow p-3 bg-white">
                     <h4>Alertas Inundación</h4>
@@ -120,17 +118,12 @@
                 get(){ return this.$store.getters.getLandslidePolygonsVisible; },
                 set(value){ this.$store.dispatch('toggleLandslidePolygonsVisible', { landslidePolygonsVisible: value }); }
             },
-<<<<<<< HEAD
             soundAlertEnabled: {
                 get(){ return this.$store.getters.getSoundAlertEnabled; },
                 set(value){
                     EventBus.$emit("sound-enabled", {muted: !value });
                     this.$store.dispatch('toggleSoundAlert', {soundAlertEnabled: value});
                 }
-=======
-            soundAlertEnabled(){
-                return this.$store.getters.getSoundAlertEnabled;
->>>>>>> e97c2fdf55d9dc054d49cd5fd45b26786e84e7d0
             }
 
         },
@@ -174,13 +167,6 @@
                 EventBus.$emit("sound-enabled", {muted: this.soundAlertEnabled});
                 this.$store.dispatch('toggleSoundAlert', {soundAlertEnabled: !this.soundAlertEnabled});
             },*/
-=======
-            },
-            toggleSoundAlert(){
-                EventBus.$emit("sound-enabled", {muted: this.soundAlertEnabled});
-                this.$store.dispatch('toggleSoundAlert', {soundAlertEnabled: !this.soundAlertEnabled});
-            },
->>>>>>> e97c2fdf55d9dc054d49cd5fd45b26786e84e7d0
 
             clearFilters(){
                 this.textSearch = '';

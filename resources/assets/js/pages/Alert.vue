@@ -1,7 +1,6 @@
 <template>
-        <div>
-        <b-button ref="controlButton" style="display: none" v-b-toggle.sidebar-right ></b-button>
-            <b-sidebar id="sidebar-right" right shadow visible="true" width="550px">
+        <div v-if="stationData">
+            <b-sidebar id="sidebar-right" right shadow :visible="true" width="550px" ref="sidebarAlert">
                 <div class="px-3 py-2">
                     <b-tabs content-class="mt-3">
                         <b-tab title="Información estación" active>
@@ -39,19 +38,19 @@
                                             <b-col><p><b>Descripción:</b> {{stationData.data.stationData[0].description}}</p></b-col>
                                         </b-row>
                                         <b-row>
-                                            <b-col><charts></charts></b-col>
+                                            <b-col>
+                                                <charts
+                                                    :title="`Indicadores para estación ${stationData.data.stationData[0].id}`"
+                                                    y-axis="Nivel prueba"
+                                                    :series="stationData.data.tracking">
+                                                </charts>
+                                            </b-col>
                                         </b-row>
                                     </b-container>
-
                                 </b-card-text>
-
                             </b-card>
-
-                            <b-container>
-
-                            </b-container>
-
                         </b-tab>
+
                         <b-tab title="Estaciones secundarias">
                             <b-card v-for="station in stationData.data.stationData[0].StationsSeconds" :key="station.id" :title="`Estación ${station.id}`">
                                 <b-card-text>
@@ -90,13 +89,11 @@
                                 </b-card-text>
                             </b-card>
                         </b-tab>
-
                     </b-tabs>
                 </div>
             </b-sidebar>
         </div>
 </template>
-
 
 <script>
     import Charts from "../components/alerts/Charts";
@@ -105,32 +102,31 @@
         name: 'Alert',
         data(){
             return {
+                visible: false,
             }
         },
         components:{
           charts: Charts
         },
+        create(){
+            this.$refs.sidebarAlert.visible = true;
+        },
         watch:{
             '$route.params.id': function () {
-                this.$refs.controlButton.click();
-                this.$store.dispatch('currentStationData', {
-                    "id": 31,
-                    "alertId": 4,
-                    "stationType": "flood"
-                });
+                this.$refs.sidebarAlert.visible = true;
+                this.$store.dispatch('currentStationData', this.$attrs);
             },
         },
         mounted() {
-            this.$store.dispatch('currentStationData',{
-                "id": 31,
-                "alertId": 4,
-                "stationType": "flood"
-            });
+            this.$store.dispatch('currentStationData',this.$attrs);
         },
         computed: {
             stationData(){
                 return this.$store.getters.getCurrentStationData;
             }
+        },
+        destroy() {
+            this.$refs.sidebarAlert.visible = false;
         },
 
        methods:{

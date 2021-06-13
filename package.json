@@ -36,11 +36,7 @@
         "dotenv": "^10.0.0",
         "fecha": "^2.3.2",
         "fs": "0.0.1-security",
-<<<<<<< HEAD
         "highcharts": "^9.0.0",
-=======
-        "highcharts": "^7.2.2",
->>>>>>> e97c2fdf55d9dc054d49cd5fd45b26786e84e7d0
         "highcharts-vue": "^1.2.0",
         "laravel-echo": "^1.4.0",
         "leaflet": "^1.6.0",
