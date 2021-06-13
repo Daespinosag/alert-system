@@ -19,7 +19,7 @@ export default new VueRouter({
                     component: PrintAlerts,
                     children: [
                         {
-                            path: ':id',
+                            path: 'Alert/:id',
                             name: 'Alert',
                             component: Vue.component( 'Alert', require( '../pages/Alert' ).default ),
                             props: true,
