@@ -36,7 +36,6 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
 
     public function execute()
     {
-
         foreach ($this->alerts as $alert) {
             $alert->execute();
         }

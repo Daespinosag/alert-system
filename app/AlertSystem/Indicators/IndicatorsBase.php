@@ -2,6 +2,7 @@
 
 namespace App\AlertSystem\Indicators;
 
+use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\RepositoriesContract;
 use Carbon\Carbon;
 
@@ -80,6 +81,7 @@ class IndicatorsBase
 
     protected function generateRageDateTime()
     {
+
         # Se calcula la fecha homogenizada para el calculo del indicador
         $this->actualTracking->date_time_homogenization = $this->value->dateTime;
 
@@ -91,6 +93,7 @@ class IndicatorsBase
 
         # Se calcula la fecha inicial para el calculo del indicador
         $this->beforeDateTime = (Carbon::parse($this->value->dateTime))->addSeconds(-$this->period * 60)->format('Y-m-d H:i:s');
+
     }
 
     /**
@@ -117,12 +120,33 @@ class IndicatorsBase
 
     protected function getBeforeIndicatorTracking()
     {
-        $this->beforeIndicatorTracking = $this->trackingTableRepository->getFromDate(
-            $this->beforeDateTime,
-            $this->actualTracking->sup_id,
-            $this->actualTracking->alert_id,
-            $this->actualTracking->primary_station_id
-        );
+        try {
+            $this->beforeIndicatorTracking = $this->trackingTableRepository->getFromDate(
+                $this->beforeDateTime,
+                $this->actualTracking->sup_id,
+                $this->actualTracking->alert_id,
+                $this->actualTracking->primary_station_id
+            );
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'IndicatorsBase';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Indicators|IndicatorsBase|getBeforeIndicatorTracking|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $this->beforeDateTime,
+                    $this->actualTracking->sup_id,
+                    $this->actualTracking->alert_id,
+                    $this->actualTracking->primary_station_id
+                ])
+            ]);
+            $log->save();
+        }
     }
 
     protected function calculatePartialIndicator()

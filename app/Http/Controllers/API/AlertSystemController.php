@@ -10,6 +10,7 @@ use App\Repositories\Administrator\StationRepository;
 use App\Repositories\AlertSystem\FloodRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
 use App\Repositories\Administrator\StationTypeRepository;
+use App\Repositories\AlertSystem\LogsRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\AlertSystem\Alerts\FloodAlert;
@@ -196,22 +197,58 @@ class AlertSystemController extends Controller
      */
     public function getNets()
     {
-        return $this->netRepository->getNets();
+        try {
+            return $this->netRepository->getNets();
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'NetRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|Administrator|NetRepository|getNets|No pudo obtener los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                ])
+            ]);
+            $log->save();
+            return;
+        }
     }
 
 
     public function getAlerts(Request $request)
     {
-        $permissions = $request->get('permissions');
-        $arr = [];
+        try {
+            $permissions = $request->get('permissions');
+            $arr = [];
 
-        foreach ($permissions as $permission) {
-            if ($permission['pivot']['active'] and $permission['type'] == 'permission-alert') {
-                array_push($arr, str_replace("permission-", "alert-", $permission['code']));
+            foreach ($permissions as $permission) {
+                if ($permission['pivot']['active'] and $permission['type'] == 'permission-alert') {
+                    array_push($arr, str_replace("permission-", "alert-", $permission['code']));
+                }
             }
-        }
 
-        return (count($arr) > 0) ? $this->alertRepository->getAlertsWhereIn($arr) : null;
+            return (count($arr) > 0) ? $this->alertRepository->getAlertsWhereIn($arr) : null;
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'AlertRepository';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|Repositories|Administrator|AlertRepository|getAlertsWhereIn|No pudo recuperar las alertas';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $this
+                ])
+            ]);
+            $log->save();
+        }
     }
 
     public function getTypeStation()

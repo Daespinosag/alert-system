@@ -13,7 +13,7 @@ class ExtractBase
     /**
      * @var string
      */
-    protected $connection;
+    public $connection = false;
     /**
      * @var string
      */

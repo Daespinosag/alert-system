@@ -13,17 +13,17 @@ class StationAlert
     /**
      * @var Station
      */
-    private $station;
+    public $station;
 
     /**
      * @var Carbon
      */
-    private $initDateTime;
+    public $initDateTime;
 
     /**
      * @var Carbon
      */
-    private $finalDateTime;
+    public $finalDateTime;
 
     /**
      * @var
@@ -32,7 +32,7 @@ class StationAlert
     /**
      * @var Carbon
      */
-    private $dateTime;
+    public $dateTime;
 
     /**
      * @var Homogenization

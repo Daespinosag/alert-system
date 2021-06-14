@@ -10,7 +10,8 @@
     'previousDeference' => $item->indicator_previous_difference,
     'initialDate'       => $item->date_time_initial,
     'finalDate'         => $item->date_time_final,
-    'alertStatus'       => $item->alert_status
+    'alertStatus'       => $item->alert_status,
+    'indicatorValue'       => $item->indicator_value
 ])
 @endcomponent
 @endforeach

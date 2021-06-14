@@ -24,21 +24,21 @@ class CreateTrackingFloodAlert extends Migration
 
             $table->float('rainfall')->nullable();
             $table->float('water_level')->nullable();
-            $table->float('rainfall_recovered')->nullable();
+            $table->float('rainfall_recovered')->nullable();// defecto error 0
 
             $table->float('indicator_value')->nullable();
             $table->float('indicator_previous_difference')->nullable();
 
             $table->integer('alert_level')->default(0);
-            $table->enum('alert_tag',['green','yellow','orange','red'])->nullable();
-            $table->enum('alert_status',['equal','increase','decrease'])->nullable();
+            $table->enum('alert_tag',['green','yellow','orange','red'])->nullable();// defecto error green
+            $table->enum('alert_status',['equal','increase','decrease'])->nullable();// defecto error equal
 
             $table->dateTime('date_time_homogenization')->nullable();
             $table->dateTime('date_time_execution')->nullable();
             $table->dateTime('date_time_initial')->nullable();
             $table->dateTime('date_time_final')->nullable();
 
-            $table->enum('error',['communication','no_data','calculation'])->nullable();
+            $table->enum('error',['communication','no_data','no_homogenization','calculation'])->nullable();
             $table->string('comment')->nullable();
 
             $table->timestamps();
