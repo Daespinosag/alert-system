@@ -77,8 +77,8 @@
             highcharts: Chart,
         },
         mounted(){
-            this.chartOptions.series[0].data = this.getSeriesArray("rainfall");
-            this.chartOptions.series[1].data = this.getSeriesArray("indicator_value");
+            this.chartOptions.series[0].data = this.getSeriesArray("indicator_value");
+            this.chartOptions.series[1].data = this.getSeriesArray("rainfall");
         },
         computed:{
 
