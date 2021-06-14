@@ -4,6 +4,7 @@ namespace App\AlertSystem\AlertsV2;
 
 use App\AlertSystem\Indicators\A25Indicator;
 use App\Entities\AlertSystem\ControlNewData;
+use App\Entities\AlertSystem\TrackingLandslideAlert;
 use App\Events\AlertLandslideEvent;
 use App\Repositories\Administrator\AlertLandslideRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
@@ -66,7 +67,37 @@ class LandslideAlert extends AlertBase implements AlertContract
             return;
         }
 
-        #dd('No fue posible calcular el indicador de inundacion');
+        #se guarda el registro de igual forma si se tuvieron errores
+        $this->actualTracking = new TrackingLandslideAlert();
+        $this->actualTracking->sup_id = 2;
+        $this->actualTracking->alert_id = $this->primaryStationAlert->station->net_id;
+        $this->actualTracking->primary_station_id = $this->primaryStationAlert->station->station_sk;
+        $this->actualTracking->rainfall_recovered = 0;
+        $this->actualTracking->alert_tag = 'green';
+        $this->actualTracking->alert_status = 'equal';
+        $this->actualTracking->date_time_homogenization = $this->primaryStationAlert->dateTime;
+        $this->actualTracking->date_time_initial = $this->primaryStationAlert->initDateTime;
+        $this->actualTracking->date_time_final = $this->primaryStationAlert->finalDateTime;
+
+        if (is_bool($this->primaryStationAlert->exactMethod->connection)) {
+            //error no conection
+            $this->actualTracking->error = 'communication';
+            $this->complete = true;
+            $this->actualTracking->save();
+            return;
+        }
+        if (!$this->primaryStationAlert->exactMethod->dataExistence) {
+            //error no existencia de datos
+            $this->actualTracking->error = 'no_data';
+            $this->complete = true;
+            $this->actualTracking->save();
+            return;
+        }
+        //error de homogenizacion
+        $this->actualTracking->error = 'no_homogenization';
+        $this->complete = true;
+        $this->actualTracking->save();
+        return;
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Events\AlertEchoCalculatedEvent;
 use App\Repositories\AlertSystem\ControlNewDataRepository;
 use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\AlertSystem\UserRepository;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Administrator\ConnectionRepository;
@@ -67,25 +68,28 @@ class testController extends Controller
 
     }
 
-    public function testConfig()
+    public function testConfig(Request $request)
     {
-       $date = Carbon::parse('2020-10-24 00:30:00');
+        $date = Carbon::parse($request->initialDate);
 
-                $config = [
-                    'floodAlert' => true,
-                    'landslideAlert' => false,
-                    'initialDate' => clone $date,
-                    'flood' => [],
-                    'landslide' => [],
-                    'windowTemp' => 6,
-                    'sendEmail' => true,
-                    'insertDatabase' => true,
-                    'sendEventData' => true
-                ];
-                $ali = new AlertExecuteCommand();
-                $ali->testMode($config);
+        $config = [
+            'floodAlert' => $request->floodAlert,
+            'landslideAlert' => $request->landslideAlert,
+            'initialDate' => clone $date,
+            'flood' => $request->flood,
+            'landslide' => $request->landslide,
+            'windowTemp' => $request->windowTemp,
+            'sendEmail' => $request->sendEmail,
+            'insertDatabase' => $request->insertDatabase,
+            'sendEventData' => $request->sendEventData
+        ];
+        $ali = new AlertExecuteCommand();
+        $ali->testMode($config);
 
-        dd('terminé');
+        return response()->json([
+            'status' => true,
+            'message' => 'Proceso éxitoso',
+        ]);
 
     }
 

@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Container\Container;
 use Illuminate\Database\Query\Builder;
-use Rinvex\Repository\Contracts\RepositoryContract;
+use App\Repositories\RepositoryContract;
 
 interface RepositoriesContract extends RepositoryContract
 {

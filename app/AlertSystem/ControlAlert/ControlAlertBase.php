@@ -93,12 +93,32 @@ class ControlAlertBase extends AlertSystem
     public function getControlAlerts()
     {
 
-        if (!is_null($this->config)) {
-            if (count($this->config[$this->alertCode]) > 0) {
 
-                return $this->controlNewDataRepository->getUnsettledAlertsSpecific($this->alertCode, $this->config[$this->alertCode]);
+        try {
+            if (!is_null($this->config)) {
+                if (count($this->config[$this->alertCode]) > 0) {
+                    return $this->controlNewDataRepository->getUnsettledAlertsSpecific($this->alertCode, $this->config[$this->alertCode]);
+                }
             }
+            return $this->controlAlerts = $this->controlNewDataRepository->getUnsettledAlerts($this->alertCode);
+        } catch (Exception $e) {
+            $logRepository = new  LogsRepository();
+            $log = $logRepository->newObject();
+            $log->code = 'ControlAlertBase';
+            $log->type = 'Error';
+            $log->status = 'Active';
+            $log->priority = 'Max';
+            $log->date = Carbon::now();
+            $log->comments = 'AlertSystem|ControlAlert|ControlAlertBase|getControlAlerts|No pudo recuperar los datos';
+            $log->aditionalData = json_encode([
+                'exeptionMessage' => $e,
+                'parametersIn' => json_encode([
+                    $this->alertCode,
+                    $this->config[$this->alertCode]
+                ])
+            ]);
+            $log->save();
         }
-        return $this->controlAlerts = $this->controlNewDataRepository->getUnsettledAlerts($this->alertCode);
+
     }
 }

@@ -45,6 +45,7 @@ Route::group(['prefix' => 'v2'], function()  //,'middleware' => 'auth:api'
     Route::post('/userInformation', [ 'as'=>'v2.userInformation','uses'=>'API\AccessAlertSystemController@userInformation']);
     Route::post('/getAllDataStationById', [ 'as'=>'v2.getAllDataStationById','uses'=>'API\AccessAlertSystemController@getAllDataStationById']);
 
+
     # Old Version
 /*
     Route::post('/getStationsAlertLandslide', [ 'as'=>'v2.getStationsAlertLandslide','uses'=>'API\AccessAlertSystemController@getStationsAlertLandslide']);
@@ -73,4 +74,7 @@ Route::group(['prefix' => 'v2'], function()  //,'middleware' => 'auth:api'
 
     Route::post('/consultAlert', [ 'as'=>'v2.consultAlert','uses'=>'API\AccessAlertSystemController@consultAlert']);
 */
+});
+Route::group(['prefix' => 'mantainer', 'name' => 'test'], function () {
+    Route::post('testWithConfig', ['as' => 'test.testConfig', 'uses' => 'AlertSystem\testController@testConfig']);
 });

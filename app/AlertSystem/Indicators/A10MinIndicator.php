@@ -12,6 +12,7 @@ class A10MinIndicator extends IndicatorsBase implements IndicatorContract
      */
     public function __construct($value, $config = null)
     {
+
         parent::__construct(new TrackingFloodAlertRepository(), 5, 2, $value, 'rainfall', $config);
         # TODO 5 y rainfall deben ingresar por medio de un archivo de configuracion
     }
