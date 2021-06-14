@@ -37,7 +37,7 @@ class CreateTrackingLandslideAlert extends Migration
             $table->dateTime('date_time_initial')->nullable();
             $table->dateTime('date_time_final')->nullable();
 
-            $table->enum('error',['communication','no_data','calculation'])->nullable();
+            $table->enum('error',['communication','no_data','no_homogenization','calculation'])->nullable();
             $table->string('comment')->nullable();
 
             $table->timestamps();
