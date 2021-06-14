@@ -38,13 +38,12 @@
                                             <b-col><p><b>Descripción:</b> {{stationData.data.stationData[0].description}}</p></b-col>
                                         </b-row>
                                         <b-row>
-                                            <b-col>
-                                                <charts
+                                            <b-col> <charts
                                                     :title="`Indicadores para estación ${stationData.data.stationData[0].id}`"
                                                     y-axis="Nivel prueba"
+                                                    :limits="stationData.data.tracking"
                                                     :series="stationData.data.tracking">
-                                                </charts>
-                                            </b-col>
+                                            </charts></b-col>
                                         </b-row>
                                     </b-container>
                                 </b-card-text>
