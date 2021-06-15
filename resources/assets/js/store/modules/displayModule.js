@@ -11,6 +11,7 @@ export const displayModule = {
         landslideIconsVisible: true,
         landslidePolygonsVisible: false,
         soundAlertEnabled: true,
+        showAlertInfo: false,
     },
 
     actions: {
@@ -50,7 +51,8 @@ export const displayModule = {
         },
         toggleSoundAlert({commit}, data){
             commit ("setSoundAlertEnabled", data.soundAlertEnabled);
-        }
+        },
+
     },
 
     mutations: {
@@ -86,6 +88,9 @@ export const displayModule = {
         },
         setSoundAlertEnabled(state, show){
             state.soundAlertEnabled = show;
+        },
+        setShowAlertInfo(state, show){
+            state.showAlertInfo = show;
         }
     },
 
@@ -122,6 +127,9 @@ export const displayModule = {
         },
         getSoundAlertEnabled(state){
             return state.soundAlertEnabled;
+        },
+        getShowAlertInfo(state){
+            return state.showAlertInfo;
         }
     }
 }

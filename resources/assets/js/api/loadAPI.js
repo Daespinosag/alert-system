@@ -20,6 +20,7 @@ export default {
         return axios.post( ALERT_SYSTEM_CONFIG.API_URL + 'userInformation', userId);
     },
 
+    /** POST /api/v2/getAllDataStationById **/
     currentStationInfo: function(stationData){
         return axios.post(ALERT_SYSTEM_CONFIG.API_URL + 'getAllDataStationById', stationData)
     }

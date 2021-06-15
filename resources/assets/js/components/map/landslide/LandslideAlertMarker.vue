@@ -5,6 +5,7 @@
                 @mouseover="openPopup"
                 @mouseleave="closePopup"
                 :visible="this.visible"
+                @click="changeRoute"
         >
             <l-tooltip> {{ stationAlert.name }} </l-tooltip>
             <!--<l-icon :icon-url="require(`@alert-system-vue/assets/alerts/landslide_alert_${this.iconColor}.png`)"> </l-icon>-->
@@ -60,6 +61,9 @@
             closePopup: function (event) { this.$nextTick(()=> event.target.closePopup())},
             processFilters: function (filters) {
                 this.visible = this.processStationTextFilter(this.searchArray, filters.text);
+            },
+            changeRoute: function () {
+                this.$router.push({ name: 'Alert', params: { id: this.stationAlert.id, alert_id: this.stationAlert.alert_id, stationType: `landslide` } })
             },
         }
     }

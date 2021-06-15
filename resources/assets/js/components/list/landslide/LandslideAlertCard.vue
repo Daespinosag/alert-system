@@ -1,6 +1,6 @@
 <template>
     <div class="alert-card-container" v-show="show && alert.active">
-        <router-link :to="{ name: 'Alert', params: { id: landslidePrimaryStation.id } }" v-on:click.native="panToLocation( alert )" style="text-decoration: none; color: inherit;">
+        <router-link :to="{ name: 'Alert', params: { id: landslidePrimaryStation.id, alert_id: landslidePrimaryStation.alert_id, stationType: `landslide` } }" v-on:click.native="panToLocation( alert )" style="text-decoration: none; color: inherit;">
             <b-card v-bind:class="[this.cardOptions[landslidePrimaryStation.alert_tag]]" class="col-md-5 m-2 border-75 shadow-lg rounded-75" style="height: 150px; border-radius: 10px">
                 <b-card-title class="title" style="font-size: 20px;">{{ alert.name }}</b-card-title>
 

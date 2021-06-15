@@ -1,7 +1,12 @@
 <template>
         <div v-if="stationData">
-            <b-sidebar id="sidebar-right" right shadow :visible="true" width="550px" ref="sidebarAlert">
-                <div class="px-3 py-2">
+            <b-sidebar id="sidebar-right" no-header shadow right :visible="true" width="550px">
+                <div class="px-3 py-4">
+                    <p class="h4 mb-2">
+                        <router-link to="/PrintAlerts"">
+                            <b-icon-x v-b-toggle.sidebar-right></b-icon-x>
+                        </router-link>
+                    </p>
                     <b-tabs content-class="mt-3">
                         <b-tab title="Información estación" active>
                             <b-card :title="`Estación ${stationData.data.stationData[0].id}`">
@@ -42,7 +47,7 @@
                                                     :title="`Indicadores para estación ${stationData.data.stationData[0].id}`"
                                                     y-axis="Nivel prueba"
                                                     :limits="stationData.data.tracking"
-                                                    :series="stationData.data.tracking">
+                                                    :series="stationData.data.tracking" :key="stationData.data.stationData[0].id">
                                             </charts></b-col>
                                         </b-row>
                                     </b-container>
@@ -108,28 +113,47 @@
           charts: Charts
         },
         create(){
-            this.$refs.sidebarAlert.visible = true;
+
         },
         watch:{
             '$route.params.id': function () {
                 this.$refs.sidebarAlert.visible = true;
-                this.$store.dispatch('currentStationData', this.$attrs);
+                if (this.$attrs.stationType == 'flood'){
+                    this.$store.dispatch('currentFloodStationData',this.$attrs);
+                }
+                else{
+                    this.$store.dispatch('currentLandslideStationData',this.$attrs);
+                }
             },
         },
         mounted() {
-            this.$store.dispatch('currentStationData',this.$attrs);
+            this.$store.dispatch( 'toggleShowFilters', { showFilters : false } );
+            this.toggleShowAlertInfo(true);
+            if (this.$attrs.stationType == 'flood'){
+                this.$store.dispatch('currentFloodStationData',this.$attrs);
+            }
+            else{
+                this.$store.dispatch('currentLandslideStationData',this.$attrs);
+            }
         },
         computed: {
             stationData(){
-                return this.$store.getters.getCurrentStationData;
+                if (this.$attrs.stationType == 'flood') {
+                    return this.$store.getters.getCurrentFloodStationData;
+                }
+                else{
+                    return this.$store.getters.getCurrentLandslideStationData;
+                }
             }
         },
-        destroy() {
-            this.$refs.sidebarAlert.visible = false;
+        beforeDestroy() {
+            this.toggleShowAlertInfo(false);
         },
 
        methods:{
-
+           toggleShowAlertInfo(show){
+               this.$store.dispatch( 'toggleShowAlertInfo', { showAlertInfo : show } );
+           }
 
         }
     }

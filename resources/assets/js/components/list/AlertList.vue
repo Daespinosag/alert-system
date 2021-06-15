@@ -1,5 +1,5 @@
 <template>
-    <div  id="alert-list" class="alert-list"  v-bind:class="[ this.showFilters ? 'load-with-filters' : 'load-without-filters', 'alert-list-container' ]">
+    <div  id="alert-list" class="alert-list"  v-bind:class="[ this.showAlertInfo ? 'load-with-alert-info' : 'load-without-filters', this.showFilters ? 'load-with-filters' : 'load-without-filters', 'alert-list-container' ]">
         <b-container>
             <b-row class = "text-center">
                 <b-col class="alert-grid-container" id="alert-grid">
@@ -43,6 +43,9 @@
             },
             showFilters(){
                 return this.$store.getters.getShowFilters;
+            },
+            showAlertInfo(){
+                return this.$store.getters.getShowAlertInfo;
             }
         },
 
@@ -74,6 +77,11 @@
     .load-with-filters{
         width: 55%;
         margin-left: 45%
+    }
+
+    .load-with-alert-info{
+        width: 55%;
+        margin-right: 45%
     }
 
 </style>

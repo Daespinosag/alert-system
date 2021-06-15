@@ -204,7 +204,7 @@
         max-width: 550px;
         width: 100%;
         box-shadow: 0 2px 4px 0 rgba(3,27,78,0.10);
-        z-index: 99;
+        z-index: 999;
 
         span.clear-filters{
             font-size: 16px;

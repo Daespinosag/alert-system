@@ -1,7 +1,7 @@
 <style lang="scss">
     div#sound-alert{
         position: absolute;
-        z-index: 999999;
+        z-index: 999;
         right: 10px;
         bottom: 30px;
     }
@@ -10,7 +10,7 @@
 <template>
         <div id="sound-alert">
             <i class="fa-2x" @click="stop" v-bind:class="{'fa fa-volume-up text-success': !isPlaying, 'fa fa-volume-off text-danger' : isPlaying} " aria-hidden="true"></i>
-            <button @click="play">Test me!</button>
+            <button @click="testSound">Test me!</button>
         </div>
 </template>
 
@@ -42,6 +42,7 @@
         methods: {
             play () {
                 if (!this.alarm.muted){
+                    this.stop();
                     this.alarm.play();
                     EventBus.$emit("playing-sound", {isPlaying: true});
                     setTimeout(this.stop, 5100);
@@ -61,6 +62,9 @@
             changePlayingState(payload){
                 this.isPlaying = payload.isPlaying;
             },
+            testSound(){
+                EventBus.$emit("play-alarm");
+            }
         }
     }
 </script>
