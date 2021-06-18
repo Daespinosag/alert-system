@@ -1,81 +1,52 @@
 <template>
     <transition name="slide-in-left">
         <div class="filters-container" id="filters-container" v-show="showFilters">
-            <div class="close-filters" v-on:click="toggleShowFilters()">
+            <div class="close-filters mb-5" v-on:click="toggleShowFilters()">
                 <img src="images/grey-left.svg"/>
             </div>
-            <div class="col-md-4 col-md-offset-8">
-                <br><br><br><!-- TODO espacio para el menu de cambio -->
-            </div>
-            <div class="col-md-12" id="text-container">
+
+            <div class="col-md-12 mb-5 mt-5" id="text-container">
                 <input type="text" class="search-filters form-control" v-model="textSearch" placeholder="Buscar Estaciones"/>
             </div>
-            <br><br>
-            <div class="m-4 col-md-12 text-center" id="toggle-sound-container">
-                <label class="btn btn-success" @click="toggleSoundAlert"><p v-if="soundAlertEnabled">Silenciar sonido</p> <p v-else>Activar sonido</p></label>
-            </div>
-            <div class="m-4 col-md-12 text-center" id="toggle-container">
-                <label class="btn btn-success" @click="toggleFloodLayer"><p v-if="floodLayerVisible">Ocultar indundación</p> <p v-else>Mostrar inundación</p></label>
-                <label class="btn btn-success" @click="toggleLandslideLayer"><p v-if="landslideLayerVisible">Ocultar deslizamiento</p> <p v-else>Mostrar deslizamiento</p></label>
-            </div>
+            <div class="col-md-12 m-1" id="flood-layer-toggle">
+                <div class="col-md-5 m-1 shadow p-3 bg-white">
+                    <h4>Alertas Inundación</h4>
 
-            <div class="m-4 col-md-12" id="flood-layer-toggle">
-                <b>Alerta inundación</b>
-                <div class="form-check pull-right">
-                    <input class="form-check-input" type="checkbox" v-model="floodIconsVisible" value="" id="flood-icon-check" @click="toggleFloodIcons">
-                    <label class="form-check-label" for="flood-icon-check">
-                        Iconos
-                    </label>
-                    <input class="form-check-input" type="checkbox" value="" id="flood-overlay-check" v-model="floodPolygonsVisible" @click="toggleFloodPolygons">
-                    <label class="form-check-label" for="flood-overlay-check">
-                        Polígonos
-                    </label>
-                </div>
-            </div>
-            <div class="m-4 col-md-12" id="landslide-layer-toggle">
-                <b>Alerta deslizamiento</b>
-                <div class="form-check pull-right">
-                    <input class="form-check-input" type="checkbox" value="" id="landslide-icon-check" v-model="landslideIconsVisible" @click="toggleLandslideIcons">
-                    <label class="form-check-label" for="landslide-icon-check">
-                        Iconos
-                    </label>
-                    <input class="form-check-input" type="checkbox" value="" id="landslide-overlay-check" v-model="landslidePolygonsVisible" @click="toggleLandslidePolygons">
-                    <label class="form-check-label" for="landslide-overlay-check">
-                        Polígonos
-                    </label>
-                </div>
-            </div>
-            <!--<div id="col-md-12 location-type-container " v-if="alerts.length > 1">
-                <div class="">
-                    <label class="filter-label">Tipos de alertas</label>
+                    <b-form-checkbox v-model="floodLayerVisible" name="flood-layer-visible" switch size="mg">
+                        Capa de alertas de inundacón
+                    </b-form-checkbox>
+
+                    <b-form-checkbox v-model="floodIconsVisible" name="flood-icons-visible" switch size="mg">
+                        Iconos de alertas de inundacón
+                    </b-form-checkbox>
+
+                    <b-form-checkbox v-model="floodPolygonsVisible" name="flood-polygons-visible" switch size="mg">
+                        Poligonos de alertas de inundación
+                    </b-form-checkbox>
                 </div>
 
-                <div class="">
-                    <div class="location-filter all-locations" v-bind:class="{ 'active': activeAlertFilter === 'all' }" v-on:click="setActiveAlertFilter('all')" >
-                        Todas
-                    </div>
-                    <div class="location-filter" v-on:click="toggleAlertFilter( alert.code )" v-bind:class="{'active' : activeAlertFilter === alert.code}" v-for="alert in alerts">
-                        {{ alert.table }}
-                    </div>
-                </div>
-            </div>-->
+                <div class="col-md-6 m-1 shadow p-3 bg-white rounded">
+                    <h4>Alertas Deslizamientos</h4>
 
-            <!-- <div id="brew-methods-container">
-                <div class="grid-x grid-padding-x">
-                    <div class="large-12 medium-12 small-12 cell">
-                        <label class="filter-label">Tipos de Estaciones</label>
-                    </div>
+                    <b-form-checkbox v-model="landslideLayerVisible" name="flood-layer-visible" switch size="mg">
+                        Capa de alertas de deslizamiento
+                    </b-form-checkbox>
+
+                    <b-form-checkbox v-model="landslideIconsVisible" name="landslide-icons-visible" switch size="mg">
+                        Iconos de alertas de deslizamiento
+                    </b-form-checkbox>
+
+                    <b-form-checkbox v-model="landslidePolygonsVisible" name="landslide-polygons-visible" switch size="mg">
+                        Poligonos de alertas de deslizamiento
+                    </b-form-checkbox>
                 </div>
-                <div class="col-md-offset-1 col-md-10">
-                    <div class="brew-method" v-on:click="toggleTypeStationFilter( type.code )" v-bind:class="{'active' : activeTypeStationFilter.indexOf(type.code) >= 0 }" v-for="type in typeStation">
-                        <div class="brew-method-container">
-                            <img v-bind:src="'images/alert-icons/type-station-icon.svg'" class="brew-method-icon"/>
-                            <span class="brew-method-name">{{ type.name }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+            </div>
+
+            <div class="col-md-11 ml-3  mt-5 shadow p-3 bg-white rounded text-right" id="toggle-sound-container">
+                <b-form-checkbox v-model="soundAlertEnabled" name="landslide-polygons-visible" switch size="mg">
+                    Alerta Sonora
+                </b-form-checkbox>
+            </div>
         </div>
     </transition>
 </template>
@@ -122,26 +93,37 @@
             existenceFiltersActive(){
                 return this.$store.getters.getExistenceFiltersActive;
             },
-            floodLayerVisible(){
-                return this.$store.getters.getFloodLayerVisible;
+            floodLayerVisible: {
+                get() { return this.$store.getters.getFloodLayerVisible; },
+                set(value) { this.$store.dispatch('toggleFloodLayerVisible', { floodLayerVisible: value }); },
             },
-            landslideLayerVisible(){
-                return this.$store.getters.getLandslideLayerVisible;
+            landslideLayerVisible: {
+                get() { return this.$store.getters.getLandslideLayerVisible; },
+                set(value) {  this.$store.dispatch('toggleLandslideLayerVisible', { landslideLayerVisible: value }); }
             },
-            floodIconsVisible(){
-                return this.$store.getters.getFloodIconsVisible;
+            floodIconsVisible: {
+                get(){ return this.$store.getters.getFloodIconsVisible; },
+                set(value){ this.$store.dispatch('toggleFloodIconsVisible', { floodIconsVisible: value }); }
             },
-            floodPolygonsVisible(){
-                return this.$store.getters.getFloodPolygonsVisible;
+            floodPolygonsVisible:{
+                get(){ return this.$store.getters.getFloodPolygonsVisible; },
+                set(value){ this.$store.dispatch('toggleFloodPolygonsVisible', { floodPolygonsVisible: value }); }
             },
-            landslideIconsVisible(){
-                return this.$store.getters.getLandslideIconsVisible;
+            landslideIconsVisible: {
+                get(){ return this.$store.getters.getLandslideIconsVisible; },
+                set(value){ this.$store.dispatch('toggleLandslideIconsVisible', { landslideIconsVisible: value }); }
+
             },
-            landslidePolygonsVisible(){
-                return this.$store.getters.getLandslidePolygonsVisible;
+            landslidePolygonsVisible: {
+                get(){ return this.$store.getters.getLandslidePolygonsVisible; },
+                set(value){ this.$store.dispatch('toggleLandslidePolygonsVisible', { landslidePolygonsVisible: value }); }
             },
-            soundAlertEnabled(){
-                return this.$store.getters.getSoundAlertEnabled;
+            soundAlertEnabled: {
+                get(){ return this.$store.getters.getSoundAlertEnabled; },
+                set(value){
+                    EventBus.$emit("sound-enabled", {muted: !value });
+                    this.$store.dispatch('toggleSoundAlert', {soundAlertEnabled: value});
+                }
             }
 
         },
@@ -162,28 +144,29 @@
             toggleShowFilters(){
                 this.$store.dispatch( 'toggleShowFilters', { showFilters : !this.showFilters } );
             },
-            toggleFloodLayer(){
+            /*toggleFloodLayer(){
                 this.$store.dispatch('toggleFloodLayerVisible', {floodLayerVisible: !this.floodLayerVisible});
-            },
-            toggleLandslideLayer(){
+            },*/
+            /*toggleLandslideLayer(){
                 this.$store.dispatch('toggleLandslideLayerVisible', {landslideLayerVisible: !this.landslideLayerVisible});
-            },
-            toggleFloodIcons(){
+            },*/
+            /*toggleFloodIcons(){
                 this.$store.dispatch('toggleFloodIconsVisible', {floodIconsVisible: !this.floodIconsVisible});
-            },
-            toggleFloodPolygons(){
+            },*/
+            /*toggleFloodPolygons(){
                 this.$store.dispatch('toggleFloodPolygonsVisible', {floodPolygonsVisible: !this.floodPolygonsVisible});
-            },
-            toggleLandslideIcons(){
+            },*/
+            /*toggleLandslideIcons(){
                 this.$store.dispatch('toggleLandslideIconsVisible', {landslideIconsVisible: !this.landslideIconsVisible});
-            },
-            toggleLandslidePolygons(){
+            },*/
+            /*toggleLandslidePolygons(){
                 this.$store.dispatch('toggleLandslidePolygonsVisible', {landslidePolygonsVisible: !this.landslidePolygonsVisible});
-            },
-            toggleSoundAlert(){
+<<<<<<< HEAD
+            },*/
+            /*toggleSoundAlert(){
                 EventBus.$emit("sound-enabled", {muted: this.soundAlertEnabled});
                 this.$store.dispatch('toggleSoundAlert', {soundAlertEnabled: !this.soundAlertEnabled});
-            },
+            },*/
 
             clearFilters(){
                 this.textSearch = '';
