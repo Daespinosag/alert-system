@@ -71,7 +71,7 @@ class TrackingFloodAlertRepository extends EloquentRepository implements Reposit
 
     public function getAllTrackinByStationId($stationId, $alertId, $date)
     {
-        return $this->select('alert_id', 'primary_station_id', 'rainfall', 'indicator_value')
+        return $this->select('alert_id', 'primary_station_id', 'rainfall', 'indicator_value','date_time_homogenization')
             ->where('primary_station_id', "=", $stationId)
             ->where('alert_id', "=", $alertId)
             ->whereBetween('date_time_initial', [$date->startDate, $date->endDate])
