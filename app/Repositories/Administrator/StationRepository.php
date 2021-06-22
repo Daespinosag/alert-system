@@ -372,7 +372,7 @@ class StationRepository extends EloquentRepository
                     'station_type.description')
                     ->join('station_type', 'station_type.id', '=', 'station.station_type_id')
                     ->join('station_landslide_alert', 'station_landslide_alert.station_id', '=', 'station.id')
-                    ->where('station_landslide_alert.flood_alert_id', '=', $alertId)
+                    ->where('station_landslide_alert.landslide_alert_id', '=', $alertId)
                     ->where('station_landslide_alert.primary', '=', 'false')
                     ->get();
             }
