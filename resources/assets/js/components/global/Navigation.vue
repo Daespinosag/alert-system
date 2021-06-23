@@ -27,7 +27,7 @@
                 <nav id="profiles">
                     <ul class="nav navbar-nav dropdown-menu">
                         <li class="item_Egresados #>"><router-link :to="{ name: 'PrintAlerts' }"><span class=""> Sistemas de Alerta Temprana</span></router-link></li>
-                        <li class="item_Egresados #>"><a href="http://cdiac.manizales.unal.edu.co/alert-system/logout">Cerrar Sesión</a></li>
+                        <li class="item_Egresados #>"><a href="http://localhost/logout">Cerrar Sesión</a></li>
                     </ul>
                 </nav>
             </div>

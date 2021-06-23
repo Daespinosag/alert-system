@@ -40,6 +40,7 @@
         "highcharts-vue": "^1.2.0",
         "laravel-echo": "^1.4.0",
         "leaflet": "^1.6.0",
+        "postcss": "^8.3.5",
         "pusher-js": "^4.3.1",
         "select2": "^4.0.6-rc.1",
         "vue-circle-menu": "^1.1.1",

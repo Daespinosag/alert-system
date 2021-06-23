@@ -1,0 +1,25 @@
+version: '3.5'
+services:
+    web:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+            target: web
+        volumes:
+            - ${PROJECTFOLDER}:/var/www/alert-system
+            - ${PUBLICFOLDER}:/var/www/html  
+        ports:
+            - "80:80"
+    build-stage:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+            target: build-stage 
+        volumes:
+            - ${PROJECTFOLDER}:/usr/src/app    
+        command: sh /docker-entrypoint-initfront.d/entrypoint.sh      
+   
+networks: 
+  default: 
+    name: idea 
+    external: true
