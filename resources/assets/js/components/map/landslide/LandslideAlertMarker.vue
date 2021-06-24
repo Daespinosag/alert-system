@@ -36,7 +36,7 @@
                     orange: 'orange',
                     red: 'red'
                 },
-                iconSize: [25, 41],
+                iconSize: [41, 41],
                 visible: true,
                 searchArray: [],
             }

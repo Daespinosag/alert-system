@@ -9,7 +9,7 @@
                 <input type="text" class="search-filters form-control" v-model="textSearch" placeholder="Buscar Estaciones"/>
             </div>
             <div class="col-md-12 m-1" id="flood-layer-toggle">
-                <div class="col-md-5 m-1 shadow p-3 bg-white">
+                <div class="col-md-5 m-1 shadow p-2 bg-white">
                     <h4>Alertas Inundación</h4>
 
                     <b-form-checkbox v-model="floodLayerVisible" name="flood-layer-visible" switch size="mg">
@@ -25,7 +25,7 @@
                     </b-form-checkbox>
                 </div>
 
-                <div class="col-md-6 m-1 shadow p-3 bg-white rounded">
+                <div class="col-md-6 m-1 shadow p-2 bg-white rounded">
                     <h4>Alertas Deslizamientos</h4>
 
                     <b-form-checkbox v-model="landslideLayerVisible" name="flood-layer-visible" switch size="mg">
@@ -42,10 +42,59 @@
                 </div>
             </div>
 
-            <div class="col-md-11 ml-3  mt-5 shadow p-3 bg-white rounded text-right" id="toggle-sound-container">
+            <div class="col-md-11 ml-3  mt-5 shadow p-2 bg-white rounded text-right" id="toggle-sound-container">
                 <b-form-checkbox v-model="soundAlertEnabled" name="landslide-polygons-visible" switch size="mg">
                     Alerta Sonora
                 </b-form-checkbox>
+            </div>
+            <div class="col-md-11 ml-3  mt-5 shadow p-2 bg-white rounded text-center" id="alert-conventions-container">
+                <b-button v-b-toggle="'conventions'" class="m-1 bg-primary">Mostrar convenciones</b-button>
+
+                <b-collapse id="conventions">
+                    <b-card title="Deslizamiento"><b-card-text>
+                        <b-container class="text-center" align-v="center">
+                            <b-row>
+                                <b-col>
+                                    <img src="images/assets/alerts/landslide_alert_black.png" alt=""> Alerta verde
+                                </b-col>
+                                <b-col>
+                                    <img src="images/assets/alerts/landslide_alert_yellow.png" alt=""> Alerta amarilla
+                                </b-col>
+                                <b-col>
+                                    <img src="images/assets/alerts/landslide_alert_orange.png" alt=""> Alerta naranja
+                                </b-col>
+                                <b-col>
+                                    <img src="images/assets/alerts/landslide_alert_red.png" alt=""> Alerta roja
+                                </b-col>
+                            </b-row>
+                        </b-container>
+                    </b-card-text></b-card>
+                    <b-card title="Inundación"><b-card-text>
+                        <b-container class="text-center" align-v="center">
+                            <b-row>
+                                <b-col>
+                                    <img src="images/assets/alerts/flood_alert_black.png" alt=""> Alerta verde
+                                </b-col>
+                                <b-col>
+                                        <img src="images/assets/alerts/flood_alert_red.png" alt=""> Alerta roja
+                                </b-col>
+                            </b-row>
+                        </b-container>
+                    </b-card-text></b-card>
+                    <b-card title="General"><b-card-text>
+                        <b-container class="text-center" align-v="center">
+                            <b-row>
+                                <b-col>
+                                    <img src="images/assets/alerts/flood_alert_connection_error.png" alt=""> Error de conexión
+                                </b-col>
+                                <b-col>
+                                    <img src="images/assets/alerts/flood_alert_error_red.png" alt=""> Error de cálculo
+                                </b-col>
+                            </b-row>
+                        </b-container>
+                    </b-card-text></b-card>
+
+                </b-collapse>
             </div>
         </div>
     </transition>

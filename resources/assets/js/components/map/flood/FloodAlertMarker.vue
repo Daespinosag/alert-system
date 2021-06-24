@@ -26,7 +26,7 @@
         components: {  LMarker, LIcon, LPopup, LTooltip },
         data(){
             return {
-                iconSize: [25, 41],
+                iconSize: [41, 41],
                 iconsOptions: {
                     grey: 'error_red',
                     green: 'black',
