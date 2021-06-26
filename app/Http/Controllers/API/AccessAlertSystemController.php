@@ -350,6 +350,7 @@ class AccessAlertSystemController extends Controller
             if ($request->stationType == 'flood') {
                 $data->tracking = $this->trackingFloodAlertRepository->getAllTrackinByStationId($request->id, $request->alertId, $date);
             } else if ($request->stationType == 'landslide') {
+                $data->affectationZone = $this->stationRepository->getAffectationZone($request->id);
                 $data->tracking = $this->trackingLandslideAlertRepository->getAllTrackinByStationId($request->id, $request->alertId, $date);
             }
             $data->dates = $date;
@@ -380,7 +381,7 @@ class AccessAlertSystemController extends Controller
                     $date
                 ])
             ]);
-            $log->save();
+            $log->save(); 
         }
     }
 }
