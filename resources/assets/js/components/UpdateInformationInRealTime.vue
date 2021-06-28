@@ -32,11 +32,11 @@
                             if (value.alert_tag === "red" && value.alert_status === "increase"){
                                 playAlarm = true;
                             }
-                            EventBus.$emit("message-logged", {error: false, message: `Alerta con identificador ${value.id} actualizada`})
+                            EventBus.$emit("message-logged", {error: false, message: `Alerta con identificador ${value.primary_station_id} actualizada`})
                         })
                         .catch( function(error){
                             /** TODO: Actualizar Barra de notificaciones de que se actualizó correctamente una alerta*/
-                            EventBus.$emit("message-logged", {error: true, message: `Error actualizando alerta con identificador ${value.id}`})
+                            EventBus.$emit("message-logged", {error: true, message: `Error actualizando alerta con identificador ${value.primary_station_id}`})
                         });
 
                     /**
@@ -59,12 +59,12 @@
                             if (value.alert_tag === "red" && value.alert_status === "increase"){
                                 playAlarm = true;
                             }
-                            EventBus.$emit("message-logged", {error: false, message: `Alerta con identificador ${data.id} actualizada`})
+                            EventBus.$emit("message-logged", {error: false, message: `Alerta con identificador ${value.primary_station_id} actualizada`})
 
                         })
                         .catch( function(error){
                             /** TODO: Actualizar Barra de notificaciones de que se actualizó correctamente una alerta*/
-                            EventBus.$emit("message-logged", {error: true, message: `Error actualizando alerta con identificador ${data.id}`})
+                            EventBus.$emit("message-logged", {error: true, message: `Error actualizando alerta con identificador ${value.primary_station_id}`})
 
                         });
 

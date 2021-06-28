@@ -13,11 +13,11 @@
                     <h4>Alertas Inundación</h4>
 
                     <b-form-checkbox v-model="floodLayerVisible" name="flood-layer-visible" switch size="mg">
-                        Capa de alertas de inundacón
+                        Capa de alertas de inundación
                     </b-form-checkbox>
 
                     <b-form-checkbox v-model="floodIconsVisible" name="flood-icons-visible" switch size="mg">
-                        Iconos de alertas de inundacón
+                        Iconos de alertas de inundación
                     </b-form-checkbox>
 
                     <b-form-checkbox v-model="floodPolygonsVisible" name="flood-polygons-visible" switch size="mg">
@@ -44,7 +44,7 @@
 
             <div class="col-md-11 ml-3  mt-5 shadow p-2 bg-white rounded text-right" id="toggle-sound-container">
                 <b-form-checkbox v-model="soundAlertEnabled" name="landslide-polygons-visible" switch size="mg">
-                    Alerta Sonora
+                    Alarma Sonora
                 </b-form-checkbox>
             </div>
             <div class="col-md-11 ml-3  mt-5 shadow p-2 bg-white rounded text-center" id="alert-conventions-container">

@@ -1,7 +1,7 @@
 <style lang="scss">
     div#sound-alert{
         position: absolute;
-        z-index: 999;
+        z-index: 9999;
         right: 10px;
         bottom: 30px;
     }

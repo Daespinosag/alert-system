@@ -57,7 +57,7 @@
                 this.visible = this.processStationTextFilter(this.searchArray, filters.text);
             },
             changeRoute: function () {
-                this.$router.push({ name: 'Alert', params: { id: this.stationAlert.id, alert_id: this.stationAlert.alert_id, stationType: `flood` } })
+                this.$router.push({ name: 'Alert', params: { id: this.stationAlert.id, alertId: this.stationAlert.alert_id, stationType: `flood` } })
             },
         },
         created(){

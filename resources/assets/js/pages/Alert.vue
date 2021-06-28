@@ -1,24 +1,25 @@
 <template>
-        <div v-if="stationData">
-            <b-sidebar id="sidebar-right" no-header shadow right :visible="true" width="550px">
+        <div v-if="stationData && showAlertInfo">
+            <b-sidebar id="sidebar-right" no-header shadow right :visible="true" width="750px">
                 <div class="px-3 py-4">
                     <p class="h4 mb-2">
                         <router-link to="/PrintAlerts"">
                             <b-icon-x v-b-toggle.sidebar-right></b-icon-x>
                         </router-link>
                     </p>
+
                     <b-tabs content-class="mt-3">
                         <b-tab title="Información estación" active>
                             <b-card :title="`Estación ${stationData.data.stationData[0].id}`">
                                 <b-card-text>
                                     <b-container>
                                         <b-row>
-                                            <b-col><p><b>Nombre alerta:</b> {{ stationData.data.stationData[0].name}}</p></b-col>
+                                            <b-col><p><b>Nombre alerta:</b> {{ alertData.name}}</p></b-col>
                                             <b-col><p><b>Nombre estación:</b> {{ stationData.data.stationData[0].name}}</p></b-col>
                                         </b-row>
                                         <b-row>
-                                            <b-col><p><b>Red:</b> {{ stationData.data.stationData[0].name }}</p></b-col>
-                                            <b-col><p><b>Administrador red:</b> {{ stationData.data.stationData[0].name }}</p></b-col>
+                                            <b-col><p><b>Red:</b> {{ net.name }}</p></b-col>
+                                            <b-col><p><b>Administrador red:</b> {{net.administrator_name}}</p></b-col>
                                         </b-row>
                                         <b-row>
                                             <b-col><p><b>Ubicación:</b> {{stationData.data.stationData[0].localization}}</p></b-col>
@@ -44,10 +45,10 @@
                                         </b-row>
                                         <b-row>
                                             <b-col> <charts
-                                                    :title="`Indicadores para estación ${stationData.data.stationData[0].id}`"
-                                                    y-axis="Nivel prueba"
-                                                    :limits="stationData.data.tracking"
-                                                    :series="stationData.data.tracking" :key="stationData.data.stationData[0].id">
+                                                    :title="`Indicador para estación ${stationData.data.stationData[0].name}`"
+                                                    :y-axis="chartLabels"
+                                                    :limits="alertLimits"
+                                                    :series-data="stationData.data.tracking" :key="stationData.data.stationData[0].id">
                                             </charts></b-col>
                                         </b-row>
                                     </b-container>
@@ -60,12 +61,12 @@
                                 <b-card-text>
                                     <b-container>
                                         <b-row>
-                                            <b-col><p><b>Nombre alerta:</b> {{ station.name}}</p></b-col>
+                                            <b-col><p><b>Nombre alerta:</b> {{ alertData.name}}</p></b-col>
                                             <b-col><p><b>Nombre estación:</b> {{ station.name}}</p></b-col>
                                         </b-row>
                                         <b-row>
-                                            <b-col><p><b>Red:</b> {{ station.name }}</p></b-col>
-                                            <b-col><p><b>Administrador red:</b> {{ station.name }}</p></b-col>
+                                            <b-col><p><b>Red:</b> {{ net.name }}</p></b-col>
+                                            <b-col><p><b>Administrador red:</b> {{net.administrator_name}}</p></b-col>
                                         </b-row>
                                         <b-row>
                                             <b-col><p><b>Ubicación:</b> {{station.localization}}</p></b-col>
@@ -93,6 +94,26 @@
                                 </b-card-text>
                             </b-card>
                         </b-tab>
+                        <b-tab title="Zonas de afectación" v-if="this.$attrs.stationType === `landslide`">
+                            <div class="col-md-12 col-md-offset-1">
+                                <b-card no-body class="col-md-5 m-1 text-center" style="font-size: 100%; min-height: 110px" v-for="zone in stationData.data.affectationZone" :key="zone.id">
+                                    <b-card-text class="m-1 p-1">
+                                        <b-container>
+                                            <b-row>
+                                                <b-col>
+                                                    <p><b>Comuna:</b> {{zone.commune}}</p>
+                                                </b-col>
+                                            </b-row>
+                                            <b-row>
+                                                <b-col>
+                                                    <p><b>Barrio:</b> {{zone.name}}</p>
+                                                </b-col>
+                                            </b-row>
+                                        </b-container>
+                                    </b-card-text>
+                                </b-card>
+                            </div>
+                        </b-tab>
                     </b-tabs>
                 </div>
             </b-sidebar>
@@ -101,6 +122,12 @@
 
 <script>
     import Charts from "../components/alerts/Charts";
+    import LandslideStation from "../store/models/alerts/landslide/landslideStation";
+    import Net from "../store/models/alerts/net";
+    import FloodStation from "../store/models/alerts/flood/floodStation";
+    import FloodAlert from "../store/models/alerts/flood/floodAlert";
+    import LandslideAlert from "../store/models/alerts/landslide/landslideAlert";
+
 
     export default {
         name: 'Alert',
@@ -112,10 +139,7 @@
         components:{
           charts: Charts
         },
-        create(){
-
-        },
-        watch:{
+        watch: {
             '$route.params.id': function () {
                 this.$refs.sidebarAlert.visible = true;
                 if (this.$attrs.stationType == 'flood'){
@@ -144,8 +168,52 @@
                 else{
                     return this.$store.getters.getCurrentLandslideStationData;
                 }
+            },
+           alertData(){
+                if (this.$attrs.stationType == 'flood'){
+                    return FloodAlert.query().where('id', this.$attrs.alertId).first();
+                }
+                else {
+                    return LandslideAlert.query().where('id', this.$attrs.alertId).first();
+                }
+            },
+            primaryStation(){
+                if (this.$attrs.stationType == 'flood'){
+                    return FloodStation.query().where('primary',true).where('alert_id', this.$attrs.alertId).with('').first();
+                }
+                else {
+                    return LandslideStation.query().where('primary', true).where('alert_id', this.$attrs.alertId).get()[0];
+                }
+            },
+            net(){
+                return Net.query().find(this.primaryStation.net_id);
+            },
+            chartLabels(){
+                if (this.$attrs.stationType === 'flood'){
+                    return ["Precipitación (mm)", "Indicador A10-min"];
+                }
+                else{
+                    return ["Precipitación (mm)", "Indicador A25"]
+                }
+            },
+            alertLimits() {
+                if (this.$attrs.stationType === 'flood') {
+                    return [{color:'#cc3300', width: 2, value: parseFloat(this.alertData.limitRed)}];
+                }
+                else{
+                    return [
+                            {color: '#ffcc00', width: 2, value:  parseFloat(this.alertData.limitYellow)},
+                            {color: '#e2580b', width: 2, value:  parseFloat(this.alertData.limitOrange)},
+                            {color: '#cc3300', width: 2, value:  parseFloat(this.alertData.limitRed)},
+                            ];
+                }
+            },
+            showAlertInfo(){
+                return this.$store.getters.getShowAlertInfo;
             }
-        },
+            },
+
+
         beforeDestroy() {
             this.toggleShowAlertInfo(false);
         },
