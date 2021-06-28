@@ -45,7 +45,7 @@
 
 <template>
 
-    <div v-bind:class="[ this.showFilters ? 'active-position': 'initial-position' , 'menu-button']"  v-show="$route.name  === 'PrintAlerts'">
+    <div v-bind:class="[ this.showFilters ? 'active-position': 'initial-position' , 'menu-button']"  >
         <div class="filters-button" v-on:click="toggleShowFilters()" >
             <i  v-bind:class="{'fa fa-angle-double-right': !this.showFilters, 'fa fa-angle-double-left': this.showFilters } " aria-hidden="true">
                 Filtros
@@ -74,6 +74,7 @@
         },
         methods: {
             toggleShowFilters(){
+                this.$store.dispatch( 'toggleShowAlertInfo', { showAlertInfo : false } );
                 this.$store.dispatch( 'toggleShowFilters', { showFilters : !this.showFilters } );
             },
             clearFilters(){

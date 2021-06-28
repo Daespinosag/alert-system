@@ -1,8 +1,9 @@
 <template>
     <div class="alert-card-container" v-show="show && alert.active">
-        <router-link :to="{ name: 'Alert', params: { id: landslidePrimaryStation.id } }" v-on:click.native="panToLocation( alert )" style="text-decoration: none; color: inherit;">
-            <b-card v-bind:class="[this.cardOptions[landslidePrimaryStation.alert_tag]]" class="col-md-5 m-2 border-75 shadow-lg rounded-75" style="height: 150px; border-radius: 10px">
-                <b-card-title class="title" style="font-size: 20px;">{{ alert.name }}</b-card-title>
+        <router-link :to="{ name: 'Alert', params: { id: landslidePrimaryStation.id, alertId: landslidePrimaryStation.alert_id, stationType: `landslide` } }" v-on:click.native="panToLocation( alert )" style="text-decoration: none; color: inherit;">
+            <b-card v-bind:class="[this.cardOptions[landslidePrimaryStation.alert_tag]]" class="col-md-5 m-2 border-75 shadow-lg rounded-75" style="height: 180px; border-radius: 10px">
+                <b-card-title class="title"><strong>Alerta Deslizamiento</strong></b-card-title>
+                <b-card-title class="title"><u>{{ alert.name }}</u></b-card-title>
 
                 <b-card-text>
                     <span class="address">
@@ -84,12 +85,12 @@
             },
         },
         watch: {
-            landslidePrimaryStation() {
-                if (this.landslidePrimaryStation.alert_tag == "red" && this.landslidePrimaryStation.alert_status == "increase") {
-                    EventBus.$emit("play-alarm");
-                    return true;
-                }
-            }
+            // landslidePrimaryStation() {
+            //     if (this.landslidePrimaryStation.alert_tag == "red" && this.landslidePrimaryStation.alert_status == "increase") {
+            //         EventBus.$emit("play-alarm");
+            //         return true;
+            //     }
+            // }
         }
     }
 </script>
@@ -102,7 +103,7 @@
         padding: 15px 5px;
         margin-top: 20px;
         cursor: pointer;
-        height: 120px;
+        height: 200px;
         -webkit-transform: scaleX(1) scaleY(1);
         transform: scaleX(1) scaleY(1);
         transition: .2s;

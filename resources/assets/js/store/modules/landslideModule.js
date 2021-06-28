@@ -7,6 +7,9 @@ import LandslideAlert from "../models/alerts/landslide/landslideAlert";
 import FloodStation from "../models/alerts/flood/floodStation";
 
 export const landslideModule = {
+    state: {
+        currentLandslideStationData: null
+    },
     actions: {
         initLandslideInformation( { commit }){
             return new Promise((resolve, reject) => {
@@ -26,6 +29,14 @@ export const landslideModule = {
                     })
             })
         },
+        currentLandslideStationData( { commit }, stationData){
+            return new Promise( ((resolve, reject) => {
+                loadAPI.currentStationInfo(stationData)
+                    .then(function (response) {
+                        commit('setCurrentLandslideStationData', response.data);
+                    })
+            }))
+        },
         updateLandslideInformation({ commit }, tracking){
             return new Promise(((resolve) => {
                 resolve([
@@ -35,9 +46,13 @@ export const landslideModule = {
         }
     },
     mutations: {
-
+        setCurrentLandslideStationData(state, stationData) {
+            state.currentLandslideStationData = stationData;
+        }
     },
     getters:{
-
+        getCurrentLandslideStationData(state){
+            return state.currentLandslideStationData;
+        }
     }
 }

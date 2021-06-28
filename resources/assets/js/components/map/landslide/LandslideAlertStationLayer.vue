@@ -38,7 +38,7 @@
                 polygonAlertType: 'overlay',
 
                 polygonExist: false,
-                polygonOptionsColor: {grey: '#808080', 'green': '#339900','yellow': '#ffcc00','orange': '#e2580b','red': '#cc3300'}, // TODO
+                polygonOptionsColor: {grey: '#808080', 'green': '#339900','yellow': '#ffcc00','orange': '#e2580b','red': '#cc3300'},
             }
         },
         computed: {

@@ -1,7 +1,7 @@
 <style lang="scss">
     div#status-bar{
         position: absolute;
-        z-index: 999999;
+        z-index: 9999;
         right: 10px;
         bottom: 60px;
     }
@@ -28,7 +28,6 @@
         },
         mounted() {
             EventBus.$on("message-logged", function( payload ){
-                console.log("RECIBI UN PAYLOAD", payload);
                 this.updateMessage(payload);
             }.bind(this));
         },

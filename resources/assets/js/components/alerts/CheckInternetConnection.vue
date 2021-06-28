@@ -1,7 +1,7 @@
 <style lang="scss">
     div#status-icon{
         position: absolute;
-        z-index: 999999;
+        z-index: 9999;
         right: 10px;
         top: 60px;
     }

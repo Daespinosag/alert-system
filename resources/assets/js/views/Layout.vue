@@ -15,13 +15,11 @@
     import Navigation from "../components/global/Navigation";
     import Filters from "../components/global/Filters";
     import FloatButton from '../components/global/FloatButton';
-    import StatusBar from "../components/alerts/StatusBar";
     import UpdateInformationInRealTime from "../components/UpdateInformationInRealTime";
 
     export default {
         name: 'layout',
         components: {
-            StatusBar,
             LoadInitialInformationComponent,
             Navigation,
             FloatButton,
