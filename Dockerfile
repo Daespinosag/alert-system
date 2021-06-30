@@ -10,9 +10,10 @@ COPY package*.json ./
 RUN npm install
 
 # Create and define the application's working directory.
-RUN mkdir /usr/src/app
+RUN mkdir /usr/src/app 
 WORKDIR /usr/src/app
 ADD ./entrypoint.sh /docker-entrypoint-initfront.d/
+RUN dos2unix /docker-entrypoint-initfront.d/entrypoint.sh
 
 FROM php:7.2-apache as web
 #dependencies and utilities
