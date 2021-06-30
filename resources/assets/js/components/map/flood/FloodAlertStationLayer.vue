@@ -35,7 +35,7 @@
                 polygonAlertName : 'kml_', // + this.specificAlert.name,
                 polygonAlertType: 'overlay',
 
-                polygonOptionsColor: {grey: '#808080', 'green': '#339900','red': '#cc3300'}, // TODO
+                polygonOptionsColor: {grey: '#808080', 'green': '#339900','red': '#cc3300'},
             }
         },
         created() {

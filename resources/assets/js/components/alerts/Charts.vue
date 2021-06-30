@@ -11,15 +11,21 @@
     import offlineExporting from "highcharts/modules/offline-exporting";
     import {parse} from 'fecha';
 
+
+
     exportingInit(Highcharts);
     offlineExporting(Highcharts);
+    Highcharts.setOptions({
+        global: {
+            timezone: "America/Bogota",
+        }
+    });
 
     export default {
         name: 'Charts',
-        props:['title', 'yAxis', 'limits'],
+        props:['title', 'yAxis', 'limits', 'seriesData'],
         data() {
             return {
-                myFile: require("../../assets/tracking_test.json"),
                 chartOptions: {
                     exporting: {
                         chartOptions: { // specific options for the exported image
@@ -34,7 +40,16 @@
                         fallbackToExportServer: false
                     },
                     title: {
-                        text: this.title
+                        text: this.title,
+                    },
+                    xAxis: {
+                        type: "datetime",
+                        labels: {
+                            formatter: function () {
+                                return Highcharts.dateFormat('%d-%b-%Y',
+                                    this.value);
+                            }
+                        },
                     },
                     xAxis: {
                         type: "datetime",
@@ -47,23 +62,19 @@
                     },
                     yAxis:{
                         title: {
-                            text: this.yAxis
+                            text: "mm"
                         },
-                        plotLines: [{
-                            color: 'red',
-                            width: 2,
-                            value: 9.4,
-                        }]
+                        plotLines: this.limits
                     },
                     series: [
                         {
                             type: 'area',
-                            name: 'Indicator',
+                            name: `${this.yAxis[1]}`,
                             data: null,
                         },
                         {
                             type: 'column',
-                            name: 'Rainfall',
+                            name: `${this.yAxis[0]}`,
                             data: null,
                         },
 
@@ -85,12 +96,12 @@
         },
         methods:{
             parseDate(dateString) {
-                return parse(dateString, "DD/MM/YYYY HH:mm");
+                return parse(dateString, "YYYY-MM-DD HH:mm:ss");
             },
             getSeriesArray(value){
-                return this.myFile.map((a) => [
+                return this.seriesData.map((a) => [
                     this.parseDate(a.date_time_homogenization).getTime(),
-                    a[value]
+                    parseFloat(a[value])
                 ])
             },
         }

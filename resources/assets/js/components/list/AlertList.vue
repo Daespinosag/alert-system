@@ -3,14 +3,17 @@
         <b-container>
             <b-row class = "text-center">
                 <b-col class="alert-grid-container" id="alert-grid">
-
                     <flood-alert-list> </flood-alert-list>
-                    <landslide-alert-list> </landslide-alert-list>
-
                     <b-col>
                         <span class="no-results" v-if="shownCount === 0">No Hay Resultados</span>
                     </b-col>
                 </b-col>
+            </b-row>
+            <b-row>
+                <b-col><hr class="col-md-10" style="border-bottom: 3px dotted #7d7d7d;"></b-col>
+            </b-row>
+            <b-row class = "text-center">
+                <b-col class="alert-grid-container" id="alert-grid"><landslide-alert-list> </landslide-alert-list></b-col>
             </b-row>
         </b-container>
     </div>

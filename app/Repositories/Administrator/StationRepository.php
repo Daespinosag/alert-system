@@ -379,4 +379,21 @@ class StationRepository extends EloquentRepository
         }
         return $data;
     }
+
+    public function getAffectationZone($stationId)
+    {
+        return $this->queryBuilder()
+            ->select(
+                'neighborhood.id',
+                'neighborhood.zone_id',
+                'neighborhood.name',
+                'neighborhood.description',
+                'neighborhood.commune')
+            ->join('station_landslide_alert', 'station_landslide_alert.station_id', '=', 'station.id')
+            ->join('alert_landslide', 'alert_landslide.id', '=', 'station_landslide_alert.landslide_alert_id')
+            ->join('zone', 'zone.id', '=', 'alert_landslide.zone_id')
+            ->join('neighborhood', 'neighborhood.zone_id', '=', 'zone.id')
+            ->where('station.id', '=', $stationId)
+            ->get();
+    }
 }

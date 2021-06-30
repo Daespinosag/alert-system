@@ -47,7 +47,7 @@
 
 <template>
     <div>
-        <div id="toggle-alerts-view" v-show="$route.name === 'PrintAlerts'">
+        <div id="toggle-alerts-view" >
             <span class="map-view toggle-button" v-bind:class="{ 'active': alertsView === 'map' }" v-on:click="displayView('map')">Map</span><span class="list-view toggle-button" v-bind:class="{ 'active': alertsView === 'list' }" v-on:click="displayView('list')">List</span>
         </div>
     </div>
