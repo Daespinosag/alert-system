@@ -6,6 +6,7 @@ RUN mkdir /usr/src && mkdir /usr/src/cache
 WORKDIR /usr/src/cache
 
 # Install the application's dependencies into the node_modules's cache directory.
+RUN npm cache clear --force
 COPY package*.json ./
 RUN npm install
 

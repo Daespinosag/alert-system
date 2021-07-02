@@ -19,7 +19,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
 mix.js('resources/assets/js/app.js', 'public/js');
 //.sass('resources/assets/sass/app.scss', '/css');
 
-mix.copy('public/js/app.js', '/var/www/html/alert-system/js/app.js');
+mix.copy('public/js/app.js', '/var/www/html/alert-system/public/js/app.js');
 //mix.copy('public/css/app.css', '/var/www/alert-system/css/app.css');
 
 mix.webpackConfig({

@@ -1,15 +1,19 @@
 version: '3.5'
 services:
-    web:
+    alert-system-web:
+        container_name: alert-system-web     
         build: 
             context: .
             dockerfile: Dockerfile
             target: web
+        restart: unless-stopped    
         volumes:
             - ${PROJECTFOLDER}:/var/www/alert-system
-            - ${PUBLICFOLDER}:/var/www/html  
-        ports:
-            - "80:80"
+            - ${PUBLICFOLDER}:/var/www/html/alert-system  
+        deploy:
+            resources:
+                limits:
+                    memory: 5120M      
     build-stage:
         build: 
             context: .
