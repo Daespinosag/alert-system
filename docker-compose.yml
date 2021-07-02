@@ -1,0 +1,29 @@
+version: '3.5'
+services:
+    alert-system-web:
+        container_name: alert-system-web     
+        build: 
+            context: .
+            dockerfile: Dockerfile
+            target: web
+        restart: unless-stopped    
+        volumes:
+            - ${PROJECTFOLDER}:/var/www/alert-system
+            - ${PUBLICFOLDER}:/var/www/html/alert-system  
+        deploy:
+            resources:
+                limits:
+                    memory: 5120M      
+    build-stage:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+            target: build-stage 
+        volumes:
+            - ${PROJECTFOLDER}:/usr/src/app    
+        command: sh /docker-entrypoint-initfront.d/entrypoint.sh      
+   
+networks: 
+  default: 
+    name: idea 
+    external: true

@@ -7,7 +7,6 @@
                             <b-icon-x v-b-toggle.sidebar-right></b-icon-x>
                         </router-link>
                     </p>
-
                     <b-tabs content-class="mt-3">
                         <b-tab title="Información estación" active>
                             <b-card :title="`Estación ${stationData.data.stationData[0].id}`">

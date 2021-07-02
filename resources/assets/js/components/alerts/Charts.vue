@@ -27,7 +27,6 @@
         data() {
             return {
                 chartOptions: {
-
                     exporting: {
                         chartOptions: { // specific options for the exported image
                             plotOptions: {
@@ -42,6 +41,15 @@
                     },
                     title: {
                         text: this.title,
+                    },
+                    xAxis: {
+                        type: "datetime",
+                        labels: {
+                            formatter: function () {
+                                return Highcharts.dateFormat('%d-%b-%Y',
+                                    this.value);
+                            }
+                        },
                     },
                     xAxis: {
                         type: "datetime",
