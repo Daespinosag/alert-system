@@ -6,7 +6,6 @@ RUN mkdir /usr/src && mkdir /usr/src/cache
 WORKDIR /usr/src/cache
 
 # Install the application's dependencies into the node_modules's cache directory.
-RUN npm cache clear --force
 COPY package*.json ./
 RUN npm install
 
@@ -55,3 +54,4 @@ RUN apt-get update --yes \
     && a2enmod rewrite            
 COPY ./memory-limit.ini /usr/local/etc/php/conf.d    
 COPY ./timezone.ini /usr/local/etc/php/conf.d
+
