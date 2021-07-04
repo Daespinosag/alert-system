@@ -7,6 +7,8 @@ services:
             dockerfile: Dockerfile
             target: web
         restart: unless-stopped    
+        ports:
+            - "80:80"
         volumes:
             - ${PROJECTFOLDER}:/var/www/alert-system
             - ${PUBLICFOLDER}:/var/www/html/alert-system  
