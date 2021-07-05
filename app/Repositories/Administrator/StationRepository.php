@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Administrator;
 
-use App\Repositories\AlertSystem\LogsRepository;
+use App\Helpers\Log;
 use Illuminate\Support\Collection;
 use App\Repositories\EloquentRepository;
 use App\Entities\Administrator\Station;
@@ -27,20 +27,7 @@ class StationRepository extends EloquentRepository
         try {
             return DB::connection('administrator')->table('station');
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'StationRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|StationRepository|queryBuilder|No pudo conectar';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                ])
-            ]);
-            $log->save();
+            Log::newError('StationRepository', 'Max', 'AlertSystem|Repositories|Administrator|StationRepository|queryBuilder|No pudo conectar', $e);
             return;
         }
     }
@@ -50,21 +37,7 @@ class StationRepository extends EloquentRepository
         try {
             return $this->select('*')->where('id', $stationId)->first();
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'StationRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|StationRepository|getStation|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $stationId
-                ])
-            ]);
-            $log->save();
+            Log::newError('StationRepository', 'Max', 'AlertSystem|Repositories|Administrator|StationRepository|getStation|No pudo recuperar los datos', $e, [$stationId]);
             return;
         }
     }
@@ -74,21 +47,7 @@ class StationRepository extends EloquentRepository
         try {
             return $this->queryBuilder()->select('station.name')->where('id', $stationId)->first();
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'StationRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|StationRepository|getAllDataStation|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $stationId
-                ])
-            ]);
-            $log->save();
+            Log::newError('StationRepository', 'Max', 'AlertSystem|Repositories|Administrator|StationRepository|getAllDataStation|No pudo recuperar los datos', $e, [$stationId]);
             return;
         }
     }
@@ -113,21 +72,7 @@ class StationRepository extends EloquentRepository
                 }])
                 ->get();
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'StationRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|StationRepository|getStationsFromAlertsForMaps|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $alertsCode
-                ])
-            ]);
-            $log->save();
+            Log::newError('StationRepository', 'Max', 'AlertSystem|Repositories|Administrator|StationRepository|getStationsFromAlertsForMaps|No pudo recuperar los datos', $e, [$alertsCode]);
             return;
         }
     }
@@ -160,26 +105,13 @@ class StationRepository extends EloquentRepository
                 ->join('station_flood_alert', 'station_flood_alert.station_id', '=', 'station.id')
                 ->where('station_flood_alert.active', '=', true)
                 ->where('station_flood_alert.visible', '=', true)
-                ->where('station_flood_alert.primary','=', true)
+                ->where('station_flood_alert.primary', '=', true)
                 ->where('station.active', '=', true)
                 ->where('station.rt_active', '=', true)
                 ->orderBY('station_flood_alert.id')
                 ->get();
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'StationRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|StationRepository|getStationsAlertFloodToMap|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                ])
-            ]);
-            $log->save();
+            Log::newError('StationRepository', 'Max', 'AlertSystem|Repositories|Administrator|StationRepository|getStationsAlertFloodToMap|No pudo recuperar los datos', $e);
             return;
         }
     }
@@ -218,20 +150,7 @@ class StationRepository extends EloquentRepository
                 ->orderBY('station_landslide_alert.id')
                 ->get();
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'StationRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|StationRepository|getStationsAlertLandslideToMap|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                ])
-            ]);
-            $log->save();
+            Log::newError('StationRepository', 'Max', 'AlertSystem|Repositories|Administrator|StationRepository|getStationsAlertLandslideToMap|No pudo recuperar los datos', $e);
             return;
         }
     }
@@ -241,23 +160,7 @@ class StationRepository extends EloquentRepository
         try {
             return DB::connection('alert-system')->table($table)->select('*')->where('station', '=', $stationId)->orderBy('created_at', 'desc')->first();
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'StationRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|StationRepository|getUltimateDataInAlertTable|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $table,
-                    $stationId
-                ])
-            ]);
-            $log->save();
-            return;
+            Log::newError('StationRepository', 'Max', 'AlertSystem|Repositories|Administrator|StationRepository|getUltimateDataInAlertTable|No pudo recuperar los datos', $e, [$table, $stationId]);
         }
     }
 
@@ -314,7 +217,6 @@ class StationRepository extends EloquentRepository
             ->join('net', 'net.id', '=', 'station.net_id')
             ->join('connection', 'connection.id', '=', 'net.connection_id')
             ->join('station_type', 'station_type.id', '=', 'station.station_type_id')
-            //->where('station_landslide_alert.landslide_alert_id','=',1)
             ->where('station_flood_alert.active', '=', true)
             ->where('station_flood_alert.visible', '=', true)
             ->where('station.active', '=', true)
@@ -380,7 +282,11 @@ class StationRepository extends EloquentRepository
         return $data;
     }
 
-    public function getAffectationZone($stationId)
+    /**
+     * @param $stationId
+     * @return mixed
+     */
+    public function getAffectationZoneLandsLide($stationId)
     {
         return $this->queryBuilder()
             ->select(
@@ -393,6 +299,26 @@ class StationRepository extends EloquentRepository
             ->join('alert_landslide', 'alert_landslide.id', '=', 'station_landslide_alert.landslide_alert_id')
             ->join('zone', 'zone.id', '=', 'alert_landslide.zone_id')
             ->join('neighborhood', 'neighborhood.zone_id', '=', 'zone.id')
+            ->where('station.id', '=', $stationId)
+            ->get();
+    }
+
+    /**
+     * @param $stationId
+     * @return mixed
+     */
+    public function getAffectationZoneFlood($stationId)
+    {
+        return $this->queryBuilder()
+            ->select(
+                'basin.id',
+                'basin.name',
+                'basin.code',
+                'basin.description',
+                'basin.kml')
+            ->join('station_flood_alert', 'station_flood_alert.station_id', '=', 'station.id')
+            ->join('alert_flood', 'alert_flood.id', '=', 'station_flood_alert.flood_alert_id')
+            ->join('basin', 'basin.id', '=', 'alert_flood.basin_id')
             ->where('station.id', '=', $stationId)
             ->get();
     }

@@ -10,15 +10,13 @@ use App\Repositories\Administrator\StationRepository;
 use App\Repositories\Administrator\StationTypeRepository;
 use App\Repositories\Administrator\ZoneRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
-use App\Repositories\AlertSystem\LogsRepository;
+use App\Helpers\Log;
 use App\Repositories\AlertSystem\PermissionRepository;
 use App\Repositories\AlertSystem\RoleRepository;
 use App\Repositories\AlertSystem\TrackingFloodAlertRepository;
 use App\Repositories\AlertSystem\TrackingLandslideAlertRepository;
 use App\Repositories\AlertSystem\UserPermissionRepository;
 use App\Repositories\AlertSystem\UserRepository;
-use function Couchbase\defaultDecoder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
@@ -144,21 +142,7 @@ class AccessAlertSystemController extends Controller
 
             return ['alerts' => $landslideAlerts, 'stations' => $landslideStations, 'nets' => $nets, 'stationType' => $stationType, 'zones' => $zones];
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'AlertLandslideRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'Http|Controllers|API|AccessAlertSystemController|landslideInformation|No pudo recuperar las alertas';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-
-                ])
-            ]);
-            $log->save();
+            Log::newError('AlertLandslideRepository', 'Max', 'Http|Controllers|API|AccessAlertSystemController|landslideInformation|No pudo recuperar las alertas', $e);
         }
     }
 
@@ -174,21 +158,7 @@ class AccessAlertSystemController extends Controller
 
             return ['alerts' => $floodAlerts, 'stations' => $floodStations, 'nets' => $nets, 'stationType' => $stationType, 'basins' => $basins];
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'BasinRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|BasinRepository|getBasinsById|No pudo obtener los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $this
-                ])
-            ]);
-            $log->save();
+            Log::newError('BasinRepository', 'Max', 'AlertSystem|Repositories|Administrator|BasinRepository|getBasinsById|No pudo obtener los datos', $e, [$this]);
         }
     }
 
@@ -218,23 +188,7 @@ class AccessAlertSystemController extends Controller
             }
             return $stations;
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'AccessAlertSystemController';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'Http|Controllers|API|AccessAlertSystemController|includeTrackingInformation|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $typeAlertId,
-                    $station->alert_id,
-                    $station->id
-                ])
-            ]);
-            $log->save();
+            Log::newError('AccessAlertSystemController', 'Max', 'Http|Controllers|API|AccessAlertSystemController|includeTrackingInformation|No pudo recuperar los datos', $e, [$typeAlertId, $station->alert_id, $station->id]);
             return;
         }
     }
@@ -348,9 +302,10 @@ class AccessAlertSystemController extends Controller
             $date->startDate = Carbon::now()->subMonth()->format('Y-m-d H:i:s');
 
             if ($request->stationType == 'flood') {
+                $data->affectationZone = $this->stationRepository->getAffectationZoneFlood($request->id);
                 $data->tracking = $this->trackingFloodAlertRepository->getAllTrackinByStationId($request->id, $request->alertId, $date);
             } else if ($request->stationType == 'landslide') {
-                $data->affectationZone = $this->stationRepository->getAffectationZone($request->id);
+                $data->affectationZone = $this->stationRepository->getAffectationZoneLandsLide($request->id);
                 $data->tracking = $this->trackingLandslideAlertRepository->getAllTrackinByStationId($request->id, $request->alertId, $date);
             }
             $data->dates = $date;
@@ -365,23 +320,7 @@ class AccessAlertSystemController extends Controller
                 'data' => $data
             ]);
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'AccessAlertSystemController';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'Http|Controllers|API|AccessAlertSystemController|getAllDataStationById|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $request->id,
-                    $request->alertId,
-                    $date
-                ])
-            ]);
-            $log->save(); 
+            Log::newFail('AccessAlertSystemController', 'Max', 'Http|Controllers|API|AccessAlertSystemController|getAllDataStationById|No pudo recuperar los datos', $e, [$request->id, $request->alertId, $date]);
         }
     }
 }

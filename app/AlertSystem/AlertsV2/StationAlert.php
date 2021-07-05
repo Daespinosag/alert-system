@@ -5,7 +5,7 @@ namespace App\AlertSystem\AlertsV2;
 use App\AlertSystem\Extract\{AcquisitionServerExtract, ExtractContract};
 use App\AlertSystem\Homogenization\Homogenization;
 use App\Entities\Administrator\Station;
-use App\Repositories\AlertSystem\LogsRepository;
+use App\Helpers\Log;
 use Carbon\Carbon;
 
 class StationAlert
@@ -74,21 +74,7 @@ class StationAlert
 
         # Se valida si existen datos
         if (!$this->exactMethod->dataExistence) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'StationAlert';
-            $log->type = 'Fallo';
-            $log->status = 'Active';
-            $log->priority = 'Med';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|AlertsV2|StationAlert|execute|No Existen datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => '',
-                'parametersIn' => json_encode([
-                    $variable
-                ])
-            ]);
-            $log->save();
+            Log::newFail('StationAlert', 'Med', 'AlertSystem|AlertsV2|StationAlert|execute|No Existen datos', '', [$variable]);
             return;
         }
 
@@ -97,21 +83,7 @@ class StationAlert
 
         # Se valida la homogenizacion
         if (!$this->homogenization->validateHomogenization) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'StationAlert';
-            $log->type = 'Fallo';
-            $log->status = 'Active';
-            $log->priority = 'Med';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|AlertsV2|StationAlert|execute|No se valida la homogenización';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => '',
-                'parametersIn' => json_encode([
-                    $variable
-                ])
-            ]);
-            $log->save();
+            Log::newFail('StationAlert', 'Med', 'AlertSystem|AlertsV2|StationAlert|execute|No se valida la homogenización', '', [$variable]);
             return;
         }
 

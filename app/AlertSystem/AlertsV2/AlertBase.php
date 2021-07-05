@@ -5,8 +5,8 @@ namespace App\AlertSystem\AlertsV2;
 use App\AlertSystem\Indicators\IndicatorContract;
 use App\Entities\Administrator\Station;
 use App\Entities\AlertSystem\ControlNewData;
+use App\Helpers\Log;
 use App\Repositories\Administrator\StationRepository;
-use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\RepositoriesContract;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -123,21 +123,7 @@ class AlertBase
             $this->primaryStation = $this->getStationAlert(true)[0]; # TODO Validar que hacer cuando no se encuentra estacion primaria
             $this->primaryStationAlert = $this->createStation($this->primaryStation);
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'AlertBaseRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|AlertSystem|AlertBaseRepository|getAlert|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $this
-                ])
-            ]);
-            $log->save();
+            Log::newError('AlertBaseRepository', 'Max', 'AlertSystem|Repositories|AlertSystem|AlertBaseRepository|getAlert|No pudo recuperar los datos', $e, [$this]);
         }
     }
 
@@ -161,23 +147,7 @@ class AlertBase
         try {
             return $this->stationRepository->getStationsAlerts($this->alertCode, $this->controlNewData->alert_id, $primary);
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'StationRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|StationRepository|getStationsAlerts|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $this->alertCode,
-                    $this->controlNewData->alert_id,
-                    $primary
-                ])
-            ]);
-            $log->save();
+            Log::newError('StationRepository', 'Max', 'AlertSystem|Repositories|Administrator|StationRepository|getStationsAlerts|No pudo recuperar los datos', $e, [$this->alertCode, $this->controlNewData->alert_id, $primary]);
             return new Collection;
         }
     }

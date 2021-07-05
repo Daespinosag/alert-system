@@ -5,11 +5,9 @@ namespace App\AlertSystem\AlertsV2;
 use App\AlertSystem\Indicators\A10MinIndicator;
 use App\Entities\AlertSystem\ControlNewData;
 use App\Entities\AlertSystem\TrackingFloodAlert;
-use App\Events\AlertFloodEvent;
+use App\Helpers\Log;
 use App\Repositories\Administrator\AlertFloodRepository;
 use App\Repositories\AlertSystem\FloodRepository;
-use App\Repositories\AlertSystem\LogsRepository;
-use App\Repositories\AlertSystem\TrackingFloodAlertRepository;
 use Carbon\Carbon;
 
 class FloodAlert extends AlertBase implements AlertContract
@@ -101,21 +99,7 @@ class FloodAlert extends AlertBase implements AlertContract
             $this->actualTracking->save();
             return;
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'FloodAlert';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|AlertsV2|FloodAlert|execute|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $this
-                ])
-            ]);
-            $log->save();
+            Log::newError('FloodAlert', 'Max', 'AlertSystem|AlertsV2|FloodAlert|execute|No pudo recuperar los datos', $e, [$this]);
         }
     }
 

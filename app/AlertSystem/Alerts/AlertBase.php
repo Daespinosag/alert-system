@@ -8,6 +8,7 @@ use App\Mail\AlertMail;
 use App\Repositories\AlertSystem\UserRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use App\Helpers\Config;
 
 class AlertBase extends AlertSystem
 {
@@ -314,7 +315,7 @@ class AlertBase extends AlertSystem
 
         # se pregunta si existen cambios y si existen correos para poder enviar el email
         if ($data->changes and count($arrEmail) > 0) {
-            Mail::to('ideaalertas@gmail.com')->bcc($arrEmail)->send(new AlertMail($name, $data, $message, $code));
+            Mail::to(Config::$emailFrom)->bcc($arrEmail)->send(new AlertMail($name, $data, $message, $code));
         }
     }
 
