@@ -2,7 +2,7 @@
 
 namespace App\AlertSystem\Extract;
 
-use App\Repositories\AlertSystem\LogsRepository;
+use App\Helpers\Log;
 use Carbon\Carbon;
 
 class AcquisitionServerExtract extends ExtractBase implements ExtractContract
@@ -23,22 +23,7 @@ class AcquisitionServerExtract extends ExtractBase implements ExtractContract
     {
         #se valida si exite la conexión
         if (is_bool($this->connection)) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'AcquisitionServerExtract';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|AlertsV2|Extract|AcquisitionServerExtract|execute|No hay conexión para la estación';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => '',
-                'parametersIn' => json_encode([
-                    $variable
-                ])
-            ]);
-            $logRepository->sendEmail($log);
-            $log->save();
+            Log::newError('AcquisitionServerExtract', 'Max', 'AlertSystem|AlertsV2|Extract|AcquisitionServerExtract|execute|No hay conexión para la estación', '', [$variable],true);
             return $this;
         }
         # Se realiza la validacion de la existencia de los datos en la central de acopio

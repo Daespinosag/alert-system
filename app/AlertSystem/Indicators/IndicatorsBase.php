@@ -2,7 +2,7 @@
 
 namespace App\AlertSystem\Indicators;
 
-use App\Repositories\AlertSystem\LogsRepository;
+use App\Helpers\Log;
 use App\Repositories\RepositoriesContract;
 use Carbon\Carbon;
 
@@ -128,24 +128,7 @@ class IndicatorsBase
                 $this->actualTracking->primary_station_id
             );
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'IndicatorsBase';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Indicators|IndicatorsBase|getBeforeIndicatorTracking|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $this->beforeDateTime,
-                    $this->actualTracking->sup_id,
-                    $this->actualTracking->alert_id,
-                    $this->actualTracking->primary_station_id
-                ])
-            ]);
-            $log->save();
+            Log::newError('IndicatorsBase', 'Max', 'AlertSystem|Indicators|IndicatorsBase|getBeforeIndicatorTracking|No pudo recuperar los datos', $e, [$this->beforeDateTime, $this->actualTracking->sup_id, $this->actualTracking->alert_id, $this->actualTracking->primary_station_id]);
         }
     }
 

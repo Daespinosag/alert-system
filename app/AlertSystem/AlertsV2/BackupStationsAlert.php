@@ -2,7 +2,7 @@
 
 namespace App\AlertSystem\AlertsV2;
 
-use App\Repositories\AlertSystem\LogsRepository;
+use App\Helpers\Log;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
 
@@ -66,21 +66,7 @@ class BackupStationsAlert
 
         # Se valida si alguna de las estacion no ha transmitido
         if (!$this->validateHomogenization()) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'BackupStationsAlert';
-            $log->type = 'Fallo';
-            $log->status = 'Active';
-            $log->priority = 'Med';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|AlertsV2|BackupStationsAlert|execute|No fue posible realizar el cálculo';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => '',
-                'parametersIn' => json_encode([
-                    $variable
-                ])
-            ]);
-            $log->save();
+            Log::newFail('BackupStationsAlert', 'Med', 'AlertSystem|AlertsV2|BackupStationsAlert|execute|No fue posible realizar el cálculo', '',[$variable]);
             return;
         }
 

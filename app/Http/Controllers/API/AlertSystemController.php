@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers\Log;
 use App\Http\Controllers\Controller;
 use App\Repositories\Administrator\AlertRepository;
 use App\Repositories\Administrator\ConnectionRepository;
@@ -10,7 +11,6 @@ use App\Repositories\Administrator\StationRepository;
 use App\Repositories\AlertSystem\FloodRepository;
 use App\Repositories\AlertSystem\LandslideRepository;
 use App\Repositories\Administrator\StationTypeRepository;
-use App\Repositories\AlertSystem\LogsRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\AlertSystem\Alerts\FloodAlert;
@@ -200,20 +200,7 @@ class AlertSystemController extends Controller
         try {
             return $this->netRepository->getNets();
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'NetRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|NetRepository|getNets|No pudo obtener los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                ])
-            ]);
-            $log->save();
+            Log::newError('NetRepository', 'Max', 'AlertSystem|Repositories|Administrator|NetRepository|getNets|No pudo obtener los datos', $e);
             return;
         }
     }
@@ -233,21 +220,7 @@ class AlertSystemController extends Controller
 
             return (count($arr) > 0) ? $this->alertRepository->getAlertsWhereIn($arr) : null;
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'AlertRepository';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Repositories|Administrator|AlertRepository|getAlertsWhereIn|No pudo recuperar las alertas';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $this
-                ])
-            ]);
-            $log->save();
+            Log::newError('AlertRepository', 'Max', 'AlertSystem|Repositories|Administrator|AlertRepository|getAlertsWhereIn|No pudo recuperar las alertas', $e, [$this]);
         }
     }
 

@@ -4,10 +4,9 @@ namespace App\Repositories\AlertSystem;
 
 use App\Mail\LogMail;
 use App\Repositories\RepositoriesContract;
-use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\EloquentRepository;
 use App\Entities\AlertSystem\Logs;
-use Carbon\Carbon;
+use App\Helpers\Config;
 
 class LogsRepository extends EloquentRepository implements RepositoriesContract
 {
@@ -46,6 +45,6 @@ class LogsRepository extends EloquentRepository implements RepositoriesContract
     public function sendEmail($data)
     {
         if ($this->isSendEmail($data->code, $data->type, $data->date))
-            \Mail::to('ideaalertas@gmail.com')->bcc(['ideaalertas@gmail.com'])->send(new LogMail($data->type . ' Detectado Prioridad ' . $data->priority, $data, 'Anomalía Detectada - Revise Logs'));
+            \Mail::to(Config::$emailFrom)->bcc(Config::$emailsMantainers)->send(new LogMail($data->type . ' Detectado Prioridad ' . $data->priority, $data, 'Anomalía Detectada - Revise Logs'));
     }
 }

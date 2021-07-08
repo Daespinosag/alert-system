@@ -4,6 +4,7 @@ namespace App\AlertSystem\ControlAlert;
 
 use App\AlertSystem\AlertsV2\AlertContract;
 use App\AlertSystem\AlertSystem;
+use App\Helpers\Log;
 use App\Repositories\AlertSystem\ControlNewDataRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -102,22 +103,7 @@ class ControlAlertBase extends AlertSystem
             }
             return $this->controlAlerts = $this->controlNewDataRepository->getUnsettledAlerts($this->alertCode);
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'ControlAlertBase';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|ControlAlert|ControlAlertBase|getControlAlerts|No pudo recuperar los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $this->alertCode,
-                    $this->config[$this->alertCode]
-                ])
-            ]);
-            $log->save();
+            Log::newError('ControlAlertBase', 'Max', 'AlertSystem|ControlAlert|ControlAlertBase|getControlAlerts|No pudo recuperar los datos', $e, [$this->alertCode, $this->config[$this->alertCode]]);
         }
 
     }

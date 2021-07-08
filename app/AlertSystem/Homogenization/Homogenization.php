@@ -2,10 +2,9 @@
 
 namespace App\AlertSystem\Homogenization;
 
-use App\Repositories\AlertSystem\LogsRepository;
+use App\Helpers\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
-use phpDocumentor\Reflection\DocBlock\Description;
 
 
 class Homogenization extends HomogenizationBase implements HomogenizationContract
@@ -110,45 +109,13 @@ class Homogenization extends HomogenizationBase implements HomogenizationContrac
 
         # En caso de que no se encuentre el valor siguiente no se puede realizar la homogenizacion
         if ($val >= count($sortedRecoveryData) - 1) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'Homogenization';
-            $log->type = 'Fallo';
-            $log->status = 'Active';
-            $log->priority = 'Med';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Homogenization|Homogenization|selectBestOptions|No hay dato siguiente';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => '',
-                'parametersIn' => json_encode([
-                    $recoveryData,
-                    $t3
-                ])
-            ]);
-            $log->save();
-
+            Log::newFail('Homogenization', 'Med', 'AlertSystem|Homogenization|Homogenization|selectBestOptions|No hay dato siguiente', '', [$recoveryData, $t3]);
             return [];
         }
 
         # En caso de que no se encuentre el valor anterior no se puede realizar la homogenizacion
         if ($val <= 0) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'Homogenization';
-            $log->type = 'Fallo';
-            $log->status = 'Active';
-            $log->priority = 'Med';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Homogenization|Homogenization|selectBestOptions|No hay dato anterior';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => '',
-                'parametersIn' => json_encode([
-                    $recoveryData,
-                    $t3
-                ])
-            ]);
-            $log->save();
-
+            Log::newFail('Homogenization', 'Med', 'AlertSystem|Homogenization|Homogenization|selectBestOptions|No hay dato anterior', '', [$recoveryData, $t3]);
             return [];
         }
 

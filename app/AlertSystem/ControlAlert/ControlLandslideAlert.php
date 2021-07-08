@@ -5,9 +5,10 @@ namespace App\AlertSystem\ControlAlert;
 use App\AlertSystem\ControlAlert\AlertContract;
 use App\AlertSystem\AlertsV2\LandslideAlert;
 use App\Events\AlertLandslideEvent;
+use App\Helpers\Log;
+use App\Helpers\Config;
 use App\Mail\AlertMail;
 use App\Repositories\Administrator\StationRepository;
-use App\Repositories\AlertSystem\LogsRepository;
 use App\Repositories\AlertSystem\UserRepository;
 use Carbon\Carbon;
 use DB;
@@ -58,21 +59,7 @@ class ControlLandslideAlert extends ControlAlertBase implements ControlAlertCont
             }
             return $data;
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'ControlLandslideAlert';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|ControlAlert|ControlLandslideAlert|formatDataToEvent|No se recuperaron los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-
-                ])
-            ]);
-            $log->save();
+            Log::newError('ControlLandslideAlert', 'Max', 'AlertSystem|AlertsV2|BackupStationsAlert|execute|No fue posible realizar el cálculo', $e);
             return [];
         }
     }
@@ -144,7 +131,7 @@ class ControlLandslideAlert extends ControlAlertBase implements ControlAlertCont
             if ($item->alert_status == 'increase') {
 //                envia EMAIL
                 $dataReal = $this->sortData($data);
-                \Mail::to('ideaalertas@gmail.com')->bcc($arrEmail)->send(new AlertMail($name, $dataReal, $message, $code));
+                \Mail::to(Config::$emailFrom)->bcc($arrEmail)->send(new AlertMail($name, $dataReal, $message, $code));
                 break;
             }
         }

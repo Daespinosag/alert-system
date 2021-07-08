@@ -3,14 +3,12 @@
 namespace App\AlertSystem\ControlAlert;
 
 use App\AlertSystem\AlertsV2\FloodAlert;
-use App\Entities\AlertSystem\TrackingFloodAlert;
 use App\Events\AlertFloodEvent;
+use App\Helpers\Log;
+use App\Helpers\Config;
 use App\Mail\AlertMail;
 use App\Repositories\Administrator\StationRepository;
-use App\Repositories\AlertSystem\LogsRepository;
 use Carbon\Carbon;
-use mysql_xdevapi\Table;
-use function Couchbase\defaultDecoder;
 use App\Repositories\AlertSystem\UserRepository;
 use DB;
 
@@ -61,21 +59,7 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
             }
             return $data;
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'ControlFloodAlert';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|ControlAlert|ControlFloodAlert|formatDataToEvent|No se recuperaron los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-
-                ])
-            ]);
-            $log->save();
+            Log::newError('ControlFloodAlert', 'Max', 'AlertSystem|ControlAlert|ControlFloodAlert|formatDataToEvent|No se recuperaron los datos', $e);
             return [];
         }
     }
@@ -139,7 +123,7 @@ class ControlFloodAlert extends ControlAlertBase implements ControlAlertContract
             if ($item->alert_status == 'increase') {
 //                envia EMAIL
                 $dataReal = $this->sortData($data);
-                \Mail::to('ideaalertas@gmail.com')->bcc($arrEmail)->send(new AlertMail($name, $dataReal, $message, $code));
+                \Mail::to(Config::$emailFrom)->bcc($arrEmail)->send(new AlertMail($name, $dataReal, $message, $code));
                 break;
             }
 

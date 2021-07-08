@@ -2,11 +2,9 @@
 
 namespace App\AlertSystem\Traits;
 
-use App\Repositories\AlertSystem\LogsRepository;
+use App\Helpers\Log;
 use Exception;
-use function Couchbase\defaultDecoder;
 use DB;
-use Carbon\Carbon;
 
 trait StorageServerTrait
 {
@@ -40,30 +38,8 @@ trait StorageServerTrait
                 ->limit($constData)
                 ->get()
                 ->toArray();
-        }catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'Traits';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Traits|StorageServerTrait|calculateA25|No se recuperaron los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $externalConnection,
-                    $tableName,
-                    $dataOne,
-                    $timeOne,
-                    $dataTwo,
-                    $timeTwo,
-                    $constData
-                ])
-            ]);
-            $logRepository->sendEmail($log);
-            $log->save();
-
+        } catch (Exception $e) {
+            Log::newError('Traits', 'Max', 'AlertSystem|Traits|StorageServerTrait|calculateA25|No se recuperaron los datos', $e, [$externalConnection, $tableName, $dataOne, $timeOne, $dataTwo, $timeTwo, $constData],true);
             return;
         }
     }
@@ -100,29 +76,7 @@ trait StorageServerTrait
                 ->get()
                 ->toArray();
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'Traits';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Traits|StorageServerTrait|calculateA10|No se recuperaron los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $externalConnection,
-                    $tableName,
-                    $dataOne,
-                    $timeOne,
-                    $dataTwo,
-                    $timeTwo,
-                    $constData
-                ])
-            ]);
-            $logRepository->sendEmail($log);
-            $log->save();
-
+            Log::newError('Traits', 'Max', 'AlertSystem|Traits|StorageServerTrait|calculateA10|No se recuperaron los datos', $e, [$externalConnection, $tableName, $dataOne, $timeOne, $dataTwo, $timeTwo, $constData],true);
             return;
         }
     }
@@ -157,29 +111,7 @@ trait StorageServerTrait
             return is_null($value) ? 0 : $value->count;
 
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->code = 'Traits';
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Traits|StorageServerTrait|countDataToExtract|No se recuperaron los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $externalConnection,
-                    $tableName,
-                    $variable,
-                    $dataOne,
-                    $timeOne,
-                    $dataTwo,
-                    $timeTwo
-                ])
-            ]);
-            $logRepository->sendEmail($log);
-            $log->save();
-
+            Log::newError('Traits', 'Max', 'AlertSystem|Traits|StorageServerTrait|countDataToExtract|No se recuperaron los datos', $e, [$externalConnection, $tableName, $dataOne, $timeOne, $dataTwo, $timeTwo],true);
             return 0;
         }
 
@@ -215,27 +147,7 @@ trait StorageServerTrait
                 ->get()
                 ->toArray();
         } catch (Exception $e) {
-            $logRepository = new  LogsRepository();
-            $log = $logRepository->newObject();
-            $log->type = 'Error';
-            $log->status = 'Active';
-            $log->priority = 'Max';
-            $log->date = Carbon::now();
-            $log->comments = 'AlertSystem|Traits|StorageServerTrait|getExternalData|No se recuperaron los datos';
-            $log->aditionalData = json_encode([
-                'exeptionMessage' => $e,
-                'parametersIn' => json_encode([
-                    $externalConnection,
-                    $tableName,
-                    $variable,
-                    $dataOne,
-                    $timeOne,
-                    $dataTwo,
-                    $timeTwo
-                ])
-            ]);
-            $logRepository->sendEmail($log);
-            $log->save();
+            Log::newError('Traits', 'Max', 'AlertSystem|Traits|StorageServerTrait|getExternalData|No se recuperaron los datos', $e, [$externalConnection, $tableName, $dataOne, $timeOne, $dataTwo, $timeTwo],true);
             return;
         }
     }
